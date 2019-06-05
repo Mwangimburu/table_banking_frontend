@@ -1,0 +1,51 @@
+
+<div class="container" style="
+  width: 60%;
+  max-width: 500px;
+  position: relative;
+  margin-top: 50px;
+  padding: 0px; ">
+
+
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">SmartMicro</h4>
+                <p class="card-category">Log In</p>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Username / Email" type="text">
+                                <mat-icon matSuffix class="material-icons">mail_outline</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="Password" type="password">
+                                <mat-icon matSuffix class="material-icons">lock_outline</mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-md"></div>
+
+                    <div class="additional-info">
+                        <span class="divider-h"></span>
+                        <a [routerLink]="['/forgot-password']">Forgot your password?</a>
+
+                        <button mat-raised-button type="submit" class="btn btn-danger pull-right">Login</button>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+
+
+</div>
