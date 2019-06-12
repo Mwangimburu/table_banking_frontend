@@ -1,4 +1,8 @@
-import { Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { select, Store } from '@ngrx/store';
+import { AppState } from './reducers';
+import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
 
 
 @Component({
@@ -6,6 +10,21 @@ import { Component} from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
+
+  constructor(private store: Store<AppState>) {}
+
+  ngOnInit(): void {
+
+   this.isLoggedIn$ = this.store.pipe(
+        select(isLoggedIn)
+    );
+
+   this.isLoggedOut$ = this.store
+       .pipe(select(isLoggedOut));
+  }
 
 }

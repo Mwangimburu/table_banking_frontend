@@ -20,6 +20,12 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { AuthenticationModule } from './auth/authentication.module';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   imports: [
@@ -29,6 +35,10 @@ import { HttpClientModule } from '@angular/common/http';
     ComponentsModule,
     RouterModule,
     AppRoutingModule,
+    AuthenticationModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   declarations: [
     AppComponent,

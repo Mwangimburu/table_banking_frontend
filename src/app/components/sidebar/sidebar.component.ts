@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Logout } from '../../auth/auth.actions';
+import { AppState } from '../../reducers';
+import { Router } from '@angular/router';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -26,11 +30,16 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
 
-  constructor() { }
+  constructor(private router: Router, private store: Store<AppState>) { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);
   }
+
+  logout() {
+      this.store.dispatch(new Logout());
+  }
+
   isMobileMenu() {
       if ($(window).width() > 991) {
           return false;

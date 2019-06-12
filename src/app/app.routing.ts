@@ -4,7 +4,7 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { AuthenticationModule } from './auth/authentication.module';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -23,6 +23,7 @@ const routes: Routes = [
       {
         path: 'branches',
         loadChildren: './branches/branch.module#BranchModule',
+        canActivate: [AuthGuard]
        // loadChildren: () => import('./branches/branch.module').then(m => m.BranchModule),
       },
       {
@@ -37,7 +38,6 @@ const routes: Routes = [
   imports: [
     CommonModule,
     BrowserModule,
-    AuthenticationModule,
     RouterModule.forRoot(routes, {
        useHash: false
     })
