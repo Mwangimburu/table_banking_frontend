@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import * as jwt_decode from 'jwt-decode';
 import { AppConfigService } from '../shared/app.config-service';
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +23,19 @@ export class AuthenticationService {
     login(username: string, password: string) {
         return this.http.post<any>(`${this.apiUrl}/login`, { email: username, password })
             .pipe(map((user) => {
+                /*console.log('At auth service');
+                console.log(user.access_token);
+                console.log('....');*/
+
+                const decodedToken = jwt_decode(user.access_token);
+              /*  console.log('decoded....');
+
+                console.log(decodedToken.scopes);
+
+                console.log('....');*/
+
+                user.scope = decodedToken.scopes;
+
                 return user;
             }));
     }
