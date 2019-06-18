@@ -5,11 +5,12 @@ import { AppConfigService } from './app.config-service';
 
 export class BaseService<T extends BaseModel> {
 
-    private readonly apiUrl = AppConfigService.settings.apiUrl;
+   // private readonly apiUrl = AppConfigService.settings.apiUrl;
     private readonly resourceUrl: string;
 
     constructor( private httpClient: HttpClient, private endpoint: string) {
-        this.resourceUrl = `${this.apiUrl}/${this.endpoint}`;
+        // this.resourceUrl = `${this.apiUrl}/${this.endpoint}`;
+        this.resourceUrl = `http://localhost/19/dan/smartmicro/public/api/v1/` + this.endpoint;
     }
 
     /**
@@ -64,6 +65,17 @@ export class BaseService<T extends BaseModel> {
         });
     }
 
+    fetchBranches(page = 0, limit = 4, sortField: string = '', sortDirection: string = ''): Observable<{}> {
+        return this.httpClient.get(this.getResourceUrl(), {
+            params: new HttpParams()
+                .set('filter', '')
+                .set('page', page.toString())
+                .set('limit', limit.toString())
+                .set('sortField', sortField)
+                .set('sortDirection', sortDirection)
+        });
+    }
+
     /**
      * Fetch single item by specified id
      * @param uuid
@@ -86,7 +98,7 @@ export class BaseService<T extends BaseModel> {
      * @param item
      */
     public update(item: T): Observable<T> {
-        return this.httpClient.put<T>(this.getItemUrl(item.uuid), item);
+        return this.httpClient.put<T>(this.getItemUrl(item.id), item);
     }
 
     /**
@@ -94,6 +106,6 @@ export class BaseService<T extends BaseModel> {
      * @param item
      */
     public delete(item: T) {
-        return this.httpClient.delete(this.getItemUrl(item.uuid));
+        return this.httpClient.delete(this.getItemUrl(item.id));
     }
 }

@@ -1,6 +1,10 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../reducers';
+import { BranchesRequested, PageQuery } from '../branches/branch.actions';
+import { selectBranchesPage } from '../branches/branch.selectors';
 
 export class BaseDataSource implements DataSource<any> {
 
@@ -12,7 +16,29 @@ export class BaseDataSource implements DataSource<any> {
     private metaSubject = new BehaviorSubject({});
     public meta$ = this.metaSubject.asObservable();
 
-    constructor(private service: any) {}
+    constructor(private service: any, private store: Store<AppState>) {}
+
+    loadBranches(page: PageQuery) {
+        this.store
+            .pipe(
+                select(selectBranchesPage(page)),
+                tap(branches => {
+                    console.log('loadBranches in data source');
+                    console.log(branches['data']);
+                    if (branches.length > 0) {
+                        console.log('loadBranches in datasource ...xx');
+                        console.log('something is loaded ...xx');
+                        this.dataSubject.next(branches['data']);
+                    } else {
+                        console.log('Nothig loaded ...xx');
+
+                        this.store.dispatch(new BranchesRequested({page}));
+                    }
+                }),
+                catchError(() => of([]))
+            ).subscribe();
+
+    }
 
     /**
      * Load paginated data
@@ -25,7 +51,6 @@ export class BaseDataSource implements DataSource<any> {
     load(filter: string, page: number, limit: number, sortField: string = '', sortDirection: string = '') {
 
         console.log('load data from base data source');
-
         this.loadingSubject.next(true);
 
         this.service.getAll(filter, page, limit, sortField, sortDirection).pipe(
