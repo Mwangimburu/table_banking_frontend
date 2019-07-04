@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, merge } from 'rxjs';
+import { fromEvent, merge, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
@@ -10,10 +10,11 @@ import { Branch } from './model/branch';
 import { EditBranchComponent } from './edit/edit-branch.component';
 import { BranchDataSource } from './data/branch-data.source';
 import { BranchService } from './data/branch.service';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from '../reducers';
 import { PageQuery } from './branch.actions';
 import { BaseDataSource } from '../shared/base-data-source';
+import { selectBranchesLoading, selectBranchesMeta } from './branch.selectors';
 
 @Component({
     selector: 'app-branch',
@@ -34,13 +35,17 @@ export class BranchComponent implements OnInit, AfterViewInit {
     // Search field
     @ViewChild('search', {static: false}) search: ElementRef;
     // pagination
-    @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+    @ViewChild(MatPaginator, {static: true }) paginator: MatPaginator;
     // Pagination
     length: number;
     pageIndex = 0;
     pageSizeOptions: number[] = [5, 10, 25, 50, 100];
-    meta: any;
+   // meta: any;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
+
+    loading$: Observable<boolean>;
+    meta$: Observable<any>;
+
 
     // Data for the list table display
     dataSource: BranchDataSource;
@@ -57,25 +62,79 @@ export class BranchComponent implements OnInit, AfterViewInit {
     ngOnInit() {
 
         // this.dataSource = new BranchDataSource(this.service, this.store);
-        this.dataSource = new BaseDataSource(this.service, this.store);
+      // this.dataSource = new BaseDataSource(this.service, this.store);
+
+        this.loading$ = this.store.pipe(select(selectBranchesLoading));
+        this.meta$ = this.store.pipe(select(selectBranchesMeta));
+
+       /* console.log('meta amen$');
+        console.log(this.meta$);*/
+
+        this.dataSource = new BranchDataSource(this.service);
 
         const initialPage: PageQuery = {
-            pageIndex: 0,
-            pageSize: 3
+            pageIndex: 1,
+            pageSize: 5
         };
 
-        this.dataSource.loadBranches(initialPage);
+      //  this.dataSource.loadBranches(initialPage);
 
-        console.log(this.dataSource);
+      /*  this.meta = this.store.pipe(select(selectBranchesMeta));
+
+        console.log('meta data');
+        console.log(this.meta);
+*/
+
+
+       // console.log(this.dataSource);
 
         // Load pagination data
-    //    this.dataSource.meta$.subscribe((res) => this.meta = res);
+      /*  this.dataSource.meta$.subscribe((res) => {
+           /!* console.log('meta data');
+            console.log(res);*!/
+            this.meta = res;
+        } );*/
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
 
-      //  this.dataSource.load('', 0, 0, 'branch_name', 'asc');
+        this.dataSource.load('', 0, 0, 'branch_name', 'asc');
 
     }
+
+
+
+/*    loadDataxx() {
+        console.log(this.sort.direction);
+        this.dataSource.load(
+            this.search.nativeElement.value,
+            (this.paginator.pageIndex + 1),
+            (this.paginator.pageSize),
+            this.sort.active,
+            this.sort.direction
+        );
+    }*/
+
+
+  /*  ngAfterViewInit() {
+        console.log('At...ngAfterViewInit');
+
+        this.paginator.page
+            .pipe(
+                tap(() => this.loadBranchesPage())
+            )
+            .subscribe();
+    }*/
+
+   /* loadBranchesPage() {
+
+        const newPage: PageQuery = {
+            pageIndex: this.paginator.pageIndex,
+            pageSize: this.paginator.pageSize
+        };
+
+        this.dataSource.loadBranches(newPage);
+
+    }*/
 
     /**
      * Add dialog launch
@@ -89,7 +148,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
-                    this.loadData();
+                  //  this.loadData();
                 }
             }
         );
@@ -111,7 +170,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
-                    this.loadData();
+                   // this.loadData();
                 }
             }
         );
@@ -134,6 +193,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
     /**
      * Handle search and pagination
      */
+
     ngAfterViewInit() {
 
         fromEvent(this.search.nativeElement, 'keyup')
@@ -163,6 +223,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
             .subscribe();
     }
 
+
     /**
      * Open Edit form
      * @param source
@@ -191,7 +252,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
         this.service.delete(source)
             .subscribe((data) => {
                     this.loader = false;
-                    this.loadData();
+                 //   this.loadData();
                     this.notification.showNotification('success', 'Success !! Branch has been deleted.');
                 },
                 (error) => {
@@ -210,7 +271,7 @@ export class BranchComponent implements OnInit, AfterViewInit {
      */
     clearSearch() {
         this.search.nativeElement.value = '';
-        this.loadData()
+        // this.loadData()
     }
 }
 

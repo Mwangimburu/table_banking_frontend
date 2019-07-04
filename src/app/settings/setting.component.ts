@@ -1,11 +1,15 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'app-setting',
+    selector: 'sig-setting',
     templateUrl: './setting.component.html',
     styleUrls: ['./setting.component.css']
 })
-export class SettingComponent {
+export class SettingComponent implements OnInit {
+
+    constructor() { }
+
+    ngOnInit() {
+    }
+
 }
-
-

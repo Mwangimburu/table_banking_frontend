@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
 
 export class BranchDataSource extends BaseDataSource {
-    constructor(service: BranchService, store: Store<AppState>) {
-        super(service, store);
+    constructor(service: BranchService) {
+        super(service);
     }
 }

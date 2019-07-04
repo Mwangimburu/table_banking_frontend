@@ -4,7 +4,7 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../reducers';
 import { BranchesRequested, PageQuery } from '../branches/branch.actions';
-import { selectBranchesPage } from '../branches/branch.selectors';
+import { selectBranchesMeta, selectBranchesPage } from '../branches/branch.selectors';
 
 export class BaseDataSource implements DataSource<any> {
 
@@ -16,29 +16,7 @@ export class BaseDataSource implements DataSource<any> {
     private metaSubject = new BehaviorSubject({});
     public meta$ = this.metaSubject.asObservable();
 
-    constructor(private service: any, private store: Store<AppState>) {}
-
-    loadBranches(page: PageQuery) {
-        this.store
-            .pipe(
-                select(selectBranchesPage(page)),
-                tap(branches => {
-                    console.log('loadBranches in data source');
-                    console.log(branches['data']);
-                    if (branches.length > 0) {
-                        console.log('loadBranches in datasource ...xx');
-                        console.log('something is loaded ...xx');
-                        this.dataSubject.next(branches['data']);
-                    } else {
-                        console.log('Nothig loaded ...xx');
-
-                        this.store.dispatch(new BranchesRequested({page}));
-                    }
-                }),
-                catchError(() => of([]))
-            ).subscribe();
-
-    }
+    constructor(private service: any) {}
 
     /**
      * Load paginated data

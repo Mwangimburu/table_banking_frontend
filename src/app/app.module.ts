@@ -19,13 +19,15 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { UpgradeComponent } from './upgrade/upgrade.component';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AuthenticationModule } from './auth/authentication.module';
 import { EffectsModule } from '@ngrx/effects';
+import { JwtInterceptor } from './auth/jwt.interceptor';
+import { ErrorInterceptor } from './auth/error.interceptor';
 
 @NgModule({
   imports: [
@@ -45,7 +47,10 @@ import { EffectsModule } from '@ngrx/effects';
     AdminLayoutComponent,
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

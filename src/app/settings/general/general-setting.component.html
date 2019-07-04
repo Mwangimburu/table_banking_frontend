@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <p class="card-category"> General Settings </p>
+            </div>
+            <div class="card-body">
+
+                <form [formGroup] = "form" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Business Name" formControlName="business_name">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Business Type" formControlName="business_type">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Contact Email" formControlName="email">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="First Name" formControlName="contact_first_name">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Last Name" formControlName="contact_last_name">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Phone" formControlName="phone">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Currency" formControlName="currency">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Country" formControlName="country">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="County" formControlName="county">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Town" formControlName="town">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Physical Address" formControlName="physical_address">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Postal Address" formControlName="postal_address">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Kra Pin" formControlName="kra_pin">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Logo" formControlName="logo">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <mat-form-field class="full-width" color="accent">
+                                <input matInput placeholder="Favicon" formControlName="favicon">
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="divider divider-md"></div>
+
+                    <div class="additional-info">
+                        <button class="mat-raised-button mat-primary" (click)="update()" [disabled]="!form.valid">Update</button>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

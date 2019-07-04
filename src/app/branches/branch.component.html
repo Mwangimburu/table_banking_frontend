@@ -29,6 +29,10 @@
 
                         <div class="table-responsive">
 
+{{(meta$|async)?.total}}
+                            {{loading$|async}}
+                            {{meta$|async|json}}
+
                             <mat-table #table [dataSource]="dataSource" matSort matSortActive="branch_name" matSortDirection="asc" matSortDisableClear>
 
                                 <ng-container matColumnDef="branch_name">
@@ -64,14 +68,14 @@
                                 <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
 
                             </mat-table>
-                            <span *ngIf="meta?.total===0">No Data</span>
+                            <span *ngIf="meta$?.total===0">No Data</span>
 
-                            <div class="d-flex justify-content-center spinner-container" *ngIf="(dataSource?.loading$ | async) || loader">
+                            <div class="d-flex justify-content-center spinner-container" *ngIf="(loading$ | async) || loader">
                                 <mat-spinner [diameter]="40"></mat-spinner>
                             </div>
 
                             <mat-paginator #pagination
-                                           [length]="meta?.total"
+                                           [length]="(meta$|async)?.total"
                                            [pageIndex]="pageIndex"
                                            [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
                             </mat-paginator>

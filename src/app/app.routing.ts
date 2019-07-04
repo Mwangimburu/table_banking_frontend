@@ -27,6 +27,10 @@ const routes: Routes = [
        // loadChildren: () => import('./branches/branch.module').then(m => m.BranchModule),
       },
       {
+        path: 'loans',
+        loadChildren: './loans/loan.module#LoanModule'
+      },
+      {
         path: 'settings',
         loadChildren: './settings/setting.module#SettingModule'
       }
