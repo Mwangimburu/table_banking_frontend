@@ -1,0 +1,83 @@
+<h5 mat-dialog-title>Add Payment</h5>
+
+<div class="d-flex spinner-container" *ngIf="loader">
+    <mat-spinner [diameter]="40"></mat-spinner>
+</div>
+
+<mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="create()">
+
+    <div class="row">
+        <div class="col-12">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="member_id" placeholder="Member Id">
+                <mat-error align="start" *ngIf="formErrors?.member_id" class="form__error">{{ formErrors.member_id }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="reviewed_by_user_id" placeholder="Reviewed By">
+                <mat-error align="start" *ngIf="formErrors?.reviewed_by_user_id" class="form__error">{{ formErrors.reviewed_by_user_id }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="approved_by_user_id" placeholder="Approved By">
+                <mat-error align="start" *ngIf="formErrors?.approved_by_user_id" class="form__error">{{ formErrors.approved_by_user_id }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="application_date" placeholder="Application Date">
+                <mat-error align="start" *ngIf="formErrors?.application_date" class="form__error">{{ formErrors.application_date }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="amount_applied" placeholder="Amount Applied">
+                <mat-error align="start" *ngIf="formErrors?.amount_applied" class="form__error">{{ formErrors.amount_applied }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="repayment_period" placeholder="Repayment Period">
+                <mat-error align="start" *ngIf="formErrors?.repayment_period" class="form__error">{{ formErrors.repayment_period }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="date_approved" placeholder="Date Approved">
+                <mat-error align="start" *ngIf="formErrors?.date_approved" class="form__error">{{ formErrors.date_approved }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="status_id" placeholder="Loan Status">
+                <mat-error align="start" *ngIf="formErrors?.status_id" class="form__error">{{ formErrors.status_id }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-form-field class="full-width"  color="accent">
+        <textarea  formControlName="application_notes" matInput #notes placeholder="Notes" maxlength="150" rows="3"></textarea>
+        <mat-hint align="end">{{notes.value.length}} / 150</mat-hint>
+        <mat-error align="start" *ngIf="formErrors?.application_notes" class="form__error">{{ formErrors.application_notes }}</mat-error>
+    </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+    <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!form.valid">Save</button>
+</mat-dialog-actions>

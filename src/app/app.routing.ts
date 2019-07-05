@@ -43,6 +43,10 @@ const routes: Routes = [
         loadChildren: './payments/payment.module#PaymentModule'
       },
       {
+        path: 'loan-applications',
+        loadChildren: './loan-applications/loan-application.module#LoanApplicationModule'
+      },
+      {
         path: 'loans',
         loadChildren: './loans/loan.module#LoanModule'
       },
