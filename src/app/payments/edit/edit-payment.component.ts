@@ -9,9 +9,9 @@ import { PaymentMethodSettingService } from '../../settings/payment/method/data/
 @Component({
     selector: 'app-edit-lead',
     styles: [],
-    templateUrl: './edit-loan.component.html'
+    templateUrl: './edit-payment.component.html'
 })
-export class EditLoanComponent implements OnInit  {
+export class EditPaymentComponent implements OnInit  {
 
     form: FormGroup;
 
@@ -30,9 +30,9 @@ export class EditLoanComponent implements OnInit  {
                 private paymentService: PaymentService,
                 private paymentMethodService: PaymentMethodSettingService,
                 private notification: NotificationService,
-                private dialogRef: MatDialogRef<EditLoanComponent>) {
+                private dialogRef: MatDialogRef<EditPaymentComponent>) {
 
-        this.payment = row.payment;
+        this.payment = row.data;
 
         /* this.form = fb.group({
              method_id: [this.payment.method_id, [Validators.required,

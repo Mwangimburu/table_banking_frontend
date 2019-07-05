@@ -4,25 +4,26 @@ import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
-import { PaymentService } from './data/payment.service';
-import { AddPaymentComponent } from './add/add-payment.component';
-import { PaymentModel } from './models/payment-model';
-import { EditPaymentComponent } from './edit/edit-payment.component';
-import { PaymentDataSource } from './data/payment-data.source';
+import { MemberService } from './data/member.service';
+import { AddMemberComponent } from './add/add-member.component';
+import { MemberModel } from './models/member-model';
+import { EditMemberComponent } from './edit/edit-member.component';
+import { MemberDataSource } from './data/member-data.source';
 import { NotificationService } from '../shared/notification.service';
 
 @Component({
-    selector: 'app-payments',
-    templateUrl: './payment.component.html',
-    styleUrls: ['./payment.component.css']
+    selector: 'app-members',
+    templateUrl: './member.component.html',
+    styleUrls: ['./member.component.css']
 })
-export class PaymentComponent implements OnInit, AfterViewInit {
+export class MemberComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'loan_id',
-        'amount',
-        'method_id',
-        'date',
-        'receipt_number',
+        'first_name',
+        'last_name',
+        'id_number',
+        'phone',
+        'email',
+        'status_id',
         'actions',
     ];
 
@@ -44,9 +45,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // Data for the list table display
-    dataSource: PaymentDataSource;
+    dataSource: MemberDataSource;
 
-    constructor(private service: PaymentService, private notification: NotificationService, private dialog: MatDialog) {
+    constructor(private service: MemberService, private notification: NotificationService, private dialog: MatDialog) {
     }
 
     /**
@@ -56,13 +57,13 @@ export class PaymentComponent implements OnInit, AfterViewInit {
      */
     ngOnInit() {
 
-        this.dataSource = new PaymentDataSource(this.service);
+        this.dataSource = new MemberDataSource(this.service);
 
         // Load pagination data
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'date', 'asc');
+        this.dataSource.load('', 0, 0, 'first_name', 'asc');
 
     }
 
@@ -74,7 +75,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
 
-        const dialogRef = this.dialog.open(AddPaymentComponent, dialogConfig);
+        const dialogRef = this.dialog.open(AddMemberComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -87,7 +88,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(data: PaymentModel) {
+    editDialog(data: MemberModel) {
 
         const id = data.id;
 
@@ -96,7 +97,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {data};
 
-        const dialogRef = this.dialog.open(EditPaymentComponent, dialogConfig);
+        const dialogRef = this.dialog.open(EditMemberComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -156,7 +157,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
      * Open Edit form
      * @param lead
      */
-    openConfirmationDialog(lead: PaymentModel) {
+    openConfirmationDialog(lead: MemberModel) {
 
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
@@ -175,7 +176,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
      * Remove resource from db
      * @param lead
      */
-    delete(lead: PaymentModel) {
+    delete(lead: MemberModel) {
         this.loader = true;
         this.service.delete(lead)
             .subscribe((data) => {
