@@ -31,6 +31,10 @@ const routes: Routes = [
         loadChildren: './members/member.module#MemberModule'
       },
       {
+        path: 'borrowers',
+        loadChildren: './borrowers/borrower.module#BorrowerModule'
+      },
+      {
         path: 'guarantors',
         loadChildren: './guarantors/guarantor.module#GuarantorModule'
       },
