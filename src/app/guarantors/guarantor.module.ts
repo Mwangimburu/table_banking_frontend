@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 
-import { MemberRoutingModule } from './member-routing.module';
-import { MemberComponent } from './member.component';
+import { GuarantorRoutingModule } from './guarantor-routing.module';
+import { GuarantorComponent } from './guarantor.component';
 import { MaterialModule } from '../shared/material.module';
-import { EditMemberComponent } from './edit/edit-member.component';
-import { AddMemberComponent } from './add/add-member.component';
+import { EditGuarantorComponent } from './edit/edit-guarantor.component';
+import { AddGuarantorComponent } from './add/add-guarantor.component';
 
 @NgModule({
     imports: [
         MaterialModule,
-        MemberRoutingModule,
+        GuarantorRoutingModule,
     ],
     declarations: [
-        MemberComponent,
-        EditMemberComponent,
-        AddMemberComponent
+        GuarantorComponent,
+        EditGuarantorComponent,
+        AddGuarantorComponent
     ],
     entryComponents: [
-        EditMemberComponent,
-        AddMemberComponent
+        EditGuarantorComponent,
+        AddGuarantorComponent
     ]
 })
 
-export class MemberModule {}
+export class GuarantorModule {}

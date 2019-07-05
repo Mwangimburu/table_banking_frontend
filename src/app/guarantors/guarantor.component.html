@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-header-danger">
-                        <h4 class="card-title ">Members</h4>
+                        <h4 class="card-title ">Guarantors</h4>
                     </div>
                     <div class="card-body">
 
@@ -29,36 +29,16 @@
 
                         <div class="table-responsive">
 
-                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="first_name" matSortDirection="asc" matSortDisableClear>
+                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="member_id" matSortDirection="asc" matSortDisableClear>
 
-                                <ng-container matColumnDef="first_name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
+                                <ng-container matColumnDef="member_id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> member_id </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.member_id}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="last_name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="id_number">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Id Number </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.id_number}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="phone">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.phone}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="email">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="status_id">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.status_id}} </mat-cell>
+                                <ng-container matColumnDef="loan_id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Id </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.loan_id}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="actions">

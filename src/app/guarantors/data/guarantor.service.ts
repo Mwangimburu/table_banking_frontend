@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MemberModel } from '../models/member-model';
+import { GuarantorModel } from '../models/guarantor-model';
 import { BaseService } from '../../shared/base-service';
 
 @Injectable({ providedIn: 'root' })
-export class MemberService extends BaseService<MemberModel> {
+export class GuarantorService extends BaseService<GuarantorModel> {
     constructor(httpClient: HttpClient) {
-        super( httpClient, 'members');
+        super( httpClient, 'guarantors');
     }
 }

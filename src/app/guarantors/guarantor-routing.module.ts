@@ -1,13 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
-import { MemberComponent } from './member.component';
-import { EditMemberComponent } from './edit/edit-member.component';
-import { AddMemberComponent } from './add/add-member.component';
+import { GuarantorComponent } from './guarantor.component';
+import { EditGuarantorComponent } from './edit/edit-guarantor.component';
+import { AddGuarantorComponent } from './add/add-guarantor.component';
 
 export const ROUTES: Routes = [
-    { path: '', component: MemberComponent },
-    { path: ':id/edit', component: EditMemberComponent },
-    { path: 'create', component: AddMemberComponent },
+    { path: '', component: GuarantorComponent },
+    { path: ':id/edit', component: EditGuarantorComponent },
+    { path: 'create', component: AddGuarantorComponent },
 ];
 
 
-export const MemberRoutingModule = RouterModule.forChild(ROUTES);
+export const GuarantorRoutingModule = RouterModule.forChild(ROUTES);

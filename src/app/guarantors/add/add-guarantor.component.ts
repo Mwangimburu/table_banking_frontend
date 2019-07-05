@@ -1,24 +1,24 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MemberModel } from '../models/member-model';
+import { GuarantorModel } from '../models/guarantor-model';
 import { GuarantorService } from '../data/guarantor.service';
 
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 
 @Component({
-    selector: 'app-add-member',
+    selector: 'app-add-guarantor',
     styles: [],
-    templateUrl: './add-member.component.html'
+    templateUrl: './add-guarantor.component.html'
 })
-export class AddMemberComponent implements OnInit  {
+export class AddGuarantorComponent implements OnInit  {
 
     form: FormGroup;
 
     formErrors: any;
 
-    member: MemberModel;
+    member: GuarantorModel;
 
     loader = false;
 
@@ -40,7 +40,7 @@ export class AddMemberComponent implements OnInit  {
                 private memberMethodService: PaymentMethodSettingService,
 
 
-                private dialogRef: MatDialogRef<AddMemberComponent>) {
+                private dialogRef: MatDialogRef<AddGuarantorComponent>) {
     }
 
     ngOnInit() {
@@ -51,23 +51,9 @@ export class AddMemberComponent implements OnInit  {
             );
 
         this.form = this.fb.group({
-            first_name: [''/*, [Validators.required,
+            member_id: [''/*, [Validators.required,
                 Validators.minLength(3)]*/],
-            middle_name: [''],
-            last_name: [''],
-            nationality: [''],
-            id_number: [''],
-            passport_number: [''],
-            phone: [''],
-            email: [''],
-            postal_address: [''],
-            residential_address: [''],
-            bank_name: [''],
-            bank_account: [''],
-            bank_branch: [''],
-            status_id: [''],
-            passport_photo: [''],
-            national_id_image: [''],
+            loan_id: ['']
         });
     }
 
@@ -92,7 +78,7 @@ export class AddMemberComponent implements OnInit  {
             .subscribe((data) => {
                     console.log('Create Source: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New member created.');
+                    this.notification.showNotification('success', 'Success !! New guarantor created.');
                 },
                 (error) => {
                     this.loader = false;

@@ -1,23 +1,23 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MemberModel } from '../models/member-model';
+import { GuarantorModel } from '../models/guarantor-model';
 import { GuarantorService } from '../data/guarantor.service';
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 
 @Component({
-    selector: 'app-edit-member',
+    selector: 'app-edit-guarantor',
     styles: [],
-    templateUrl: './edit-member.component.html'
+    templateUrl: './edit-guarantor.component.html'
 })
-export class EditMemberComponent implements OnInit  {
+export class EditGuarantorComponent implements OnInit  {
 
     form: FormGroup;
 
     formErrors: any;
 
-    member: MemberModel;
+    guarantor: GuarantorModel;
 
     loader = false;
 
@@ -28,9 +28,9 @@ export class EditMemberComponent implements OnInit  {
                 private memberService: GuarantorService,
                 private memberStatusService: PaymentMethodSettingService,
                 private notification: NotificationService,
-                private dialogRef: MatDialogRef<EditMemberComponent>) {
+                private dialogRef: MatDialogRef<EditGuarantorComponent>) {
 
-        this.member = row.data;
+        this.guarantor = row.data;
     }
 
     ngOnInit() {
@@ -41,23 +41,9 @@ export class EditMemberComponent implements OnInit  {
             );
 
         this.form = this.fb.group({
-            first_name: [this.member.first_name, [Validators.required,
+            member_id: [this.guarantor.member_id, [Validators.required,
                 Validators.minLength(3)]],
-            middle_name: [this.member.middle_name],
-            last_name: [this.member.last_name],
-            nationality: [this.member.nationality],
-            id_number: [this.member.id_number],
-            passport_number: [this.member.passport_number],
-            phone: [this.member.phone],
-            email: [this.member.email],
-            postal_address: [this.member.postal_address],
-            residential_address: [this.member.residential_address],
-            bank_name: [this.member.bank_name],
-            bank_account: [this.member.bank_account],
-            bank_branch: [this.member.bank_branch],
-            status_id: [this.member.status_id],
-            passport_photo: [this.member.passport_photo],
-            national_id_image: [this.member.national_id_image],
+            loan_id: [this.guarantor.loan_id]
         });
     }
 
@@ -66,7 +52,7 @@ export class EditMemberComponent implements OnInit  {
     }
 
     update() {
-        const body = Object.assign({}, this.member, this.form.value);
+        const body = Object.assign({}, this.guarantor, this.form.value);
 
         this.loader = true;
         this.memberService.update(body)
@@ -78,7 +64,7 @@ export class EditMemberComponent implements OnInit  {
                     this.dialogRef.close(this.form.value);
 
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Member has been updated.');
+                    this.notification.showNotification('success', 'Success !! Guarantor has been updated.');
 
                 },
                 (error) => {

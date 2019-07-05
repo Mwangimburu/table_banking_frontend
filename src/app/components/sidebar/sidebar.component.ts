@@ -20,6 +20,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
     { path: '/branches', title: 'Branches',  icon: 'business', class: '' },
     { path: '/members', title: 'Members',  icon: 'people', class: '' },
+    { path: '/guarantors', title: 'Guarantors',  icon: 'people', class: '' },
     { path: '/loans', title: 'Loans',  icon: 'business', class: '' },
     { path: '/payments', title: 'Payments',  icon: 'attach_money', class: '' },
     { path: '/settings', title: 'Setting',  icon: 'settings', class: '' },

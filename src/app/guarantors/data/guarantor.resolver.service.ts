@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MemberModel } from '../models/member-model';
+import { GuarantorModel } from '../models/guarantor-model';
 import { GuarantorService } from './guarantor.service';
-import { MemberDataSource } from './member-data.source';
+import { GuarantorDataSource } from './guarantor-data.source';
 
 @Injectable({ providedIn: 'root' })
-export class MemberResolverService implements Resolve<MemberModel> {
+export class GuarantorResolverService implements Resolve<GuarantorModel> {
 
-    dataSource: MemberDataSource;
+    dataSource: GuarantorDataSource;
 
     constructor(private service: GuarantorService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | MemberModel {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | GuarantorModel {
 
       //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);

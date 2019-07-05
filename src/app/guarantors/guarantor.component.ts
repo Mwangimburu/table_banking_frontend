@@ -5,26 +5,22 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
 import { GuarantorService } from './data/guarantor.service';
-import { AddMemberComponent } from './add/add-member.component';
-import { MemberModel } from './models/member-model';
-import { EditMemberComponent } from './edit/edit-member.component';
-import { MemberDataSource } from './data/member-data.source';
+import { AddGuarantorComponent } from './add/add-guarantor.component';
+import { GuarantorModel } from './models/guarantor-model';
+import { EditGuarantorComponent } from './edit/edit-guarantor.component';
+import { GuarantorDataSource } from './data/guarantor-data.source';
 import { NotificationService } from '../shared/notification.service';
 
 @Component({
-    selector: 'app-members',
+    selector: 'app-guarantors',
     templateUrl: './guarantor.component.html',
     styleUrls: ['./guarantor.component.css']
 })
-export class MemberComponent implements OnInit, AfterViewInit {
+export class GuarantorComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'first_name',
-        'last_name',
-        'id_number',
-        'phone',
-        'email',
-        'status_id',
-        'actions',
+        'member_id',
+        'loan_id',
+        'actions'
     ];
 
     loader = false;
@@ -45,7 +41,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // Data for the list table display
-    dataSource: MemberDataSource;
+    dataSource: GuarantorDataSource;
 
     constructor(private service: GuarantorService, private notification: NotificationService, private dialog: MatDialog) {
     }
@@ -57,13 +53,13 @@ export class MemberComponent implements OnInit, AfterViewInit {
      */
     ngOnInit() {
 
-        this.dataSource = new MemberDataSource(this.service);
+        this.dataSource = new GuarantorDataSource(this.service);
 
         // Load pagination data
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'first_name', 'asc');
+        this.dataSource.load('', 0, 0, 'member_id', 'asc');
 
     }
 
@@ -75,7 +71,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
 
-        const dialogRef = this.dialog.open(AddMemberComponent, dialogConfig);
+        const dialogRef = this.dialog.open(AddGuarantorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -88,7 +84,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(data: MemberModel) {
+    editDialog(data: GuarantorModel) {
 
         const id = data.id;
 
@@ -97,7 +93,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {data};
 
-        const dialogRef = this.dialog.open(EditMemberComponent, dialogConfig);
+        const dialogRef = this.dialog.open(EditGuarantorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -157,7 +153,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
      * Open Edit form
      * @param lead
      */
-    openConfirmationDialog(lead: MemberModel) {
+    openConfirmationDialog(lead: GuarantorModel) {
 
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
@@ -176,7 +172,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
      * Remove resource from db
      * @param lead
      */
-    delete(lead: MemberModel) {
+    delete(lead: GuarantorModel) {
         this.loader = true;
         this.service.delete(lead)
             .subscribe((data) => {
