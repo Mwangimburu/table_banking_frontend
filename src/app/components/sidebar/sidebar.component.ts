@@ -10,22 +10,23 @@ declare interface RouteInfo {
     title: string;
     icon: string;
     class: string;
+    permission?: any;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
-    { path: '/user-profile', title: 'User Profile',  icon: 'person', class: '' },
+    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '', permission: ['create-branch'] },
+    /*{ path: '/user-profile', title: 'User Profile',  icon: 'person', class: '' },
     { path: '/table-list', title: 'Table List',  icon: 'content_paste', class: '' },
     { path: '/typography', title: 'Typography',  icon: 'library_books', class: '' },
     { path: '/icons', title: 'Icons',  icon: 'bubble_chart', class: '' },
     { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
-    { path: '/branches', title: 'Branches',  icon: 'business', class: '' },
-    { path: '/members', title: 'Members',  icon: 'people', class: '' },
-    { path: '/borrowers', title: 'Borrowers',  icon: 'people', class: '' },
-    { path: '/guarantors', title: 'Guarantors',  icon: 'people', class: '' },
-    { path: '/loans', title: 'Loans',  icon: 'business', class: '' },
-    { path: '/loan-applications', title: 'Loan Applications',  icon: 'business', class: '' },
-    { path: '/payments', title: 'Payments',  icon: 'attach_money', class: '' },
-    { path: '/settings', title: 'Setting',  icon: 'settings', class: '' },
+    { path: '/branches', title: 'Branches',  icon: 'business', class: '' },*/
+    { path: '/members', title: 'Members',  icon: 'people', class: '', permission: ['create-branch'] },
+    { path: '/borrowers', title: 'Borrowers',  icon: 'people', class: '', permission: ['create-branch'] },
+    { path: '/guarantors', title: 'Guarantors',  icon: 'people', class: '', permission: ['create-branch'] },
+    { path: '/loans', title: 'Loans',  icon: 'business', class: '', permission: ['create-branch'] },
+    { path: '/loan-applications', title: 'Loan Applications',  icon: 'business', class: '', permission: ['create-branch'] },
+    { path: '/payments', title: 'Payments',  icon: 'attach_money', class: '', permission: ['create-branch'] },
+    { path: '/settings', title: 'Setting',  icon: 'settings', class: '', permission: ['create-branch'] },
 ];
 
 @Component({

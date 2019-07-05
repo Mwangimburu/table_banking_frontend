@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { HasPermissionDirective } from '../shared/directives/has-permission-directive';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    HasPermissionDirective
   ],
   exports: [
     FooterComponent,
