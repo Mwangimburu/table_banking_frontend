@@ -60,7 +60,7 @@ export class AddPaymentMethodComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    if (error.method === 0) {
+                    if (error.message) {
                         this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
                             ' Check your connection and retry.');
                         return;

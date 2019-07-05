@@ -27,6 +27,10 @@ const routes: Routes = [
        // loadChildren: () => import('./branches/branch.module').then(m => m.BranchModule),
       },
       {
+        path: 'payments',
+        loadChildren: './payments/payment.module#PaymentModule'
+      },
+      {
         path: 'loans',
         loadChildren: './loans/loan.module#LoanModule'
       },

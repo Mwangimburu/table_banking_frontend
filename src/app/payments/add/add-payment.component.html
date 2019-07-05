@@ -1,0 +1,87 @@
+<h5 mat-dialog-title>Add Payment</h5>
+
+<div class="d-flex spinner-container" *ngIf="loader">
+    <mat-spinner [diameter]="40"></mat-spinner>
+</div>
+
+<mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="create()">
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="amount" placeholder="Amount">
+                <mat-error align="start" *ngIf="formErrors?.amount" class="form__error">{{ formErrors.amount }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width" color="primary">
+                <mat-select placeholder="Payment Method" formControlName="method_id">
+                    <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.id">
+                        {{paymentMethod.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error align="start" *ngIf="formErrors?.method_id" class="form__error">{{ formErrors.method_id }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+  <!--  <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width" color="primary">
+                <mat-select placeholder="Client Name" formControlName="client_id">
+                    <mat-option *ngFor="let client of clients" [value]="client.uuid">
+                        {{client.business_name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error align="start" *ngIf="formErrors?.client_id" class="form__error">{{ formErrors.client_id }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width" color="primary">
+                <mat-select placeholder="Invoice Number" formControlName="invoice_id">
+                    <mat-option *ngFor="let invoice of invoices" [value]="invoice.uuid">
+                        {{invoice.invoice_number}}
+                    </mat-option>
+                </mat-select>
+                <mat-error align="start" *ngIf="formErrors?.invoice_id" class="form__error">{{ formErrors.invoice_id }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>-->
+
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="loan_id" placeholder="loan_id">
+                <mat-error align="start" *ngIf="formErrors?.loan_id" class="form__error">{{ formErrors.loan_id }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="date" placeholder="date">
+                <mat-error align="start" *ngIf="formErrors?.date" class="form__error">{{ formErrors.date }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <mat-form-field class="full-width">
+        <input matInput formControlName="paid_to" placeholder="paid_to">
+        <mat-error align="start" *ngIf="formErrors?.paid_to" class="form__error">{{ formErrors.paid_to }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width"  color="accent">
+        <textarea  formControlName="notes" matInput #notes placeholder="Note" maxlength="150" rows="3"></textarea>
+        <mat-hint align="end">{{notes.value.length}} / 150</mat-hint>
+        <mat-error align="start" *ngIf="formErrors?.notes" class="form__error">{{ formErrors.notes }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput formControlName="attachment" placeholder="Attachment">
+        <mat-error align="start" *ngIf="formErrors?.attachment" class="form__error">{{ formErrors.attachment }}</mat-error>
+    </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+    <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!form.valid">Save</button>
+</mat-dialog-actions>
