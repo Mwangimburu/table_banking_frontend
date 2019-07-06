@@ -44,7 +44,9 @@ export class GeneralSettingComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.prePopulateForm(this.route.snapshot.data['setting'].data);
+        if (this.route.snapshot.data['setting']) {
+            this.prePopulateForm(this.route.snapshot.data['setting'].data);
+        }
      }
 
     /**

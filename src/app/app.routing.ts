@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthGuard } from './auth/auth.guard';
+import { PermissionGuardService as PermGuard } from './auth/permission-guard-service';
 
 const routes: Routes = [
   {
@@ -52,7 +53,12 @@ const routes: Routes = [
       },
       {
         path: 'settings',
-        loadChildren: './settings/setting.module#SettingModule'
+        loadChildren: './settings/setting.module#SettingModule',
+        canLoad: [PermGuard],
+        data: {
+          expectedPermission: ['create-branch']
+        }
+
       }
     ]
   }

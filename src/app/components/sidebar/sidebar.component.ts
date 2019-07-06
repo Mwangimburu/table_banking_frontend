@@ -20,7 +20,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/icons', title: 'Icons',  icon: 'bubble_chart', class: '' },
     { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
     { path: '/branches', title: 'Branches',  icon: 'business', class: '' },*/
-    { path: '/members', title: 'Members',  icon: 'people', class: '', permission: ['create-branch'] },
+    { path: '/members', title: 'Members',  icon: 'people', class: '', permission: ['delete-branch'] },
     { path: '/borrowers', title: 'Borrowers',  icon: 'people', class: '', permission: ['create-branch'] },
     { path: '/guarantors', title: 'Guarantors',  icon: 'people', class: '', permission: ['create-branch'] },
     { path: '/loans', title: 'Loans',  icon: 'business', class: '', permission: ['create-branch'] },

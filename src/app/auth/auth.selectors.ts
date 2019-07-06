@@ -19,5 +19,9 @@ export const accessToken = createSelector(
 
 export const allScopes = createSelector(
     selectAuthState,
-    auth => auth.user.scope
+    auth => {
+        if (auth.user) {
+            return auth.user.scope;
+        }
+    }
 );

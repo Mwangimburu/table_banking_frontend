@@ -8,7 +8,10 @@ import { accessToken, isLoggedIn } from './auth.selectors';
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
+    storageKey = 'be3295963d1091720c8513f78f83c216332190ff714a5239c8b49190443be288';
+
     constructor( private store: Store<AppState>) {}
+
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -16,13 +19,12 @@ export class JwtInterceptor implements HttpInterceptor {
        // const currentToken = this.auth.getToken();
         const currentToken$ = this.store.pipe(select(accessToken));
 
-      //  console.log('Token');
-      //  console.log(currentToken$);
+        const userData = JSON.parse(localStorage.getItem(this.storageKey));
 
-        if (currentToken$) {
+        if (userData) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${currentToken$}`
+                    Authorization: `Bearer ${userData.access_token}`
                 }
             });
         }

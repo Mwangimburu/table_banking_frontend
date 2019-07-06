@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
-import { Login } from '../auth.actions';
+import { Login, Logout } from '../auth.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.store.dispatch(new Logout());
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
