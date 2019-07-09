@@ -5,8 +5,10 @@ export class UserSettingModel extends BaseModel {
     email: string;
     first_name: string;
     last_name: string;
+    employee_id: string;
     salutation: string;
     password: string;
+    password_confirmation: string;
     phone: string;
     country: string;
     state: string;

@@ -11,13 +11,13 @@ export const ROUTES: Routes = [
                 loadChildren: 'app/settings/general/general-setting.module#GeneralSettingModule',
                 resolve : { setting: GeneralSettingResolverService}
             },
-          /*  {
-                path: 'currency',
-                loadChildren: 'app/settings/currency/currency-setting.module#CurrencySettingModule'
-            },*/
             {
                 path: 'branch',
                 loadChildren: 'app/settings/branch/branch-setting.module#BranchSettingModule'
+            },
+            {
+                path: 'employee',
+                loadChildren: 'app/settings/employee/employee-setting.module#EmployeeSettingModule'
             },
            {
                 path: 'email',

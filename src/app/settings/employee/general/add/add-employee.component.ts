@@ -1,62 +1,37 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserSettingModel } from '../../model/user-setting.model';
-import { UserSettingService } from '../../data/user-setting.service';
+import { EmployeeModel } from '../model/employee.model';
+import { EmployeeService } from '../data/employee.service';
 import { NotificationService } from '../../../../shared/notification.service';
-import { RoleSettingService } from '../../data/role-setting.service';
-import { EmployeeService } from '../../../employee/general/data/employee.service';
 
 @Component({
-    selector: 'app-add-user',
+    selector: 'app-add-employee',
     styles: [],
-    templateUrl: './add-user.component.html'
+    templateUrl: './add-employee.component.html'
 })
-
-export class AddUserComponent implements OnInit  {
+export class AddEmployeeComponent implements OnInit  {
 
     form: FormGroup;
 
     formErrors: any;
 
-    user: UserSettingModel;
+    employee: EmployeeModel;
 
     loader = false;
 
-    roles: any = [];
-    employees: any = [];
-
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
-                private userService: UserSettingService,
-                private roleService: RoleSettingService,
-                private employeeService: EmployeeService,
+                private branchService: EmployeeService,
                 private notification: NotificationService,
-                private dialogRef: MatDialogRef<AddUserComponent>) {
+                private dialogRef: MatDialogRef<AddEmployeeComponent>) {
     }
 
     ngOnInit() {
-
-        this.roleService.list('name')
-            .subscribe((res) => this.roles = res,
-                () => this.roles = []
-            );
-
-        this.employeeService.list('first_name')
-            .subscribe((res) => this.employees = res,
-                () => this.employees = []
-            );
-
-
         this.form = this.fb.group({
             first_name: ['', [Validators.required,
                 Validators.minLength(3)]],
             last_name: [''],
-            role_id: [''],
-            employee_id: [''],
-            email: [''],
-            password: [''],
-            password_confirmation: [''],
         });
     }
 
@@ -71,21 +46,21 @@ export class AddUserComponent implements OnInit  {
     /**
      * Create a resource
      */
-    createUser() {
+    createBranch() {
 
-        const body = Object.assign({}, this.user, this.form.value);
+        const body = Object.assign({}, this.employee, this.form.value);
 
         this.loader = true;
 
-        this.userService.create(body)
+        this.branchService.create(body)
             .subscribe((data) => {
-                    console.log('Create User: ', data);
+                    console.log('Create Employee: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New user created.');
+                    this.notification.showNotification('success', 'Success !! New employee created.');
                 },
                 (error) => {
                     this.loader = false;
-                    if (error.user === 0) {
+                    if (error.employee === 0) {
                         this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
                             ' Check your connection and retry.');
                         return;

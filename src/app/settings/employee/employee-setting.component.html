@@ -2,15 +2,15 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header card-header-danger">
-                <p class="card-category">Branch Settings</p>
+                <p class="card-category">Employee Settings</p>
             </div>
 
             <div class="card-body">
 
                 <nav mat-tab-nav-bar>
-                    <a mat-tab-link routerLinkActive #branch="routerLinkActive" [active]="branch.isActive" [routerLinkActiveOptions]="{exact: true}"
-                       [routerLink]="['/settings/branch']">
-                        <span class="nav-text"> Branch</span></a>
+                    <a mat-tab-link routerLinkActive #employee="routerLinkActive" [active]="employee.isActive" [routerLinkActiveOptions]="{exact: true}"
+                       [routerLink]="['/settings/employee']">
+                        <span class="nav-text"> Employee</span></a>
                 </nav>
 
                 <router-outlet></router-outlet>

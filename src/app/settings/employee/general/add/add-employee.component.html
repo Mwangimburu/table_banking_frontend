@@ -1,4 +1,4 @@
-<h5 mat-dialog-title>Add Branch</h5>
+<h5 mat-dialog-title>Add Employee</h5>
 
 <div class="d-flex spinner-container" *ngIf="loader">
     <mat-spinner [diameter]="40"></mat-spinner>
@@ -7,13 +7,13 @@
 <mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="createBranch()">
 
     <mat-form-field class="full-width">
-        <input matInput formControlName="name" placeholder="Branch Name">
-        <mat-error align="start" *ngIf="formErrors?.name" class="form__error">{{ formErrors.name }}</mat-error>
+        <input matInput formControlName="first_name" placeholder="First Name">
+        <mat-error align="start" *ngIf="formErrors?.first_name" class="form__error">{{ formErrors.first_name }}</mat-error>
     </mat-form-field>
 
     <mat-form-field class="full-width">
-        <input matInput formControlName="location" placeholder="Branch Location">
-        <mat-error align="start" *ngIf="formErrors?.location" class="form__error">{{ formErrors.location }}</mat-error>
+        <input matInput formControlName="last_name" placeholder="Last Name">
+        <mat-error align="start" *ngIf="formErrors?.last_name" class="form__error">{{ formErrors.last_name }}</mat-error>
     </mat-form-field>
 
 </mat-dialog-content>

@@ -4,22 +4,22 @@ import { ConfirmationDialogComponent } from '../../../shared/delete/confirmation
 
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { BranchDataSource } from './data/branch-data.source';
-import { BranchService } from './data/branch.service';
-import { AddBranchComponent } from './add/add-branch.component';
-import { BranchModel } from './model/branch.model';
-import { EditBranchComponent } from './edit/edit-branch.component';
+import { EmployeeDataSource } from './data/employee-data.source';
+import { EmployeeService } from './data/employee.service';
+import { AddEmployeeComponent } from './add/add-employee.component';
+import { EmployeeModel } from './model/employee.model';
+import { EditEmployeeComponent } from './edit/edit-employee.component';
 import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
     selector: 'app-branch-general-setting',
-    templateUrl: './branch-general-setting.component.html',
-    styleUrls: ['./branch-general-setting.component.css']
+    templateUrl: './employee-general-setting.component.html',
+    styleUrls: ['./employee-general-setting.component.css']
 })
-export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
+export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'name',
-        'location',
+        'first_name',
+        'last_name',
         'actions',
     ];
 
@@ -39,9 +39,9 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // Data for the list table display
-    dataSource: BranchDataSource;
+    dataSource: EmployeeDataSource;
 
-    constructor(private service: BranchService, private notification: NotificationService, private dialog: MatDialog) {
+    constructor(private service: EmployeeService, private notification: NotificationService, private dialog: MatDialog) {
     }
 
     /**
@@ -51,13 +51,13 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
      */
     ngOnInit() {
 
-        this.dataSource = new BranchDataSource(this.service);
+        this.dataSource = new EmployeeDataSource(this.service);
 
         // Load pagination data
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'name', 'asc');
+        this.dataSource.load('', 0, 0, 'first_name', 'asc');
 
     }
 
@@ -69,7 +69,7 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
 
-        const dialogRef = this.dialog.open(AddBranchComponent, dialogConfig);
+        const dialogRef = this.dialog.open(AddEmployeeComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -82,7 +82,7 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(branch: BranchModel) {
+    editDialog(branch: EmployeeModel) {
 
         const id = branch.id;
 
@@ -91,7 +91,7 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {branch};
 
-        const dialogRef = this.dialog.open(EditBranchComponent, dialogConfig);
+        const dialogRef = this.dialog.open(EditEmployeeComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -151,7 +151,7 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
      * Open Edit form
      * @param branch
      */
-    openConfirmationDialog(branch: BranchModel) {
+    openConfirmationDialog(branch: EmployeeModel) {
 
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
@@ -170,13 +170,13 @@ export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
      * Remove resource from db
      * @param branch
      */
-    delete(branch: BranchModel) {
+    delete(branch: EmployeeModel) {
         this.loader = true;
         this.service.delete(branch)
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Branch has been deleted.');
+                    this.notification.showNotification('success', 'Success !! Employee has been deleted.');
                 },
                 (error) => {
                     this.loader = false;
