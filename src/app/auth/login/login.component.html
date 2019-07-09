@@ -1,10 +1,5 @@
 
-<div class="container" style="
-  width: 60%;
-  max-width: 500px;
-  position: relative;
-  margin-top: 50px;
-  padding: 0px; ">
+<div class="login-container">
 
 
         <div class="card">
@@ -14,7 +9,7 @@
             </div>
             <div class="card-body">
 
-                <div style="position:absolute;top:20%;left:40%; margin:0 auto; display: inline-block;" *ngIf="loading">
+                <div class="spinner" *ngIf="loading">
                     <mat-spinner [diameter]="48"></mat-spinner>
                 </div>
 

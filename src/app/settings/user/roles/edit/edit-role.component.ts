@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoleSettingService } from '../../data/role-setting.service';
 import { RoleSettingModel } from '../../model/role-setting-model';
 import { NotificationService } from '../../../../shared/notification.service';
+import { CheckboxItem } from './check-box-item';
 
 @Component({
     selector: 'app-edit-role',
@@ -12,13 +13,20 @@ import { NotificationService } from '../../../../shared/notification.service';
 })
 export class EditRoleComponent implements OnInit  {
 
-    form: FormGroup;
+    options = Array<CheckboxItem>();
+    selectedValues: string[];
+    editForm: FormGroup;
 
     formErrors: any;
 
     role: RoleSettingModel;
 
+
     loader = false;
+
+
+    @Output() toggle = new EventEmitter<any[]>();
+    private finalPermissions: [any];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -27,13 +35,53 @@ export class EditRoleComponent implements OnInit  {
     private dialogRef: MatDialogRef<EditRoleComponent>) {
 
         this.role = row.role;
-    }
+        this.options = row.permOptions;
+        this.selectedValues = this.role.permissions.map(x => x['id']);
 
-    ngOnInit() {
-        this.form = this.fb.group({
+        this.editForm = this.fb.group({
             name: [this.role.name, [Validators.required,
                 Validators.minLength(3)]],
             display_name: [this.role.display_name],
+            permissions: new FormArray([])
+        });
+    }
+
+    get items(): FormArray {
+        return this.editForm.get('permissions') as FormArray;
+    }
+
+    ngOnInit() {
+
+        this.editForm.valueChanges.subscribe(value => {
+            const optionsChecked = new Array<any>();
+            for (let index = 0; index < this.items.length; index++) {
+                const isOptionChecked =
+                    this.items.get(index.toString()).value;
+                if (isOptionChecked) {
+                    const currentOptionValue =
+                        this.options[index].value;
+                    optionsChecked.push(currentOptionValue);
+                }
+            }
+           this.toggle.emit(optionsChecked);
+        });
+
+
+
+        if (this.items.length === 0) {
+
+            this.options.forEach(x => {
+
+                this.items.push(new FormControl(false));
+            });
+        }
+
+        this.selectedValues.forEach(value => {
+            const index: number =
+                this.options.findIndex(opt => opt.value === value);
+            if (index >= 0) {
+                this.items.get(index.toString()).setValue(true);
+            }
         });
     }
 
@@ -41,17 +89,27 @@ export class EditRoleComponent implements OnInit  {
         this.dialogRef.close();
     }
 
+
+    private selectedPermissions() {
+        return this.editForm.value.permissions
+            .map((v, i) => v ? this.options[i].value : null)
+            .filter(v => v !== null);
+    }
+
     update() {
-        const body = Object.assign({}, this.role, this.form.value);
+        const body = Object.assign({}, this.role, this.editForm.value);
+
+        this.finalPermissions = this.selectedPermissions();
+
+        body.permissions = this.finalPermissions;
 
         this.loader = true;
         this.roleService.update(body)
             .subscribe((data) => {
-                    console.log('Update role: ', data);
                     this.loader = false;
 
                     // this.loadData();
-                    this.dialogRef.close(this.form.value);
+                    this.dialogRef.close(this.editForm.value);
 
                     // notify success
                     this.notification.showNotification('success', 'Success !! Role has been updated.');
@@ -72,8 +130,8 @@ export class EditRoleComponent implements OnInit  {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
                             console.log('Hallo: ', prop);
-                            if (this.form) {
-                                this.form.controls[prop].setErrors({incorrect: true});
+                            if (this.editForm) {
+                                this.editForm.controls[prop].setErrors({incorrect: true});
                             }
                         }
                     }

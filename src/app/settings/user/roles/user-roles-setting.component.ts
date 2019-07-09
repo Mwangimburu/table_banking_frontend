@@ -5,12 +5,13 @@ import { ConfirmationDialogComponent } from '../../../shared/delete/confirmation
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { RoleSettingDataSource } from '../data/role-setting-data.source';
-import { RoleSettingService } from '../data/role-setting.service';
 import { AddRoleComponent } from './add/add-role.component';
 import { RoleSettingModel } from '../model/role-setting-model';
 import { EditRoleComponent } from './edit/edit-role.component';
-import { AssignRoleComponent } from './assign/assign-role.component';
+import { CheckboxItem } from './edit/check-box-item';
+import { RoleSettingService } from '../data/role-setting.service';
 import { NotificationService } from '../../../shared/notification.service';
+import { PermissionSettingService } from '../data/permission-setting.service';
 
 @Component({
     selector: 'app-role-roles-setting',
@@ -43,7 +44,14 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: RoleSettingDataSource;
 
-    constructor(private service: RoleSettingService, private notification: NotificationService, private dialog: MatDialog) {
+    allPermissions: any;
+    allPermissionsOptions = new Array<CheckboxItem>();
+
+    rolePermissions: any;
+
+
+    constructor(private roleService: RoleSettingService, private permissionService: PermissionSettingService,
+                private notification: NotificationService, private dialog: MatDialog) {
     }
 
     /**
@@ -53,13 +61,26 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
      */
     ngOnInit() {
 
-        this.dataSource = new RoleSettingDataSource(this.service);
+        this.dataSource = new RoleSettingDataSource(this.roleService);
 
         // Load pagination data
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'name', 'asc');
+
+        // Fetch all permissions
+        this.permissionService.list('name')
+            .subscribe((res) => {
+                    this.allPermissions = res;
+                    this.allPermissionsOptions = this.allPermissions.map(
+                        x => new CheckboxItem(x.id, x.name));
+                      /*console.log(res[0].name);
+                      console.log(res[0].id);*/
+
+                },
+                () => this.allPermissions = []
+            );
 
     }
 
@@ -88,35 +109,19 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
 
         const id = role.id;
 
+        const data = {
+            role,
+            permOptions: this.allPermissionsOptions
+        };
+
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {role};
+       // dialogConfig.data = {role};
+        dialogConfig.data = {role,
+            permOptions: this.allPermissionsOptions};
 
         const dialogRef = this.dialog.open(EditRoleComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(
-            (val) => {
-                if ((val)) {
-                    this.loadData();
-                }
-            }
-        );
-    }
-
-
-    /**
-     * Edit dialog launch
-     */
-    assignDialog(role: RoleSettingModel) {
-
-        const id = role.id;
-
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {role};
-
-        const dialogRef = this.dialog.open(AssignRoleComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -197,7 +202,7 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
      */
     delete(role: RoleSettingModel) {
         this.loader = true;
-        this.service.delete(role)
+        this.roleService.delete(role)
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();

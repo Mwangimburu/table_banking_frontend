@@ -5,7 +5,6 @@ import { MaterialModule } from '../../../shared/material.module';
 import { UserRolesSettingComponent } from './user-roles-setting.component';
 import { AddRoleComponent } from './add/add-role.component';
 import { EditRoleComponent } from './edit/edit-role.component';
-import { AssignRoleComponent } from './assign/assign-role.component';
 
 @NgModule({
     imports: [
@@ -15,13 +14,11 @@ import { AssignRoleComponent } from './assign/assign-role.component';
     declarations: [
         UserRolesSettingComponent,
         AddRoleComponent,
-        EditRoleComponent,
-        AssignRoleComponent
+        EditRoleComponent
     ],
     entryComponents: [
         AddRoleComponent,
-        EditRoleComponent,
-        AssignRoleComponent
+        EditRoleComponent
     ]
 })
 
