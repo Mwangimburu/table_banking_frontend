@@ -21,7 +21,7 @@
 
 
     <div class="row">
-            <div class="col-6">
+            <div class="col-7">
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Employee ID" formControlName="employee_id">
                         <mat-option *ngFor="let employee of employees" [value]="employee.id">
@@ -33,7 +33,7 @@
             </div>
             or
             <button mat-button matPrefix color="accent" aria-label="add new" (click)="addDialog()">
-                <mat-icon>add</mat-icon> New Employee
+                <mat-icon>add</mat-icon> Add New
             </button>
     </div>
 

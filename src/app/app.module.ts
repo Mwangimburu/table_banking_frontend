@@ -28,11 +28,13 @@ import { AuthenticationModule } from './auth/authentication.module';
 import { EffectsModule } from '@ngrx/effects';
 import { JwtInterceptor } from './auth/jwt.interceptor';
 import { ErrorInterceptor } from './auth/error.interceptor';
+import { MaterialModule } from './shared/material.module';
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     FormsModule,
+    MaterialModule,
     HttpClientModule,
     ComponentsModule,
     RouterModule,
