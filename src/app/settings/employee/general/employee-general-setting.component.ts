@@ -18,6 +18,7 @@ import { NotificationService } from '../../../shared/notification.service';
 })
 export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
+        'employee_number',
         'first_name',
         'last_name',
         'actions',

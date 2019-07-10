@@ -29,9 +29,30 @@ export class AddEmployeeComponent implements OnInit  {
 
     ngOnInit() {
         this.form = this.fb.group({
+            employee_number: [''],
             first_name: ['', [Validators.required,
                 Validators.minLength(3)]],
             last_name: [''],
+            gender: [''],
+            salutation: [''],
+            national_id_number: [''],
+            passport_number: [''],
+            email: [''],
+            telephone_number: [''],
+            address: [''],
+            postal_code: [''],
+            country: [''],
+            county: [''],
+            city: [''],
+            nhif_number: [''],
+            nssf_number: [''],
+            kra_pin: [''],
+            job_group: [''],
+            designation_id: [''],
+            department_id: [''],
+            birth_day: [''],
+            profile_picture: [''],
+            national_id_image: [''],
         });
     }
 
@@ -46,7 +67,7 @@ export class AddEmployeeComponent implements OnInit  {
     /**
      * Create a resource
      */
-    createBranch() {
+    createEmployee() {
 
         const body = Object.assign({}, this.employee, this.form.value);
 

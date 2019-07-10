@@ -1,6 +1,7 @@
 import { BaseModel } from '../../../../shared/models/base-model';
 
 export class EmployeeModel extends BaseModel {
+    employee_number: string;
     first_name: string;
     last_name: string;
     salutation: string;
@@ -20,7 +21,7 @@ export class EmployeeModel extends BaseModel {
     job_group: string;
     designation_id: string;
     department_id: string;
-    staff_no: string;
+    birth_day: string;
     profile_picture: string;
     national_id_image: string;
 }
