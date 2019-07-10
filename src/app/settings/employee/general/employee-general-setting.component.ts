@@ -12,7 +12,7 @@ import { EditEmployeeComponent } from './edit/edit-employee.component';
 import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
-    selector: 'app-branch-general-setting',
+    selector: 'app-employee-general-setting',
     templateUrl: './employee-general-setting.component.html',
     styleUrls: ['./employee-general-setting.component.css']
 })
@@ -83,14 +83,14 @@ export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(branch: EmployeeModel) {
+    editDialog(employee: EmployeeModel) {
 
-        const id = branch.id;
+        const id = employee.id;
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {branch};
+        dialogConfig.data = {employee};
 
         const dialogRef = this.dialog.open(EditEmployeeComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -150,9 +150,9 @@ export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
 
     /**
      * Open Edit form
-     * @param branch
+     * @param employee
      */
-    openConfirmationDialog(branch: EmployeeModel) {
+    openConfirmationDialog(employee: EmployeeModel) {
 
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
@@ -161,7 +161,7 @@ export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.delete(branch);
+                this.delete(employee);
             }
             this.dialogRef = null;
         });
@@ -169,11 +169,11 @@ export class EmployeeGeneralSettingComponent implements OnInit, AfterViewInit {
 
     /**
      * Remove resource from db
-     * @param branch
+     * @param employee
      */
-    delete(branch: EmployeeModel) {
+    delete(employee: EmployeeModel) {
         this.loader = true;
-        this.service.delete(branch)
+        this.service.delete(employee)
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();

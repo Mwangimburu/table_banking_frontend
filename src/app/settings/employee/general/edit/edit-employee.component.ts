@@ -32,9 +32,30 @@ export class EditEmployeeComponent implements OnInit  {
 
     ngOnInit() {
         this.form = this.fb.group({
+            employee_number: [this.employee.employee_number],
             first_name: [this.employee.first_name, [Validators.required,
                 Validators.minLength(3)]],
             last_name: [this.employee.last_name],
+            gender: [this.employee.gender],
+            salutation: [this.employee.salutation],
+            national_id_number: [this.employee.national_id_number],
+            passport_number: [this.employee.passport_number],
+            email: [this.employee.email],
+            telephone_number: [this.employee.telephone_number],
+            address: [this.employee.address],
+            postal_code: [this.employee.postal_code],
+            country: [this.employee.country],
+            county: [this.employee.county],
+            city: [this.employee.city],
+            nhif_number: [this.employee.nhif_number],
+            nssf_number: [this.employee.nssf_number],
+            kra_pin: [this.employee.kra_pin],
+            job_group: [this.employee.job_group],
+            designation_id: [this.employee.designation_id],
+            department_id: [this.employee.department_id],
+            birth_day: [this.employee.birth_day],
+            profile_picture: [this.employee.profile_picture],
+            national_id_image: [this.employee.national_id_image],
         });
     }
 

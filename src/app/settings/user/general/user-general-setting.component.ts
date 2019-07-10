@@ -203,7 +203,7 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Status has been deleted.');
+                    this.notification.showNotification('success', 'Success !! User has been deleted.');
                 },
                 (error) => {
                     this.loader = false;
