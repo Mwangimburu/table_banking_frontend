@@ -11,6 +11,8 @@ import { UserSettingModel } from '../model/user-setting.model';
 import { UserSettingDataSource } from '../data/user-setting-data.source';
 import { UserSettingService } from '../data/user-setting.service';
 import { NotificationService } from '../../../shared/notification.service';
+import { RoleSettingService } from '../data/role-setting.service';
+import { EmployeeService } from '../../employee/general/data/employee.service';
 
 @Component({
     selector: 'app-user-general-setting',
@@ -44,7 +46,12 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: UserSettingDataSource;
 
-    constructor(private service: UserSettingService, private notification: NotificationService, private dialog: MatDialog) {
+    roles: any = [];
+    employees: any = [];
+
+    constructor(private service: UserSettingService, private notification: NotificationService,
+                private roleService: RoleSettingService, private employeeService: EmployeeService,
+                private dialog: MatDialog) {
     }
 
     /**
@@ -62,6 +69,16 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'first_name', 'asc');
 
+        this.roleService.list('name')
+            .subscribe((res) => this.roles = res,
+                () => this.roles = []
+            );
+
+        this.employeeService.list('first_name')
+            .subscribe((res) => this.employees = res,
+                () => this.employees = []
+            );
+
     }
 
     /**
@@ -71,6 +88,10 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            roles: this.roles,
+            employees: this.employees
+        };
 
         const dialogRef = this.dialog.open(AddUserComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -92,7 +113,10 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {user};
+        dialogConfig.data = {user,
+            roles: this.roles,
+            employees: this.employees
+        };
 
         const dialogRef = this.dialog.open(EditUserComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(

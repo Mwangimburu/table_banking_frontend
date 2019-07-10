@@ -21,6 +21,9 @@ export class EditUserComponent implements OnInit  {
 
     loader = false;
 
+    roles: any = [];
+    employees: any = [];
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private userService: UserSettingService,
@@ -28,13 +31,22 @@ export class EditUserComponent implements OnInit  {
     private dialogRef: MatDialogRef<EditUserComponent>) {
 
         this.user = row.user;
+        this.roles = row.roles;
+        this.employees = row.employees;
+
     }
 
     ngOnInit() {
+
         this.form = this.fb.group({
             first_name: [this.user.first_name, [Validators.required,
                 Validators.minLength(3)]],
             last_name: [this.user.last_name],
+            role_id: [this.user.role_id],
+            employee_id: [this.user.employee_id],
+            email: [this.user.email],
+            password: [''],
+            password_confirmation: [''],
         });
     }
 

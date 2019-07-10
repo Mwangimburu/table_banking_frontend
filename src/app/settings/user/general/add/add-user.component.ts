@@ -4,8 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserSettingModel } from '../../model/user-setting.model';
 import { UserSettingService } from '../../data/user-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
-import { RoleSettingService } from '../../data/role-setting.service';
-import { EmployeeService } from '../../../employee/general/data/employee.service';
 
 @Component({
     selector: 'app-add-user',
@@ -29,24 +27,13 @@ export class AddUserComponent implements OnInit  {
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private userService: UserSettingService,
-                private roleService: RoleSettingService,
-                private employeeService: EmployeeService,
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<AddUserComponent>) {
+        this.roles = row.roles;
+        this.employees = row.employees;
     }
 
     ngOnInit() {
-
-        this.roleService.list('name')
-            .subscribe((res) => this.roles = res,
-                () => this.roles = []
-            );
-
-        this.employeeService.list('first_name')
-            .subscribe((res) => this.employees = res,
-                () => this.employees = []
-            );
-
 
         this.form = this.fb.group({
             first_name: ['', [Validators.required,
