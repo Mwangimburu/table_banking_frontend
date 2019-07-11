@@ -12,6 +12,10 @@ export const ROUTES: Routes = [
                 resolve : { setting: GeneralSettingResolverService}
             },
             {
+                path: 'borrower',
+                loadChildren: 'app/settings/borrower/borrower-setting.module#BorrowerSettingModule'
+            },
+            {
                 path: 'branch',
                 loadChildren: 'app/settings/branch/branch-setting.module#BranchSettingModule'
             },

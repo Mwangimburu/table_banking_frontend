@@ -2,30 +2,24 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
-import { BorrowerService } from './data/borrower.service';
-import { AddBorrowerComponent } from './add/add-borrower.component';
-import { BorrowerModel } from './models/borrower-model';
-import { EditBorrowerComponent } from './edit/edit-borrower.component';
-import { BorrowerDataSource } from './data/borrower-data.source';
-import { NotificationService } from '../shared/notification.service';
-import { WitnessTypeSettingService } from '../settings/borrower/witness-type/data/witness-type-setting.service';
-import { MemberService } from '../members/data/member.service';
-import { BorrowerStatusSettingService } from '../settings/borrower/status/data/borrower-status-setting.service';
+import { ConfirmationDialogComponent } from '../../../shared/delete/confirmation-dialog-component';
+import { BorrowerStatusSettingDataSource } from './data/borrower-status-setting-data.source';
+import { BorrowerStatusSettingService } from './data/borrower-status-setting.service';
+import { AddBorrowerStatusComponent } from './add/add-borrower-status.component';
+import { BorrowerStatusSettingModel } from './model/borrower-status-setting.model';
+import { EditBorrowerStatusComponent } from './edit/edit-borrower-status.component';
+import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
-    selector: 'app-borrowers',
-    templateUrl: './borrower.component.html',
-    styleUrls: ['./borrower.component.css']
+    selector: 'app-borrower-status-setting',
+    templateUrl: './borrower-status-setting.component.html',
+    styleUrls: ['./borrower-status-setting.component.css']
 })
-export class BorrowerComponent implements OnInit, AfterViewInit {
+export class BorrowerStatusSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'member_id',
-        'credit_score',
-        'borrower_status_id',
-        'witness_type_id',
-        'actions'
+        'name',
+        'description',
+        'actions',
     ];
 
     loader = false;
@@ -33,11 +27,9 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
     // Search field
-    @ViewChild('search', {static: false}) search: ElementRef;
-
+    @ViewChild('search', {static: true}) search: ElementRef;
     // pagination
-    @ViewChild(MatPaginator, {static: true }) paginator: MatPaginator;
-
+    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
     // Pagination
     length: number;
     pageIndex = 0;
@@ -46,46 +38,25 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     // Data for the list table display
-    dataSource: BorrowerDataSource;
+    dataSource: BorrowerStatusSettingDataSource;
 
-    witness_types: any = [];
-    members: any = [];
-    borrower_statuses: any = [];
-
-    constructor(private service: BorrowerService, private notification: NotificationService,
-                private dialog: MatDialog, private witnessTypeService: WitnessTypeSettingService,
-                private membersService: MemberService, private borrowerStatusesService: BorrowerStatusSettingService ) {
+    constructor(private service: BorrowerStatusSettingService, private notification: NotificationService, private dialog: MatDialog) {
     }
 
     /**
-     * Initialize data lead
+     * Initialize data source
      * Set pagination data values
      * Initial data load
      */
     ngOnInit() {
 
-        this.dataSource = new BorrowerDataSource(this.service);
+        this.dataSource = new BorrowerStatusSettingDataSource(this.service);
 
         // Load pagination data
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'member_id', 'asc');
-
-        this.witnessTypeService.list('name')
-            .subscribe((res) => this.witness_types = res,
-                () => this.witness_types = []
-            );
-
-        this.membersService.list('first_name')
-            .subscribe((res) => this.members = res,
-                () => this.members = []
-            );
-
-        this.borrowerStatusesService.list('name')
-            .subscribe((res) => this.borrower_statuses = res,
-                () => this.borrower_statuses = []
-            );
+        this.dataSource.load('', 0, 0, 'name', 'asc');
 
     }
 
@@ -97,13 +68,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
 
-        dialogConfig.data = {
-            witness_types: this.witness_types,
-            members: this.members,
-            borrower_statuses: this.borrower_statuses
-        };
-
-        const dialogRef = this.dialog.open(AddBorrowerComponent, dialogConfig);
+        const dialogRef = this.dialog.open(AddBorrowerStatusComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -116,21 +81,16 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(borrower: BorrowerModel) {
+    editDialog(status: BorrowerStatusSettingModel) {
 
-        const id = borrower.id;
+        const id = status.id;
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.data = {status};
 
-        dialogConfig.data = {borrower,
-            witness_types: this.witness_types,
-            members: this.members,
-            borrower_statuses: this.borrower_statuses
-        };
-
-        const dialogRef = this.dialog.open(EditBorrowerComponent, dialogConfig);
+        const dialogRef = this.dialog.open(EditBorrowerStatusComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -141,7 +101,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * Fetch data from data lead
+     * Fetch data from data source
      */
     loadData() {
         console.log(this.sort.direction);
@@ -188,9 +148,9 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
 
     /**
      * Open Edit form
-     * @param lead
+     * @param status
      */
-    openConfirmationDialog(lead: BorrowerModel) {
+    openConfirmationDialog(status: BorrowerStatusSettingModel) {
 
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
@@ -199,7 +159,7 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.delete(lead);
+                this.delete(status);
             }
             this.dialogRef = null;
         });
@@ -207,15 +167,15 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
 
     /**
      * Remove resource from db
-     * @param lead
+     * @param status
      */
-    delete(lead: BorrowerModel) {
+    delete(status: BorrowerStatusSettingModel) {
         this.loader = true;
-        this.service.delete(lead)
+        this.service.delete(status)
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Lead has been deleted.');
+                    this.notification.showNotification('success', 'Success !! Status has been deleted.');
                 },
                 (error) => {
                     this.loader = false;
@@ -236,5 +196,3 @@ export class BorrowerComponent implements OnInit, AfterViewInit {
         this.loadData()
     }
 }
-
-

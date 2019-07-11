@@ -2,9 +2,17 @@ import { BaseModel } from '../../shared/models/base-model';
 
 export class BorrowerModel extends BaseModel {
     member_id: string;
-    spouse_type: string;
-    spouse_name: string;
-    spouse_id_number: string;
-    spouse_phone: string;
-    spouse_address: string;
+    credit_score: string;
+    borrower_status_id: string;
+    witness_type_id: string;
+    witness_first_name: string;
+    witness_last_name: string;
+    witness_country: string;
+    witness_city: string;
+    witness_national_id: string;
+    witness_phone: string;
+    witness_email: string;
+    witness_postal_address: string;
+    witness_residential_address: string;
+    notes: string;
 }

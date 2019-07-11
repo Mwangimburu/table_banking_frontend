@@ -1,60 +1,37 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GuarantorModel } from '../models/guarantor-model';
-import { GuarantorService } from '../data/guarantor.service';
-
-import { NotificationService } from '../../shared/notification.service';
-import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
+import { BorrowerStatusSettingModel } from '../model/borrower-status-setting.model';
+import { BorrowerStatusSettingService } from '../data/borrower-status-setting.service';
+import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-guarantor',
+    selector: 'app-add-borrower-status',
     styles: [],
-    templateUrl: './add-guarantor.component.html'
+    templateUrl: './add-borrower-status.component.html'
 })
-export class AddGuarantorComponent implements OnInit  {
+export class AddBorrowerStatusComponent implements OnInit  {
 
     form: FormGroup;
 
     formErrors: any;
 
-    member: GuarantorModel;
+    status: BorrowerStatusSettingModel;
 
     loader = false;
 
-    memberMethods: any = [];
-
-    formGroup: FormGroup;
-
-    members: any = [];
-    loans: any = [];
-
-    @ViewChild('stepper', {static: true }) stepper: MatStepper;
-
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
-                private memberService: GuarantorService,
+                private statusService: BorrowerStatusSettingService,
                 private notification: NotificationService,
-
-                private memberMethodService: PaymentMethodSettingService,
-
-
-                private dialogRef: MatDialogRef<AddGuarantorComponent>) {
-        /*this.members = row.members;
-            this.loans = row.loans;*/
+                private dialogRef: MatDialogRef<AddBorrowerStatusComponent>) {
     }
 
     ngOnInit() {
-
-        this.memberMethodService.list('name')
-            .subscribe((res) => this.memberMethods = res,
-                () => this.memberMethods = []
-            );
-
         this.form = this.fb.group({
-            member_id: [''/*, [Validators.required,
-                Validators.minLength(3)]*/],
-            loan_id: ['']
+            name: ['', [Validators.required,
+                Validators.minLength(3)]],
+            description: [''],
         });
     }
 
@@ -67,23 +44,23 @@ export class AddGuarantorComponent implements OnInit  {
     }
 
     /**
-     * Create member
+     * Create a resource
      */
-    create() {
+    createStatus() {
 
-        const body = Object.assign({}, this.member, this.form.value);
+        const body = Object.assign({}, this.status, this.form.value);
 
         this.loader = true;
 
-        this.memberService.create(body)
+        this.statusService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
+                    console.log('Create Status: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New guarantor created.');
+                    this.notification.showNotification('success', 'Success !! New status created.');
                 },
                 (error) => {
                     this.loader = false;
-                    if (error.member === 0) {
+                    if (error.status === 0) {
                         this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
                             ' Check your connection and retry.');
                         return;
@@ -114,4 +91,3 @@ export class AddGuarantorComponent implements OnInit  {
     }
 
 }
-

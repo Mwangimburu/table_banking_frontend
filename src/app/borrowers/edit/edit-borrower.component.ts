@@ -21,7 +21,9 @@ export class EditBorrowerComponent implements OnInit  {
 
     loader = false;
 
-    memberStatuses: any = [];
+    witness_types: any = [];
+    members: any = [];
+    borrower_statuses: any = [];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -30,24 +32,30 @@ export class EditBorrowerComponent implements OnInit  {
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<EditBorrowerComponent>) {
 
-        this.borrower = row.data;
+        this.borrower = row.borrower;
+        this.witness_types = row.witness_types;
+        this.members = row.members;
+        this.borrower_statuses = row.borrower_statuses;
     }
 
     ngOnInit() {
 
-        this.memberStatusService.list('name')
-            .subscribe((res) => this.memberStatuses = res,
-                () => this.memberStatuses = []
-            );
-
         this.form = this.fb.group({
             member_id: [this.borrower.member_id, [Validators.required,
                 Validators.minLength(3)]],
-            spouse_type: [this.borrower.spouse_type],
-            spouse_name: [this.borrower.spouse_name],
-            spouse_id_number: [this.borrower.spouse_id_number],
-            spouse_phone: [this.borrower.spouse_phone],
-            spouse_address: [this.borrower.spouse_address]
+            credit_score: [this.borrower.credit_score],
+            borrower_status_id: [this.borrower.borrower_status_id],
+            witness_type_id: [this.borrower.witness_type_id],
+            witness_first_name: [this.borrower.witness_first_name],
+            witness_last_name: [this.borrower.witness_last_name],
+            witness_country: [this.borrower.witness_country],
+            witness_city: [this.borrower.witness_city],
+            witness_national_id: [this.borrower.witness_national_id],
+            witness_phone: [this.borrower.witness_phone],
+            witness_email: [this.borrower.witness_email],
+            witness_postal_address: [this.borrower.witness_postal_address],
+            witness_residential_address: [this.borrower.witness_residential_address],
+            notes: [this.borrower.notes]
         });
     }
 

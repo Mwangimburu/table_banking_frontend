@@ -23,6 +23,9 @@ export class EditGuarantorComponent implements OnInit  {
 
     memberStatuses: any = [];
 
+    members: any = [];
+    loans: any = [];
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private memberService: GuarantorService,
