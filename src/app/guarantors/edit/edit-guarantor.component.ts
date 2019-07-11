@@ -33,16 +33,12 @@ export class EditGuarantorComponent implements OnInit  {
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<EditGuarantorComponent>) {
 
-        this.guarantor = row.data;
+        this.guarantor = row.guarantor;
+        this.members = row.members;
+        this.loans = row.loans;
     }
 
     ngOnInit() {
-
-        this.memberStatusService.list('name')
-            .subscribe((res) => this.memberStatuses = res,
-                () => this.memberStatuses = []
-            );
-
         this.form = this.fb.group({
             member_id: [this.guarantor.member_id, [Validators.required,
                 Validators.minLength(3)]],

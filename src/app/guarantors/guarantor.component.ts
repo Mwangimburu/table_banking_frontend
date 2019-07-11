@@ -10,6 +10,8 @@ import { GuarantorModel } from './models/guarantor-model';
 import { EditGuarantorComponent } from './edit/edit-guarantor.component';
 import { GuarantorDataSource } from './data/guarantor-data.source';
 import { NotificationService } from '../shared/notification.service';
+import { MemberService } from '../members/data/member.service';
+import { LoanService } from '../loans/data/loan.service';
 
 @Component({
     selector: 'app-guarantors',
@@ -43,7 +45,11 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: GuarantorDataSource;
 
-    constructor(private service: GuarantorService, private notification: NotificationService, private dialog: MatDialog) {
+    members: any = [];
+    loans: any = [];
+
+    constructor(private service: GuarantorService, private notification: NotificationService,
+                private dialog: MatDialog, private membersService: MemberService, private loansService: LoanService) {
     }
 
     /**
@@ -61,6 +67,16 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'member_id', 'asc');
 
+        this.membersService.list('first_name')
+            .subscribe((res) => this.members = res,
+                () => this.members = []
+            );
+
+        this.loansService.list('loan_reference')
+            .subscribe((res) => this.loans = res,
+                () => this.loans = []
+            );
+
     }
 
     /**
@@ -70,6 +86,10 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+        dialogConfig.data = {
+            loans: this.loans,
+            members: this.members
+        };
 
         const dialogRef = this.dialog.open(AddGuarantorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -84,14 +104,18 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(data: GuarantorModel) {
+    editDialog(guarantor: GuarantorModel) {
 
-        const id = data.id;
+        const id = guarantor.id;
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {data};
+
+        dialogConfig.data = {guarantor,
+            loans: this.loans,
+            members: this.members
+        };
 
         const dialogRef = this.dialog.open(EditGuarantorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(

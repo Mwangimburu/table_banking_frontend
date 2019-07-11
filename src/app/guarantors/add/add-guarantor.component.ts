@@ -40,16 +40,11 @@ export class AddGuarantorComponent implements OnInit  {
 
 
                 private dialogRef: MatDialogRef<AddGuarantorComponent>) {
-        /*this.members = row.members;
-            this.loans = row.loans;*/
+        this.members = row.members;
+        this.loans = row.loans;
     }
 
     ngOnInit() {
-
-        this.memberMethodService.list('name')
-            .subscribe((res) => this.memberMethods = res,
-                () => this.memberMethods = []
-            );
 
         this.form = this.fb.group({
             member_id: [''/*, [Validators.required,

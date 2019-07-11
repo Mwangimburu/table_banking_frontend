@@ -24,7 +24,7 @@
             <mat-form-field class="full-width" color="primary">
                 <mat-select placeholder="Loan" formControlName="loan_id">
                     <mat-option *ngFor="let loan of loans" [value]="loan.id">
-                        {{loan.first_name}}
+                        {{loan.loan_reference}}
                     </mat-option>
                 </mat-select>
                 <mat-error align="start" *ngIf="formErrors?.loan_id" class="form__error">{{ formErrors.loan_id }}</mat-error>
