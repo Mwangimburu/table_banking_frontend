@@ -51,10 +51,13 @@ export class BaseService<T extends BaseModel> {
      * @param filter
      * @param page
      * @param limit
+     * @param whereField
+     * @param whereValue
      * @param sortField
      * @param sortDirection
      */
-    getAll(filter: string, page: number, limit: number, sortField: string = '', sortDirection: string = ''): Observable<{}> {
+    getAll(filter: string, page: number, limit: number, sortField: string = '', sortDirection: string = '',
+           whereField: string = '', whereValue: string = ''): Observable<{}> {
         return this.httpClient.get(this.getResourceUrl(), {
             params: new HttpParams()
                 .set('filter', filter)
@@ -62,6 +65,8 @@ export class BaseService<T extends BaseModel> {
                 .set('limit', limit.toString())
                 .set('sortField', sortField)
                 .set('sortDirection', sortDirection)
+                .set('whereField', whereField)
+                .set('whereValue', whereValue)
         });
     }
 
