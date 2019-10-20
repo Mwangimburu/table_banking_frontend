@@ -35,6 +35,9 @@ export class EditBranchComponent implements OnInit  {
             name: [this.branch.name, [Validators.required,
                 Validators.minLength(3)]],
             location: [this.branch.location],
+            address: [this.branch.address],
+            description: [this.branch.description],
+            branch_code: [this.branch.branch_code],
         });
     }
 

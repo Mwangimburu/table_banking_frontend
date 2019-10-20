@@ -32,6 +32,11 @@
                             <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="branch_code">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Branch Code </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.branch_code}} </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="location">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Branch Location </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.location}} </mat-cell>
@@ -50,7 +55,7 @@
                                     </button>
                                     <button mat-menu-item (click)="openConfirmationDialog(row)">
                                         <mat-icon color="warn">delete</mat-icon>
-                                        <span>Delete</span>
+                                        <span>Archive</span>
                                     </button>
                                 </mat-menu>
                             </mat-cell>

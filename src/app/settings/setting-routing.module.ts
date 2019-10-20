@@ -1,6 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { SettingComponent } from './setting.component';
 import { GeneralSettingResolverService } from './general/data/general-setting-resolver.service';
+import { EmailSettingResolverService } from './email/general/data/email-setting-resolver.service';
 export const ROUTES: Routes = [
     {
         path: '',
@@ -10,6 +11,10 @@ export const ROUTES: Routes = [
                 path: '',
                 loadChildren: 'app/settings/general/general-setting.module#GeneralSettingModule',
                 resolve : { setting: GeneralSettingResolverService}
+            },
+            {
+                path: 'account',
+                loadChildren: 'app/settings/account/account-setting.module#AccountSettingModule'
             },
             {
                 path: 'borrower',
@@ -25,7 +30,8 @@ export const ROUTES: Routes = [
             },
            {
                 path: 'email',
-                loadChildren: 'app/settings/email/email-setting.module#EmailSettingModule'
+                loadChildren: 'app/settings/email/email-setting.module#EmailSettingModule',
+               resolve : { setting: EmailSettingResolverService}
             },
             /*{
                path: 'expense',
@@ -35,15 +41,17 @@ export const ROUTES: Routes = [
                 path: 'general',
                 loadChildren: 'app/settings/general/general-setting.module#GeneralSettingModule'
             },
-            /*{
-                path: 'invoice',
-                loadChildren: 'app/settings/invoice/invoice-setting.module#InvoiceSettingModule',
-                resolve : { setting: GeneralInvoiceSettingResolverService}
-
-            },*/
             {
                 path: 'loan',
                 loadChildren: 'app/settings/loan/loan-setting.module#LoanSettingModule'
+            },
+            {
+                path: 'communication',
+                loadChildren: 'app/settings/communication/communication-setting.module#CommunicationSettingModule'
+            },
+            {
+                path: 'expense',
+                loadChildren: 'app/settings/expense/expense-setting.module#ExpenseSettingModule'
             },
             {
                 path: 'payment',
@@ -65,7 +73,7 @@ export const ROUTES: Routes = [
              },*/
             {
                 path: 'user',
-                loadChildren: 'app/settings/user/user-setting.module#UserSettingModule'
+                loadChildren: 'app/settings/user/user-setting.module#UserSettingModule',
             }
         ]
     }

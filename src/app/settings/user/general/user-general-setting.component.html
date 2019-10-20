@@ -16,7 +16,7 @@
 
                     <div class="col-9">
                         <mat-form-field class="search-form-field">
-                            <input matInput #search placeholder="Search" autocomplete="off" [disabled]="meta?.total===0">
+                            <input matInput #search placeholder="Filter" autocomplete="off" [disabled]="meta?.total===0">
                             <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearSearch()">
                                 <mat-icon>close</mat-icon></button>
                         </mat-form-field>
@@ -27,8 +27,13 @@
 
                     <mat-table #table [dataSource]="dataSource" matSort matSortActive="first_name" matSortDirection="asc" matSortDisableClear>
 
-                        <ng-container matColumnDef="role">
-                            <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+                        <ng-container matColumnDef="branch_id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.branch?.name}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="role_id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Role </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.role?.name}} </mat-cell>
                         </ng-container>
 

@@ -1,9 +1,16 @@
 <div class="logo">
-    <a href="https://www.creative-tim.com" class="simple-text">
+    <a href="#" class="simple-text">
         <div class="logo-img">
             <img src="/assets/img/angular2-logo-red.png"/>
         </div>
-        Smart Micro
+        <!--{{businessName}}-->
+   <!-- {{((currentSettings$|async)|json)?.business_name}}
+
+   {{businessName}}
+        {{((currentSettings$|async)|json)?.business_name}}-->
+
+        {{(currentSettings$|async)?.business_name}}
+
     </a>
 </div>
 <div class="sidebar-wrapper">
@@ -71,10 +78,11 @@
             </a>
         </li>-->
 
-        <li routerLinkActive="active" class="nav-item" (click)="logout()">
+        <li routerLinkActive="active" class="nav-item pointer" (click)="logout()">
             <a class="nav-link">
             <i class="material-icons">power_settings_new</i>
-            <p>Logout</p>
+            <p *ngIf="!loading">Logout</p>
+            <p *ngIf="loading">clean up ...</p>
             </a>
         </li>
     </ul>

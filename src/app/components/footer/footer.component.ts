@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { settings } from '../../auth/auth.selectors';
 
 @Component({
   selector: 'app-footer',
@@ -6,11 +9,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-  test : Date = new Date();
-  
-  constructor() { }
+  today: Date = new Date();
+  businessName: any;
+
+  currentSettings$: any;
+
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
+    // this.store.pipe(select(settings)).subscribe(res => this.businessName = res.business_name);
+    this.currentSettings$ = this.store.pipe(select(settings));
   }
 
 }

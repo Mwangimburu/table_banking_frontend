@@ -25,3 +25,21 @@ export const allScopes = createSelector(
         }
     }
 );
+
+export const settings = createSelector(
+    selectAuthState,
+    auth => {
+        if (auth.user) {
+            return auth.user.settings;
+        }
+    }
+);
+
+export const branch = createSelector(
+    selectAuthState,
+    auth => {
+        if (auth.user) {
+            return auth.user.branch_id;
+        }
+    }
+);

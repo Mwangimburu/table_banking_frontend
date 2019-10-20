@@ -1,22 +1,30 @@
 import { BaseModel } from './models/base-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AppConfigService } from './app.config-service';
+import { environment } from '../../environments/environment';
+import { API_URLS } from '../../assets/config/api-url';
 
 export class BaseService<T extends BaseModel> {
 
-   // private readonly apiUrl = AppConfigService.settings.apiUrl;
+    private readonly apiUrl: string;
     private readonly resourceUrl: string;
 
     constructor( private httpClient: HttpClient, private endpoint: string) {
+        this.apiUrl = environment.production ?  API_URLS.prod : API_URLS.dev;
+
         // this.resourceUrl = `${this.apiUrl}/${this.endpoint}`;
-        this.resourceUrl = `http://localhost/19/dan/smartmicro/public/api/v1/` + this.endpoint;
+       // this.resourceUrl = `http://localhost/19/dan/smartmicro/public/api/v1/` + this.endpoint;
+        this.resourceUrl = this.apiUrl + `/` + this.endpoint;
+
+        // Demo1
+      //  this.resourceUrl = `http://africomit.co.ke/backend/api/v1/` + this.endpoint;
+
     }
 
     /**
      * API URL
      */
-    private getResourceUrl(): string {
+    protected getResourceUrl(): string {
         return this.resourceUrl;
     }
 

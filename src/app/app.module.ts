@@ -29,6 +29,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { JwtInterceptor } from './auth/jwt.interceptor';
 import { ErrorInterceptor } from './auth/error.interceptor';
 import { MaterialModule } from './shared/material.module';
+import { MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { AppPreloadingStrategy } from './app-preloading-strategy';
 
 @NgModule({
   imports: [
@@ -52,6 +55,9 @@ import { MaterialModule } from './shared/material.module';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+   // { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: {useUTC: true} },
+    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
+    AppPreloadingStrategy
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <p class="card-category">Communication Setting</p>
+            </div>
+
+            <div class="card-body">
+
+                <nav mat-tab-nav-bar>
+
+                    <a mat-tab-link routerLinkActive #type="routerLinkActive" [active]="type.isActive" [routerLinkActiveOptions]="{exact: true}"
+                       [routerLink]="['/settings/communication']">
+                        <span class="nav-text"> Email</span></a>
+
+                    <a mat-tab-link routerLinkActive #interest_type="routerLinkActive" [active]="interest_type.isActive" [routerLink]="['sms']">
+                        <span class="nav-text"> Sms</span></a>
+
+                </nav>
+
+                <router-outlet></router-outlet>
+
+            </div>
+        </div>
+    </div>
+</div>

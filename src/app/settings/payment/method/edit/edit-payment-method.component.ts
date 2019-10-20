@@ -29,7 +29,9 @@ export class EditPaymentMethodComponent implements OnInit  {
         this.method = row.method;
 
         this.form = fb.group({
-            name: [this.method.name, [Validators.required,
+            name: [{value: this.method.name, disabled: true}, [Validators.required,
+                Validators.minLength(3)]],
+            display_name: [this.method.display_name, [Validators.required,
                 Validators.minLength(3)]],
             description: [this.method.description],
         });

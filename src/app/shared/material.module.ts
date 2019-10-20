@@ -35,6 +35,7 @@ import {
     MatStepperModule,
 } from '@angular/material';
 import { DeleteModule } from './delete/delete.module';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     imports: [
@@ -109,7 +110,8 @@ import { DeleteModule } from './delete/delete.module';
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule,
-        DeleteModule
+        DeleteModule,
+        NgxMatSelectSearchModule
     ],
     declarations: [],
     entryComponents: [],

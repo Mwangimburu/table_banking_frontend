@@ -23,6 +23,7 @@ export class EditUserComponent implements OnInit  {
 
     roles: any = [];
     employees: any = [];
+    branches: any = [];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -33,12 +34,15 @@ export class EditUserComponent implements OnInit  {
         this.user = row.user;
         this.roles = row.roles;
         this.employees = row.employees;
+        this.branches = row.branches;
 
     }
 
     ngOnInit() {
 
         this.form = this.fb.group({
+            branch_id: [this.user.branch_id, [Validators.required,
+                Validators.minLength(3)]],
             first_name: [this.user.first_name, [Validators.required,
                 Validators.minLength(3)]],
             last_name: [this.user.last_name],
@@ -53,6 +57,8 @@ export class EditUserComponent implements OnInit  {
     close() {
         this.dialogRef.close();
     }
+
+    addDialog() {}
 
     updateUser() {
         const body = Object.assign({}, this.user, this.form.value);

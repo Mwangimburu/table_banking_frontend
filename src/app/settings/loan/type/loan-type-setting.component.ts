@@ -9,6 +9,8 @@ import { AddLoanTypeComponent } from './add/add-loan-type.component';
 import { LoanTypeSettingModel } from './model/loan-type-setting.model';
 import { EditLoanTypeComponent } from './edit/edit-loan-type.component';
 import { NotificationService } from '../../../shared/notification.service';
+import { InterestTypeSettingService } from '../interest-type/data/interest-type-setting.service';
+import { PaymentFrequencySettingService } from '../payment-frequency/data/payment-frequency-setting.service';
 
 @Component({
     selector: 'app-loan-type-setting',
@@ -18,7 +20,10 @@ import { NotificationService } from '../../../shared/notification.service';
 export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
         'name',
-        'description',
+        'interest_rate',
+        'interest_type_id',
+        'repayment_period',
+        'payment_frequency_id',
         'actions',
     ];
 
@@ -40,7 +45,12 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: LoanTypeSettingDataSource;
 
-    constructor(private service: LoanTypeSettingService, private notification: NotificationService, private dialog: MatDialog) {
+    interestTypes: any = [];
+    paymentFrequencies: any = [];
+
+    constructor(private service: LoanTypeSettingService, private interestTypeService: InterestTypeSettingService,
+                private notification: NotificationService, private dialog: MatDialog,
+                private paymentFrequencyService: PaymentFrequencySettingService) {
     }
 
     /**
@@ -58,6 +68,16 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'name', 'asc');
 
+        this.interestTypeService.list(['name', 'display_name'])
+            .subscribe((res) => this.interestTypes = res,
+                () => this.interestTypes = []
+            );
+
+        this.paymentFrequencyService.list(['name', 'display_name'])
+            .subscribe((res) => this.paymentFrequencies = res,
+                () => this.paymentFrequencies = []
+            );
+
     }
 
     /**
@@ -67,6 +87,11 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            interestTypes: this.interestTypes,
+            paymentFrequencies: this.paymentFrequencies
+        };
 
         const dialogRef = this.dialog.open(AddLoanTypeComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -88,7 +113,11 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {type};
+
+        dialogConfig.data = {type,
+            interestTypes: this.interestTypes,
+            paymentFrequencies: this.paymentFrequencies
+        };
 
         const dialogRef = this.dialog.open(EditLoanTypeComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(

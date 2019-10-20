@@ -18,6 +18,7 @@ import { NotificationService } from '../../../shared/notification.service';
 export class PaymentMethodSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
         'name',
+        'display_name',
         'description',
         'actions',
     ];

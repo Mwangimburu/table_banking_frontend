@@ -23,6 +23,7 @@ export class AddUserComponent implements OnInit  {
 
     roles: any = [];
     employees: any = [];
+    branches: any = [];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -31,11 +32,14 @@ export class AddUserComponent implements OnInit  {
                 private dialogRef: MatDialogRef<AddUserComponent>) {
         this.roles = row.roles;
         this.employees = row.employees;
+        this.branches = row.branches;
     }
 
     ngOnInit() {
 
         this.form = this.fb.group({
+            branch_id: ['', [Validators.required,
+                Validators.minLength(3)]],
             first_name: ['', [Validators.required,
                 Validators.minLength(3)]],
             last_name: [''],
@@ -54,6 +58,8 @@ export class AddUserComponent implements OnInit  {
     close() {
         this.dialogRef.close();
     }
+
+    addDialog() {}
 
     /**
      * Create a resource

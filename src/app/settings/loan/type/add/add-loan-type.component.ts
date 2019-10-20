@@ -20,18 +20,30 @@ export class AddLoanTypeComponent implements OnInit  {
 
     loader = false;
 
+    interestTypes: any;
+    paymentFrequencies: any;
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private typeService: LoanTypeSettingService,
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<AddLoanTypeComponent>) {
+        this.interestTypes = row.interestTypes;
+        this.paymentFrequencies = row.paymentFrequencies;
+
     }
 
     ngOnInit() {
         this.form = this.fb.group({
             name: ['', [Validators.required,
                 Validators.minLength(3)]],
+            repayment_period: [''],
+            interest_rate: [''],
+            interest_type_id: [''],
+            service_fee: [''],
+            payment_frequency_id: [''],
             description: [''],
+            active_status: ['']
         });
     }
 

@@ -19,6 +19,7 @@ import { NotificationService } from '../../../shared/notification.service';
 export class BranchGeneralSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
         'name',
+        'branch_code',
         'location',
         'actions',
     ];

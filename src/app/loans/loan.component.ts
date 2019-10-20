@@ -10,6 +10,8 @@ import { LoanModel } from './models/loan-model';
 import { EditLoanComponent } from './edit/edit-loan.component';
 import { LoanDataSource } from './data/loan-data.source';
 import { NotificationService } from '../shared/notification.service';
+import { LoanApplicationModel } from '../loan-applications/models/loan-application-model';
+import { LoanAmortizationComponent } from './amortization/loan-amortization.component';
 
 @Component({
     selector: 'app-loans',
@@ -18,15 +20,15 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class LoanComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'loan_reference',
-        'branch_id',
-        'borrower_id',
+        'member_id',
+        'loan_reference_number',
         'loan_type_id',
-        'loan_status_id',
-        'amount_applied',
+        'repayment_period',
         'amount_approved',
-        'amount_received',
-        'date_approved',
+        'balance',
+        'next_repayment_date',
+        'amortization',
+
         'actions',
     ];
 
@@ -49,6 +51,7 @@ export class LoanComponent implements OnInit, AfterViewInit {
 
     // Data for the list table display
     dataSource: LoanDataSource;
+    selectedRowIndex = '';
 
     constructor(private service: LoanService, private notification: NotificationService, private dialog: MatDialog) {
     }
@@ -66,9 +69,22 @@ export class LoanComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'date_approved', 'asc');
+        this.dataSource.load('', 0, 0, 'updated_at', 'desc');
+
+      /*  this.dataSource.connect(null).subscribe(data => {
+            if (data && data.length > 0) {
+                this.selectedRowIndex = data[0].id;
+                this.onSelected(data[0]);
+                console.log(data[0].id);
+            }
+        });*/
 
     }
+
+  /*  onSelected(loan: LoanModel): void {
+        this.selectedRowIndex = loan.id;
+        this.service.changeSelectedLoan(loan);
+    }*/
 
     /**
      * Add dialog launch
@@ -87,6 +103,34 @@ export class LoanComponent implements OnInit, AfterViewInit {
             }
         );
     }
+
+    onSelected(loan: LoanModel): void {
+        this.selectedRowIndex = loan.id;
+        this.service.changeSelectedLoan(loan);
+    }
+
+    /**
+     * Edit dialog launch
+     */
+    amortizationDialog(loan: LoanModel) {
+
+        const id = loan.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {loan};
+
+        const dialogRef = this.dialog.open(LoanAmortizationComponent, dialogConfig);
+     /*   dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    this.loadData();
+                }
+            }
+        );*/
+    }
+
 
     /**
      * Edit dialog launch

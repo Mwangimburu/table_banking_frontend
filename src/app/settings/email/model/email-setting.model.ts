@@ -1,8 +1,13 @@
 import { BaseModel } from '../../../shared/models/base-model';
 
 export class EmailSettingModel extends BaseModel {
-    company_name: string;
-    contact_email: string;
-    default_tax_id: string;
-    logo_url: string;
+    protocol: string;
+    smpt_host: string;
+    smpt_username: string;
+    smpt_password: string;
+    smpt_port: string;
+    mail_gun_domain: string;
+    mandrill_secret: string;
+    from_name: string;
+    from_email: string;
 }

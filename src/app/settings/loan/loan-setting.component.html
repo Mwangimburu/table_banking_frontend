@@ -8,15 +8,22 @@
             <div class="card-body">
 
                 <nav mat-tab-nav-bar>
-                    <a mat-tab-link routerLinkActive #source="routerLinkActive" [active]="source.isActive" [routerLinkActiveOptions]="{exact: true}"
+                    <!--<a mat-tab-link routerLinkActive #source="routerLinkActive" [active]="source.isActive" [routerLinkActiveOptions]="{exact: true}"
                        [routerLink]="['/settings/loan']">
-                        <span class="nav-text"> Sources</span></a>
+                        <span class="nav-text"> Sources</span></a>-->
 
-                    <a mat-tab-link routerLinkActive #type="routerLinkActive" [active]="type.isActive" [routerLink]="['type']">
-                        <span class="nav-text"> Type</span></a>
+                    <a mat-tab-link routerLinkActive #type="routerLinkActive" [active]="type.isActive" [routerLinkActiveOptions]="{exact: true}"
+                       [routerLink]="['/settings/loan']">
+                        <span class="nav-text"> Loan Types</span></a>
+
+                    <a mat-tab-link routerLinkActive #interest_type="routerLinkActive" [active]="interest_type.isActive" [routerLink]="['interest_type']">
+                        <span class="nav-text"> Interest Type</span></a>
 
                     <a mat-tab-link routerLinkActive #status="routerLinkActive" [active]="status.isActive" [routerLink]="['status']">
                         <span class="nav-text"> Status</span></a>
+
+                    <a mat-tab-link routerLinkActive #payment_frequency="routerLinkActive" [active]="payment_frequency.isActive" [routerLink]="['payment_frequency']">
+                        <span class="nav-text"> Payment Frequency</span></a>
 
                 </nav>
 

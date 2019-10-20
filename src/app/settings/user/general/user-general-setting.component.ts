@@ -13,6 +13,7 @@ import { UserSettingService } from '../data/user-setting.service';
 import { NotificationService } from '../../../shared/notification.service';
 import { RoleSettingService } from '../data/role-setting.service';
 import { EmployeeService } from '../../employee/general/data/employee.service';
+import { BranchService } from '../../branch/general/data/branch.service';
 
 @Component({
     selector: 'app-user-general-setting',
@@ -21,7 +22,8 @@ import { EmployeeService } from '../../employee/general/data/employee.service';
 })
 export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'role',
+        'branch_id',
+        'role_id',
         'first_name',
         'last_name',
         'email',
@@ -48,10 +50,11 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
 
     roles: any = [];
     employees: any = [];
+    branches: any = [];
 
     constructor(private service: UserSettingService, private notification: NotificationService,
                 private roleService: RoleSettingService, private employeeService: EmployeeService,
-                private dialog: MatDialog) {
+                private dialog: MatDialog, private branchService: BranchService) {
     }
 
     /**
@@ -79,6 +82,11 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
                 () => this.employees = []
             );
 
+        this.branchService.list('name')
+            .subscribe((res) => this.branches = res,
+                () => this.branches = []
+            );
+
     }
 
     /**
@@ -90,7 +98,8 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
             roles: this.roles,
-            employees: this.employees
+            employees: this.employees,
+            branches: this.branches
         };
 
         const dialogRef = this.dialog.open(AddUserComponent, dialogConfig);
@@ -115,7 +124,8 @@ export class UserGeneralSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {user,
             roles: this.roles,
-            employees: this.employees
+            employees: this.employees,
+            branches: this.branches
         };
 
         const dialogRef = this.dialog.open(EditUserComponent, dialogConfig);

@@ -6,6 +6,6 @@ import { BaseService } from '../../../../shared/base-service';
 @Injectable({ providedIn: 'root' })
 export class LoanStatusSettingService extends BaseService<LoanStatusSettingModel> {
     constructor(httpClient: HttpClient) {
-        super( httpClient, 'lead_statuses');
+        super( httpClient, 'loan_statuses');
     }
 }

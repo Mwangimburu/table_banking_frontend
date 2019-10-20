@@ -2,14 +2,14 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
 import { PaymentService } from './data/payment.service';
 import { AddPaymentComponent } from './add/add-payment.component';
 import { PaymentModel } from './models/payment-model';
-import { EditPaymentComponent } from './edit/edit-payment.component';
 import { PaymentDataSource } from './data/payment-data.source';
 import { NotificationService } from '../shared/notification.service';
+import { MemberService } from '../members/data/member.service';
+import { PaymentDetailComponent } from './details/payment-detail.component';
 
 @Component({
     selector: 'app-payments',
@@ -18,10 +18,10 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class PaymentComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'loan_id',
+        'member_id',
         'amount',
         'method_id',
-        'date',
+        'payment_date',
         'receipt_number',
         'actions',
     ];
@@ -46,7 +46,10 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: PaymentDataSource;
 
-    constructor(private service: PaymentService, private notification: NotificationService, private dialog: MatDialog) {
+    members: any;
+
+    constructor(private service: PaymentService, private notification: NotificationService,
+                private dialog: MatDialog, private memberService: MemberService) {
     }
 
     /**
@@ -62,7 +65,12 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'date', 'asc');
+        this.dataSource.load('', 0, 0, 'payment_date', 'desc');
+
+        this.memberService.list(['first_name', 'last_name', 'id_number'])
+            .subscribe((res) => this.members = res,
+                () => this.members = []
+            );
 
     }
 
@@ -73,6 +81,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            members: this.members
+        };
+
 
         const dialogRef = this.dialog.open(AddPaymentComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -85,9 +98,9 @@ export class PaymentComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * Edit dialog launch
+     * paymentDetails dialog launch
      */
-    editDialog(data: PaymentModel) {
+    paymentDetails(data: PaymentModel) {
 
         const id = data.id;
 
@@ -96,11 +109,11 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {data};
 
-        const dialogRef = this.dialog.open(EditPaymentComponent, dialogConfig);
+        const dialogRef = this.dialog.open(PaymentDetailComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
-                    this.loadData();
+                  //  this.loadData();
                 }
             }
         );
@@ -110,7 +123,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),

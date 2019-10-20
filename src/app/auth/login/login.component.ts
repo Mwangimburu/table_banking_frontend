@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
      * Login user against api
      */
     login() {
+        this.loginError = '';
         this.loading = true;
 
         this.authenticationService.login(this.email.value, this.password.value)

@@ -10,6 +10,8 @@ import { MemberModel } from './models/member-model';
 import { EditMemberComponent } from './edit/edit-member.component';
 import { MemberDataSource } from './data/member-data.source';
 import { NotificationService } from '../shared/notification.service';
+import { BranchService } from '../settings/branch/general/data/branch.service';
+import { LoanModel } from '../loans/models/loan-model';
 
 @Component({
     selector: 'app-members',
@@ -18,13 +20,12 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class MemberComponent implements OnInit, AfterViewInit {
     displayedColumns = [
+        'created_at',
+        'branch',
         'first_name',
-        'last_name',
         'id_number',
         'phone',
-        'email',
-        'status_id',
-        'actions',
+        'actions'
     ];
 
     loader = false;
@@ -46,8 +47,12 @@ export class MemberComponent implements OnInit, AfterViewInit {
 
     // Data for the list table display
     dataSource: MemberDataSource;
+    selectedRowIndex = '';
 
-    constructor(private service: MemberService, private notification: NotificationService, private dialog: MatDialog) {
+    branches: any = [];
+
+    constructor(private service: MemberService, private branchService: BranchService,
+                private notification: NotificationService, private dialog: MatDialog) {
     }
 
     /**
@@ -63,8 +68,26 @@ export class MemberComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'first_name', 'asc');
+        this.dataSource.load('', 0, 0, 'first_name', 'desc');
 
+       /* this.dataSource.connect(null).subscribe(data => {
+            if (data && data.length > 0) {
+                this.selectedRowIndex = data[0].id;
+                this.onSelected(data[0]);
+               // console.log(data[0].id);
+            }
+        });*/
+
+       this.branchService.list('name')
+            .subscribe((res) => this.branches = res,
+                () => this.branches = []
+            );
+
+    }
+
+    onSelected(member: MemberModel): void {
+        this.selectedRowIndex = member.id;
+        this.service.changeSelectedMember(member);
     }
 
     /**
@@ -74,6 +97,10 @@ export class MemberComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            branches: this.branches
+        };
 
         const dialogRef = this.dialog.open(AddMemberComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -88,14 +115,17 @@ export class MemberComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(data: MemberModel) {
+    editDialog(member: MemberModel) {
 
-        const id = data.id;
+        const id = member.id;
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {data};
+
+        dialogConfig.data = {member,
+            branches: this.branches
+        };
 
         const dialogRef = this.dialog.open(EditMemberComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(

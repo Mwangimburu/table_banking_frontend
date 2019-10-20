@@ -31,6 +31,8 @@ export class AddPaymentMethodComponent implements OnInit  {
         this.form = this.fb.group({
             name: ['', [Validators.required,
                 Validators.minLength(3)]],
+            display_name: ['', [Validators.required,
+                Validators.minLength(3)]],
             description: [''],
         });
     }

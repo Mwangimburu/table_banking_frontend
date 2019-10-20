@@ -6,6 +6,7 @@ import { MemberService } from '../data/member.service';
 
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-add-member',
@@ -29,6 +30,14 @@ export class AddMemberComponent implements OnInit  {
     memberStatuses: any = [];
     memberSources: any = [];
     memberTypes: any = [];
+    branches: any = [];
+
+    profilePicFileToUpload: File = null;
+    nationalIdFileToUpload: File = null;
+    membershipFormFileToUpload: File = null;
+    profilePicUrl = '';
+    nationalIdUrl = '';
+    membershipFormUrl = '';
 
     @ViewChild('stepper', {static: true }) stepper: MatStepper;
 
@@ -36,11 +45,9 @@ export class AddMemberComponent implements OnInit  {
                 private fb: FormBuilder,
                 private memberService: MemberService,
                 private notification: NotificationService,
-
                 private memberMethodService: PaymentMethodSettingService,
-
-
                 private dialogRef: MatDialogRef<AddMemberComponent>) {
+        this.branches = row.branches;
     }
 
     ngOnInit() {
@@ -51,21 +58,31 @@ export class AddMemberComponent implements OnInit  {
             );
 
         this.form = this.fb.group({
-            first_name: [''/*, [Validators.required,
-                Validators.minLength(3)]*/],
-            middle_name: [''],
+            first_name: ['', [Validators.required,
+                Validators.minLength(2)]],
+            middle_name: ['', [Validators.required,
+                Validators.minLength(2)]],
             last_name: [''],
-            nationality: [''],
-            id_number: [''],
+            nationality: ['', [Validators.required,
+                Validators.minLength(2)]],
+            id_number: ['', [Validators.required,
+                Validators.minLength(2)]],
             passport_number: [''],
-            phone: [''],
+            phone: ['', [Validators.required,
+                Validators.minLength(2)]],
             email: [''],
-            postal_address: [''],
-            residential_address: [''],
-            bank_name: [''],
-            bank_account: [''],
-            bank_branch: [''],
+            postal_address: ['', [Validators.required,
+                Validators.minLength(2)]],
+            residential_address: ['', [Validators.required,
+                Validators.minLength(2)]],
+            county: [''],
+            city: [''],
             status_id: [''],
+            branch_id: ['', [Validators.required,
+                Validators.minLength(2)]],
+            date_of_birth: ['', [Validators.required,
+                Validators.minLength(2)]],
+            date_became_member: [moment(), Validators.required],
             passport_photo: [''],
             national_id_image: [''],
         });
@@ -79,6 +96,73 @@ export class AddMemberComponent implements OnInit  {
         this.dialogRef.close();
     }
 
+    handleFileInput(file: FileList) {
+        this.profilePicFileToUpload = file.item(0);
+
+        const reader = new FileReader();
+
+        reader.onload = (event: any) => {
+            this.profilePicUrl = event.target.result;
+        };
+
+        reader.readAsDataURL(this.profilePicFileToUpload);
+    }
+
+    onProfilePicSelect(file: FileList) {
+
+        if (file.length > 0) {
+            this.profilePicFileToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.profilePicUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.profilePicFileToUpload);
+
+        //    this.form.get('passport_photo').setValue(this.profilePicFileToUpload);
+
+        }
+    }
+
+    onNationalIdFileInputSelect(file: FileList) {
+
+        if (file.length > 0) {
+            this.nationalIdFileToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.nationalIdUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.nationalIdFileToUpload);
+        }
+    }
+
+    onMembershipFormInputSelect(file: FileList) {
+
+        if (file.length > 0) {
+            this.membershipFormFileToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.membershipFormUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.membershipFormFileToUpload);
+        }
+    }
+
+    onFileSelect(event) {
+        if (event.target.files.length > 0) {
+            const file = event.target.files[0];
+            this.form.get('passport_photo').setValue(file);
+        }
+    }
+
     /**
      * Create member
      */
@@ -86,9 +170,33 @@ export class AddMemberComponent implements OnInit  {
 
         const body = Object.assign({}, this.member, this.form.value);
 
+        const formData = new FormData();
+        formData.append('passport_photo', this.profilePicFileToUpload);
+       // formData.append('first_name', this.form.get('first_name').value);
+
+        for (const key in body) {
+            if (body.hasOwnProperty(key)) {
+                formData.append(key, body[key]);
+            }
+        }
+
+        console.log('***formData 1***');
+        console.log(formData);
+        console.log('***end formData 1***');
+
+
+        /*const newBody = Object.assign({}, formData, body);
+
+        console.log('***newBody***');
+        console.log(newBody);
+        console.log('***formData 2***');
+        console.log(formData);*/
+
+
+
         this.loader = true;
 
-        this.memberService.create(body)
+        this.memberService.create(formData)
             .subscribe((data) => {
                     console.log('Create Source: ', data);
                     this.onSaveComplete();

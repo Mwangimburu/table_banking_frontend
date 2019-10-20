@@ -1,0 +1,73 @@
+<div class="row">
+
+
+   <div class="col-md-12">
+      <div class="card">
+         <div class="card-body">
+
+
+   <form [formGroup]="form">
+
+      <div class="row">
+
+         <div class="col-3">
+            <mat-form-field  class="full-width">
+               <input matInput [matDatepicker]="start_date" formControlName="start_date" placeholder="Start Date">
+               <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+               <mat-datepicker #start_date></mat-datepicker>
+               <mat-error align="start" *ngIf="formErrors?.start_date" class="form__error">{{ formErrors.start_date }}</mat-error>
+            </mat-form-field>
+         </div>
+
+         <div class="col-3">
+            <mat-form-field  class="full-width">
+               <input matInput [matDatepicker]="end_date" formControlName="end_date" placeholder="End Date">
+               <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+               <mat-datepicker #end_date></mat-datepicker>
+               <mat-error align="start" *ngIf="formErrors?.end_date" class="form__error">{{ formErrors.end_date }}</mat-error>
+            </mat-form-field>
+         </div>
+
+         <div class="col-3">
+            <mat-form-field class="full-width" color="primary">
+               <mat-select placeholder="Report" formControlName="report_id">
+                  <mat-option *ngFor="let report of reports" [value]="report?.id">
+                     {{report?.display_name}}
+                  </mat-option>
+               </mat-select>
+               <mat-error align="start" *ngIf="formErrors?.method_id" class="form__error">{{ formErrors.method_id }}</mat-error>
+            </mat-form-field>
+         </div>
+
+         <div class="col-3">
+            <ng-container matColumnDef="actions">
+               <mat-header-cell *matHeaderCellDef> Actions  </mat-header-cell>
+               <mat-cell *matCellDef="let row" class="button-row">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                     <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                     <button mat-menu-item (click)="viewStatement(row)">
+                        <mat-icon color="accent">visibility</mat-icon>
+                        <span>View Report</span>
+                     </button>
+                     <button mat-menu-item (click)="editDialog(row)">
+                        <mat-icon color="accent">cloud_download</mat-icon>
+                        <span>Download PDF</span>
+                     </button>
+                     <button mat-menu-item (click)="editDialog(row)">
+                        <mat-icon color="accent">cloud_download</mat-icon>
+                        <span>Download Excel</span>
+                     </button>
+                  </mat-menu>
+               </mat-cell>
+            </ng-container>
+         </div>
+      </div>
+
+   </form>
+
+         </div>
+      </div>
+   </div>
+</div>

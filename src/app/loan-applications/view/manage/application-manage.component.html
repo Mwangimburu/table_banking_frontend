@@ -1,0 +1,138 @@
+<div class="row">
+
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+
+                <form [formGroup]="form">
+
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="amount_applied" placeholder="Amount Applied">
+                                <mat-error align="start" *ngIf="formErrors?.amount_applied" class="form__error">{{ formErrors.amount_applied }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput (ngModelChange)='loanAmountModelChanged.next($event)' formControlName="amount_approved" placeholder="Amount Approved">
+                                <mat-error align="start" *ngIf="formErrors?.amount_approved" class="form__error">{{ formErrors.amount_approved }}</mat-error>
+                            </mat-form-field>
+
+                           <!-- <input [ngModel]='notesText' (ngModelChange)='notesModelChanged.next($event)' />-->
+
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="amount_to_disburse" placeholder="Amount To Disburse">
+                                <mat-error align="start" *ngIf="formErrors?.amount_to_disburse" class="form__error">{{ formErrors.amount_to_disburse }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="loan_type" placeholder="Loan Type">
+                                <mat-error align="start" *ngIf="formErrors?.loan_type" class="form__error">{{ formErrors.loan_type }}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="interest_type" placeholder="Interest Type">
+                                <mat-error align="start" *ngIf="formErrors?.interest_type" class="form__error">{{ formErrors.interest_type }}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput  (ngModelChange)='interestRateModelChanged.next($event)' formControlName="interest_rate" placeholder="Interest Rate">
+                                <mat-error align="start" *ngIf="formErrors?.interest_rate" class="form__error">{{ formErrors.interest_rate }}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput (ngModelChange)='repaymentPeriodModelChanged.next($event)' formControlName="repayment_period" placeholder="Repayment Period">
+                                <mat-error align="start" *ngIf="formErrors?.repayment_period" class="form__error">{{ formErrors.repayment_period }}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="service_fee" placeholder="Service Fee">
+                                <mat-error align="start" *ngIf="formErrors?.service_fee" class="form__error">{{ formErrors.service_fee }}</mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="periodic_payments" placeholder="Periodic Payment">
+                                <mat-error align="start" *ngIf="formErrors?.periodic_payment_amount" class="form__error">{{ formErrors.periodic_payment_amount }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                          <!--  <mat-form-field class="full-width">
+                                <input matInput formControlName="start_date" placeholder="Start Date">
+                                <mat-error align="start" *ngIf="formErrors?.start_date" class="form__error">{{ formErrors.start_date }}</mat-error>
+                            </mat-form-field>-->
+
+                            <mat-form-field  class="full-width">
+                                <input matInput [matDatepicker]="start_date" formControlName="start_date" placeholder="Start Date">
+                                <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                                <mat-datepicker #start_date></mat-datepicker>
+                                <mat-error align="start" *ngIf="formErrors?.start_date" class="form__error">{{ formErrors.start_date }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4">
+                            <mat-form-field class="full-width">
+                                <input matInput formControlName="member_id" placeholder="Member">
+                                <mat-error align="start" *ngIf="formErrors?.member_id" class="form__error">{{ formErrors?.member_id }}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <mat-form-field class="full-width"  color="accent">
+                        <textarea  formControlName="review_notes" matInput #review_notes placeholder="Review Note" maxlength="150" rows="5"></textarea>
+                        <mat-hint align="end">{{review_notes.value.length}} / 150</mat-hint>
+                        <mat-error align="start" *ngIf="formErrors?.member_id" class="form__error">{{ formErrors.member_id }}</mat-error>
+                    </mat-form-field>
+
+                    <div class="row">
+                        <div class="col-2" style="padding-top: 15px">
+                                 <mat-checkbox formControlName="collateral_check">Confirm Collateral Review.</mat-checkbox>
+                                <mat-checkbox formControlName="guarantor_check">Confirm Guarantor Review.</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="formErrors?.member_id" class="alert alert-danger">
+
+                        Error: {{ formErrors?.member_id }}
+                    </ng-container>
+
+                    <ng-container class="container-fluid">
+                        <div class="col-sm-12 text-center">
+                            <button class="mr-3 mat-raised-button mat-primary" (click)="covertToLoan()" [disabled]="!form.valid">Approve Loan</button>
+                            <button class="mr-3 mat-raised-button mat-warn" (click)="rejectLoanApplication()">Reject Loan</button>
+                        </div>
+                    </ng-container>
+
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>

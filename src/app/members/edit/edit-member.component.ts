@@ -22,6 +22,7 @@ export class EditMemberComponent implements OnInit  {
     loader = false;
 
     memberStatuses: any = [];
+    branches: any = [];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -30,7 +31,8 @@ export class EditMemberComponent implements OnInit  {
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<EditMemberComponent>) {
 
-        this.member = row.data;
+        this.member = row.member;
+        this.branches = row.branches;
     }
 
     ngOnInit() {
@@ -45,6 +47,7 @@ export class EditMemberComponent implements OnInit  {
                 Validators.minLength(3)]],
             middle_name: [this.member.middle_name],
             last_name: [this.member.last_name],
+            branch_id: [this.member.branch_id],
             nationality: [this.member.nationality],
             id_number: [this.member.id_number],
             passport_number: [this.member.passport_number],
@@ -52,9 +55,10 @@ export class EditMemberComponent implements OnInit  {
             email: [this.member.email],
             postal_address: [this.member.postal_address],
             residential_address: [this.member.residential_address],
-            bank_name: [this.member.bank_name],
-            bank_account: [this.member.bank_account],
-            bank_branch: [this.member.bank_branch],
+            date_of_birth: [this.member.date_of_birth],
+            date_became_member: [this.member.date_became_member],
+            county: [this.member.county],
+            city: [this.member.city],
             status_id: [this.member.status_id],
             passport_photo: [this.member.passport_photo],
             national_id_image: [this.member.national_id_image],

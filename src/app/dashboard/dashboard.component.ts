@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
+import { ActivatedRoute } from '@angular/router';
+import { GeneralSettingService } from '../settings/general/data/general-setting.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,15 +10,45 @@ import * as Chartist from 'chartist';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
-  startAnimationForLineChart(chart){
+    paymentColumns = [
+        'member_id',
+        'amount',
+        'method_id',
+        'payment_date'
+    ];
+
+    loanApplicationColumns = [
+        'application_date',
+        'member_id',
+        'loan_type_id',
+        'amount_applied'
+    ];
+
+    data: any;
+
+    activeLoans: any;
+    activeMembers: any;
+    loansSum: any;
+    countLoanApplications: any;
+    applicationsSum: any;
+
+    latestPaymentsDataSource: any;
+    loanApplicationsDataSource: any;
+
+  constructor(private route: ActivatedRoute) {
+      if (this.route.snapshot.data['summary']) {
+          this.data = this.route.snapshot.data['summary'];
+      }
+  }
+
+  startAnimationForLineChart(chart) {
       let seq: any, delays: any, durations: any;
       seq = 0;
       delays = 80;
       durations = 500;
 
       chart.on('draw', function(data) {
-        if(data.type === 'line' || data.type === 'area') {
+        if (data.type === 'line' || data.type === 'area') {
           data.element.animate({
             d: {
               begin: 600,
@@ -26,7 +58,7 @@ export class DashboardComponent implements OnInit {
               easing: Chartist.Svg.Easing.easeOutQuint
             }
           });
-        } else if(data.type === 'point') {
+        } else if (data.type === 'point') {
               seq++;
               data.element.animate({
                 opacity: {
@@ -42,14 +74,15 @@ export class DashboardComponent implements OnInit {
 
       seq = 0;
   };
-  startAnimationForBarChart(chart){
+
+  startAnimationForBarChart(chart) {
       let seq2: any, delays2: any, durations2: any;
 
       seq2 = 0;
       delays2 = 80;
       durations2 = 500;
       chart.on('draw', function(data) {
-        if(data.type === 'bar'){
+        if (data.type === 'bar') {
             seq2++;
             data.element.animate({
               opacity: {
@@ -65,7 +98,21 @@ export class DashboardComponent implements OnInit {
 
       seq2 = 0;
   };
+
   ngOnInit() {
+      if (this.data !== null) {
+          this.activeLoans = this.data.count_loans;
+          this.activeMembers = this.data.count_members;
+          this.loansSum = this.data.loans_sum;
+
+          this.countLoanApplications = this.data.count_pending_applications;
+          this.applicationsSum = this.data.applications_sum;
+          this.latestPaymentsDataSource = this.data.latest_payments;
+          this.loanApplicationsDataSource = this.data.pending_applications;
+      }
+
+   //   console.log(this.route.snapshot.data['summary']);
+
       /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
 
       const dataDailySalesChart: any = {

@@ -11,16 +11,17 @@
 
                         <div class="row search-form-section">
 
-                            <div class="col-3">
+                            <div class="col-5">
                                 <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                                     <mat-icon>add</mat-icon>Add New
                                 </button>
 
                             </div>
 
-                            <div class="col-9">
+
+                            <div class="col-7">
                                 <mat-form-field class="search-form-field">
-                                    <input matInput #search placeholder="Search" autocomplete="off" [disabled]="meta?.total===0">
+                                    <input matInput #search placeholder="Filter" autocomplete="off" [disabled]="meta?.total===0">
                                     <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearSearch()">
                                         <mat-icon>close</mat-icon></button>
                                 </mat-form-field>
@@ -29,16 +30,21 @@
 
                         <div class="table-responsive">
 
-                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="first_name" matSortDirection="asc" matSortDisableClear>
+                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="first_name" matSortDirection="desc" matSortDisableClear>
+
+                                <ng-container matColumnDef="created_at">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Account </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.account?.account_number}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="branch">
+                                    <mat-header-cell *matHeaderCellDef> Branch </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.branch?.name}} </mat-cell>
+                                </ng-container>
 
                                 <ng-container matColumnDef="first_name">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="last_name">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="id_number">
@@ -51,37 +57,35 @@
                                     <mat-cell *matCellDef="let row"> {{row.phone}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="email">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="status_id">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.status_id}} </mat-cell>
-                                </ng-container>
-
                                 <ng-container matColumnDef="actions">
                                     <mat-header-cell *matHeaderCellDef> Actions  </mat-header-cell>
                                     <mat-cell *matCellDef="let row" class="button-row">
-                                        <button mat-icon-button [matMenuTriggerFor]="menu">
-                                            <mat-icon>more_vert</mat-icon>
+                                        <button mat-raised-button type="button" matTooltip="Edit Member" [matTooltipPosition]="'above'" (click)="editDialog(row)"
+                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <i class="material-icons">edit</i>
                                         </button>
-                                        <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="editDialog(row)">
-                                                <mat-icon color="accent">edit</mat-icon>
-                                                <span>Edit</span>
-                                            </button>
-                                            <button mat-menu-item (click)="openConfirmationDialog(row)">
-                                                <mat-icon color="warn">delete</mat-icon>
-                                                <span>Delete</span>
-                                            </button>
-                                        </mat-menu>
+                                        <button mat-raised-button routerLink="{{row.id}}"
+                                                (click)="onSelected(row)" type="button" matTooltip="View Member Details" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                                            <mat-icon color="primary">visibility</mat-icon>
+                                        </button>
+                                        <!--  <mat-menu #menu="matMenu">
+                                              <button mat-menu-item (click)="editDialog(row)">
+                                                  <mat-icon color="accent">edit</mat-icon>
+                                                  <span>Suspend</span>
+                                              </button>
+                                              <button mat-menu-item (click)="openConfirmationDialog(row)">
+                                                  <mat-icon color="warn">delete</mat-icon>
+                                                  <span>Archive</span>
+                                              </button>
+                                          </mat-menu>-->
                                     </mat-cell>
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                               <!-- <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}"
+                                         (click)="onSelected(row)"> </mat-row>-->
+                                <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onSelected(row)"> </mat-row>
+
 
                             </mat-table>
                             <span *ngIf="meta?.total===0">No Data</span>
@@ -100,7 +104,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

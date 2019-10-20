@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
 import { LoanApplicationService } from './data/loan-application.service';
 import { AddLoanApplicationComponent } from './add/add-loan-application.component';
@@ -10,6 +10,9 @@ import { LoanApplicationModel } from './models/loan-application-model';
 import { EditLoanApplicationComponent } from './edit/edit-loan-application.component';
 import { LoanApplicationDataSource } from './data/loan-application-data.source';
 import { NotificationService } from '../shared/notification.service';
+import { MemberService } from '../members/data/member.service';
+import { LoanService } from '../loans/data/loan.service';
+import { LoanTypeSettingService } from '../settings/loan/type/data/loan-type-setting.service';
 
 @Component({
     selector: 'app-loan-applications',
@@ -18,10 +21,11 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class LoanApplicationComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'member_id',
         'application_date',
         'amount_applied',
-        'date_approved',
+        'member_id',
+        'loan_type_id',
+        'repayment_period',
         'status_id',
         'actions',
     ];
@@ -46,7 +50,15 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
     // Data for the list table display
     dataSource: LoanApplicationDataSource;
 
-    constructor(private service: LoanApplicationService, private notification: NotificationService, private dialog: MatDialog) {
+    selectedRowIndex = '';
+
+    members: any = [];
+    loanTypes: any = [];
+
+    constructor(private service: LoanApplicationService, private notification: NotificationService,
+                private dialog: MatDialog, private membersService: MemberService,
+                private loansService: LoanService, private memberService: MemberService,
+                private loanTypeService: LoanTypeSettingService) {
     }
 
     /**
@@ -62,8 +74,37 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'application_date', 'asc');
+        this.dataSource.load('', 0, 0, 'application_date', 'desc', 'reviewed_on');
 
+        this.memberService.list(['first_name', 'last_name', 'id_number'])
+            .subscribe((res) => this.members = res,
+                () => this.members = []
+            );
+
+        this.loanTypeService.list([
+            'name',
+            'interest_rate',
+            'service_fee',
+            'interest_type_id',
+            'payment_frequency_id',
+            'repayment_period'
+        ])
+            .subscribe((res) => this.loanTypes = res,
+                () => this.loanTypes = []
+            );
+
+        this.dataSource.connect(null).subscribe(data => {
+            if (data && data.length > 0) {
+                this.selectedRowIndex = data[0].id;
+                this.onSelected(data[0]);
+               // console.log(data[0].id);
+            }
+        });
+    }
+
+    onSelected(loanApplication: LoanApplicationModel): void {
+        this.selectedRowIndex = loanApplication.id;
+        this.service.changeSelectedLoanApplication(loanApplication);
     }
 
     /**
@@ -73,6 +114,11 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            members: this.members,
+            loanTypes: this.loanTypes
+        };
 
         const dialogRef = this.dialog.open(AddLoanApplicationComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -87,14 +133,17 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
     /**
      * Edit dialog launch
      */
-    editDialog(data: LoanApplicationModel) {
+    editDialog(loanApplication: LoanApplicationModel) {
 
-        const id = data.id;
+        const id = loanApplication.id;
 
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {data};
+        dialogConfig.data = {loanApplication,
+            members: this.members,
+            loanTypes: this.loanTypes
+        };
 
         const dialogRef = this.dialog.open(EditLoanApplicationComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
@@ -181,7 +230,7 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Lead has been deleted.');
+                    this.notification.showNotification('success', 'Success !! Loan Application has been deleted.');
                 },
                 (error) => {
                     this.loader = false;

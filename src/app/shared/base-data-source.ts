@@ -1,10 +1,6 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
-import { AppState } from '../reducers';
-import { BranchesRequested, PageQuery } from '../branches/branch.actions';
-import { selectBranchesMeta, selectBranchesPage } from '../branches/branch.selectors';
 
 export class BaseDataSource implements DataSource<any> {
 
@@ -25,13 +21,16 @@ export class BaseDataSource implements DataSource<any> {
      * @param limit
      * @param sortField
      * @param sortDirection
+     * @param whereField
+     * @param whereValue
      */
-    load(filter: string, page: number, limit: number, sortField: string = '', sortDirection: string = '') {
+    load(filter: string, page: number, limit: number, sortField: string = '',
+         sortDirection: string = '', whereField: string = '', whereValue: string = '') {
 
         console.log('load data from base data source');
         this.loadingSubject.next(true);
 
-        this.service.getAll(filter, page, limit, sortField, sortDirection).pipe(
+        this.service.getAll(filter, page, limit, sortField, sortDirection, whereField, whereValue).pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )

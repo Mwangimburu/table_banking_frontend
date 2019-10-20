@@ -1,0 +1,11 @@
+/*
+table {
+    width: 100%;
+}
+*/
+mat-table {
+    min-width: 600px;
+}
+table tr:last-child {
+    font-weight: bold;
+}

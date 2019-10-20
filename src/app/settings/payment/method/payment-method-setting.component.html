@@ -32,6 +32,11 @@
                             <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
                         </ng-container>
 
+                        <ng-container matColumnDef="display_name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Display Name </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.display_name}} </mat-cell>
+                        </ng-container>
+
                         <ng-container matColumnDef="description">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
@@ -50,7 +55,7 @@
                                     </button>
                                     <button mat-menu-item (click)="openConfirmationDialog(row)">
                                         <mat-icon color="warn">delete</mat-icon>
-                                        <span>Delete</span>
+                                        <span>Archive</span>
                                     </button>
                                 </mat-menu>
                             </mat-cell>

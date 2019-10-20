@@ -14,3 +14,9 @@
     margin:0 auto;
     display: inline-block;
 }
+.highlight{
+    background: #5C6BC0; /* green */
+}
+.pointer {
+    cursor: pointer;
+}

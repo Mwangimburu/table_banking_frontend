@@ -1,12 +1,18 @@
 import { BaseModel } from '../../shared/models/base-model';
 
 export class PaymentModel extends BaseModel {
-    loan_id: string;
+    account_id: string;
     amount: string;
     method_id: string;
-    date: string;
-    paid_to: string;
+    transaction_id: string;
+    payment_date: string;
+    paid_by: string;
+    payment_reason: string;
     receipt_number: string;
     attachment: string;
     notes: string;
+
+    member: any;
+    branch: any;
+    paymentMethod: any;
 }

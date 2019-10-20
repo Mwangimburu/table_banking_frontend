@@ -1,6 +1,7 @@
 import { BaseModel } from '../../../shared/models/base-model';
 
 export class UserSettingModel extends BaseModel {
+    branch_id: string;
     role_id: string;
     email: string;
     first_name: string;

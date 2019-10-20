@@ -42,9 +42,9 @@ export class EditLoanComponent implements OnInit  {
         this.lead = row.lead;
 
         this.form = fb.group({
-            first_name: [this.lead.first_name, [Validators.required,
+            first_name: ['', [Validators.required,
                 Validators.minLength(3)]],
-            last_name: [this.lead.last_name],
+            last_name: [''],
         });
     }
 
@@ -65,35 +65,35 @@ export class EditLoanComponent implements OnInit  {
             );*/
 
         this.firstFormGroup = this.fb.group({
-            title: [this.lead.title, Validators.required],
-            amount: [this.lead.amount],
-            organization: [this.lead.organization],
-            first_name: [this.lead.first_name],
-            last_name: [this.lead.last_name],
-            email: [this.lead.email],
+            title: ['', Validators.required],
+            amount: [''],
+            organization: [''],
+            first_name: [''],
+            last_name: [''],
+            email: [''],
         });
 
         this.secondFormGroup = this.fb.group({
-            phone: [this.lead.phone, Validators.required],
-            mobile: [this.lead.mobile],
-            address1: [this.lead.address1],
-            address2: [this.lead.address2],
-            preferred_comm: [this.lead.preferred_comm],
-            industry: [this.lead.industry],
-            country: [this.lead.country],
-            state: [this.lead.state],
-            city: [this.lead.city],
+            phone: ['', Validators.required],
+            mobile: [''],
+            address1: [''],
+            address2: [''],
+            preferred_comm: [''],
+            industry: [''],
+            country: [''],
+            state: [''],
+            city: [''],
         });
 
         this.thirdFormGroup = this.fb.group({
-            status_id: [this.lead.status_id, Validators.required],
-            source_id: [this.lead.source_id],
-            type_id: [this.lead.type_id],
-            company_id: [this.lead.company_id],
-            lead_owner_id: [this.lead.lead_owner_id],
-            zip_code: [this.lead.zip_code],
-            website: [this.lead.website],
-            notes: [this.lead.notes],
+            status_id: ['', Validators.required],
+            source_id: [''],
+            type_id: [''],
+            company_id: [''],
+            lead_owner_id: [''],
+            zip_code: [''],
+            website: [''],
+            notes: [''],
         });
     }
 

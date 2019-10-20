@@ -20,6 +20,9 @@ export class EditLoanTypeComponent implements OnInit  {
 
     loader = false;
 
+    interestTypes: any = [];
+    paymentFrequencies: any = [];
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private typeService: LoanTypeSettingService,
@@ -27,11 +30,20 @@ export class EditLoanTypeComponent implements OnInit  {
     private dialogRef: MatDialogRef<EditLoanTypeComponent>) {
 
         this.type = row.type;
+        this.interestTypes = row.interestTypes;
+        this.paymentFrequencies = row.paymentFrequencies;
+
 
         this.form = fb.group({
             name: [this.type.name, [Validators.required,
                 Validators.minLength(3)]],
             description: [this.type.description],
+            repayment_period: [this.type.repayment_period],
+            interest_rate: [this.type.interest_rate],
+            interest_type_id: [this.type.interest_type_id],
+            service_fee: [this.type.service_fee],
+            payment_frequency_id: [this.type.payment_frequency_id],
+            active_status: [this.type.active_status]
         });
     }
 
