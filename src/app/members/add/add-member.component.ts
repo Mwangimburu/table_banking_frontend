@@ -37,6 +37,8 @@ export class AddMemberComponent implements OnInit  {
     membershipFormFileToUpload: File = null;
     profilePicUrl = '';
     nationalIdUrl = '';
+
+    membershipFormToUpload: File = null;
     membershipFormUrl = '';
 
     @ViewChild('stepper', {static: true }) stepper: MatStepper;
@@ -78,8 +80,8 @@ export class AddMemberComponent implements OnInit  {
             county: [''],
             city: [''],
             status_id: [''],
-            branch_id: ['', [Validators.required,
-                Validators.minLength(2)]],
+           /* branch_id: ['', [Validators.required,
+                Validators.minLength(2)]],*/
             date_of_birth: ['', [Validators.required,
                 Validators.minLength(2)]],
             date_became_member: [moment(), Validators.required],
@@ -96,6 +98,10 @@ export class AddMemberComponent implements OnInit  {
         this.dialogRef.close();
     }
 
+    /**
+     *
+     * @param file
+     */
     handleFileInput(file: FileList) {
         this.profilePicFileToUpload = file.item(0);
 
@@ -108,6 +114,10 @@ export class AddMemberComponent implements OnInit  {
         reader.readAsDataURL(this.profilePicFileToUpload);
     }
 
+    /**
+     *
+     * @param file
+     */
     onProfilePicSelect(file: FileList) {
 
         if (file.length > 0) {
@@ -126,6 +136,10 @@ export class AddMemberComponent implements OnInit  {
         }
     }
 
+    /**
+     *
+     * @param file
+     */
     onNationalIdFileInputSelect(file: FileList) {
 
         if (file.length > 0) {
@@ -141,6 +155,10 @@ export class AddMemberComponent implements OnInit  {
         }
     }
 
+    /**
+     *
+     * @param file
+     */
     onMembershipFormInputSelect(file: FileList) {
 
         if (file.length > 0) {
@@ -156,10 +174,32 @@ export class AddMemberComponent implements OnInit  {
         }
     }
 
+    /**
+     *
+     * @param event
+     */
     onFileSelect(event) {
         if (event.target.files.length > 0) {
             const file = event.target.files[0];
             this.form.get('passport_photo').setValue(file);
+        }
+    }
+
+    /**
+     *
+     * @param file
+     */
+    membershipFormUpload(file: FileList) {
+
+        if (file.length > 0) {
+            this.membershipFormToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.membershipFormUrl = event.target.result;
+            };
+            reader.readAsDataURL(this.membershipFormToUpload);
         }
     }
 
@@ -172,6 +212,7 @@ export class AddMemberComponent implements OnInit  {
 
         const formData = new FormData();
         formData.append('passport_photo', this.profilePicFileToUpload);
+        formData.append('membership_form', this.membershipFormToUpload);
        // formData.append('first_name', this.form.get('first_name').value);
 
         for (const key in body) {

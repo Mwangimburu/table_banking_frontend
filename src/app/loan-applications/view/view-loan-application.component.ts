@@ -1,12 +1,9 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper, MatTableDataSource } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoanApplicationModel } from '../models/loan-application-model';
 import { LoanApplicationService } from '../data/loan-application.service';
 import { NotificationService } from '../../shared/notification.service';
-import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoanTypeSettingService } from '../../settings/loan/type/data/loan-type-setting.service';
 
 @Component({
     selector: 'app-edit-loan-application',
@@ -14,6 +11,8 @@ import { LoanTypeSettingService } from '../../settings/loan/type/data/loan-type-
     templateUrl: './view-loan-application.component.html'
 })
 export class ViewLoanApplicationComponent implements OnInit  {
+
+    permissions = ['loan-application-review'];
 
     form: FormGroup;
     generalForm: FormGroup;

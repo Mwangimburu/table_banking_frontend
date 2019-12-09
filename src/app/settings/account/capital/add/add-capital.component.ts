@@ -6,7 +6,7 @@ import { CapitalSettingService } from '../data/capital-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-tax-type',
+    selector: 'app-add-capital',
     styles: [],
     templateUrl: './add-capital.component.html'
 })
@@ -15,33 +15,27 @@ export class AddCapitalComponent implements OnInit  {
     form: FormGroup;
 
     formErrors: any;
+    branches: any = [];
 
-    type: CapitalSettingModel;
+    capital: CapitalSettingModel;
 
     loader = false;
-
-    interestTypes: any;
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private typeService: CapitalSettingService,
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<AddCapitalComponent>) {
-        this.interestTypes = row.interestTypes;
-
+        this.branches = row.branches;
     }
 
     ngOnInit() {
         this.form = this.fb.group({
-            name: ['', [Validators.required,
+            branch_id: ['', [Validators.required,
+                Validators.minLength(2)]],
+            amount: ['', [Validators.required,
                 Validators.minLength(3)]],
-            max_period_in_months: [''],
-            interest_rate: [''],
-            interest_type_id: [''],
-            service_fee: [''],
-            other_charges: [''],
-            description: [''],
-            active_status: ['']
+            description: ['']
         });
     }
 
@@ -58,7 +52,7 @@ export class AddCapitalComponent implements OnInit  {
      */
     createType() {
 
-        const body = Object.assign({}, this.type, this.form.value);
+        const body = Object.assign({}, this.capital, this.form.value);
 
         this.loader = true;
 
@@ -66,7 +60,7 @@ export class AddCapitalComponent implements OnInit  {
             .subscribe((data) => {
                     console.log('Create Type: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New type created.');
+                    this.notification.showNotification('success', 'Success !! New Capital added.');
                 },
                 (error) => {
                     this.loader = false;

@@ -45,13 +45,16 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="col-3">
-                                    <button class="mat-raised-button mat-primary" (click)="downloadPdf()" [disabled]="!form.valid">
+                                    <div class="d-flex spinner-container" *ngIf="loader">
+                                        <mat-spinner [diameter]="40"></mat-spinner>
+                                    </div>
+                                    <button *ngIf="!loader" class="mat-raised-button mat-primary" (click)="downloadPdf()" [disabled]="!form.valid">
                                         <span>Download</span>
                                     </button>
 
-                                    <button class="mat-raised-button mat-primary" (click)="viewStatement()" [disabled]="!form.valid">
+                                  <!--  <button class="mat-raised-button mat-primary" (click)="viewStatement()" [disabled]="!form.valid">
                                         <span>View</span>
-                                    </button>
+                                    </button>-->
                                 </div>
 
                             </div>

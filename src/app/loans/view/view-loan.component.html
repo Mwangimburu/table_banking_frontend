@@ -16,10 +16,10 @@
                                 <span class="nav-text"> Info </span></a>
 
                             <a mat-tab-link routerLinkActive #payment="routerLinkActive" [active]="payment.isActive" [routerLink]="['payments']">
-                                <span class="nav-text">   Payments </span></a>
+                                <span class="nav-text">   Accrue </span></a>
 
-                            <a mat-tab-link routerLinkActive #adjustment="routerLinkActive" [active]="adjustment.isActive" [routerLink]="['adjustments']">
-                                <span class="nav-text">   Adjustments </span></a>
+                          <!--  <a mat-tab-link routerLinkActive #adjustment="routerLinkActive" [active]="adjustment.isActive" [routerLink]="['adjustments']">
+                                <span class="nav-text">   Adjustments </span></a>-->
 
                             <!-- <a mat-tab-link routerLinkActive #loan_application="routerLinkActive" [active]="loan_application.isActive" [routerLink]="['loan_applications']">
                                  <span class="nav-text">  <mat-icon>work</mat-icon> Loan Application </span></a>-->
@@ -46,9 +46,11 @@
                         <p class="card-category"></p>
                     </div>
                     <div class="card-body">
+                        <div class="card-category text-gray">Loan #: {{loanData?.loan_reference_number}}</div>
                         <div class="card-category text-gray">Loan Type: {{loanData?.loanType?.name}}</div>
                         <div class="card-category text-gray">Loan Amount: {{loanData?.amount_approved|number:'1.2'}}</div>
-                        <div class="card-category text-gray">Repayment Period: {{loanData?.repayment_period}} ( {{loanData?.paymentFrequency?.display_name}} )</div>
+                        <div class="card-category text-gray">Repayment Period: {{loanData?.repayment_period}}</div>
+                        <div class="card-category text-gray">Frequency: {{loanData?.paymentFrequency?.display_name}}</div>
                         <div class="card-category text-gray">Interest Rate: {{loanData?.interest_rate}}</div>
                     </div>
                 </div>

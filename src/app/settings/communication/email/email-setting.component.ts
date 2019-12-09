@@ -1,198 +1,99 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ConfirmationDialogComponent } from '../../../shared/delete/confirmation-dialog-component';
 import { EmailSettingService } from './data/email-setting.service';
-import { AddEmailComponent } from './add/add-email.component';
 import { EmailSettingModel } from './model/email-setting.model';
-import { EditEmailComponent } from './edit/edit-email.component';
 import { NotificationService } from '../../../shared/notification.service';
-import { EmailSettingDataSource } from './data/email-setting-data.source';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-interest-type-setting',
     templateUrl: './email-setting.component.html',
     styleUrls: ['./email-setting.component.css']
 })
-export class EmailSettingComponent implements OnInit, AfterViewInit {
-    displayedColumns = [
-        'name',
-        'display_name',
-        'actions',
-    ];
-
+export class EmailSettingComponent implements OnInit {
+    form: FormGroup;
+    setting: EmailSettingModel;
+    formErrors: any;
     loader = false;
 
-    dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+    constructor(private fb: FormBuilder, private route: ActivatedRoute,
+                private notification: NotificationService, private emailSettingService: EmailSettingService) {
 
-    // Search field
-    @ViewChild('search', {static: true}) search: ElementRef;
-    // pagination
-    @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-    // Pagination
-    length: number;
-    pageIndex = 0;
-    pageSizeOptions: number[] = [5, 10, 25, 50, 100];
-    meta: any;
-    @ViewChild(MatSort, {static: true}) sort: MatSort;
-
-    // Data for the list table display
-    dataSource: EmailSettingDataSource;
-
-    constructor(private service: EmailSettingService, private notification: NotificationService, private dialog: MatDialog) {
-    }
-
-    /**
-     * Initialize data interestType
-     * Set pagination data values
-     * Initial data load
-     */
-    ngOnInit() {
-
-        this.dataSource = new EmailSettingDataSource(this.service);
-
-        // Load pagination data
-        this.dataSource.meta$.subscribe((res) => this.meta = res);
-
-        // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'name', 'asc');
-
-    }
-
-    /**
-     * Add dialog launch
-     */
-    addDialog() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-
-        const dialogRef = this.dialog.open(AddEmailComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(
-            (val) => {
-                if ((val)) {
-                    this.loadData();
-                }
-            }
-        );
-    }
-
-    /**
-     * Edit dialog launch
-     */
-    editDialog(interestType: EmailSettingModel) {
-
-        const id = interestType.id;
-
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-        dialogConfig.data = {interestType};
-
-        const dialogRef = this.dialog.open(EditEmailComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(
-            (val) => {
-                if ((val)) {
-                    this.loadData();
-                }
-            }
-        );
-    }
-
-    /**
-     * Fetch data from data interestType
-     */
-    loadData() {
-        console.log(this.sort.direction);
-        this.dataSource.load(
-            this.search.nativeElement.value,
-            (this.paginator.pageIndex + 1),
-            (this.paginator.pageSize),
-            this.sort.active,
-            this.sort.direction
-        );
-    }
-
-    /**
-     * Handle search and pagination
-     */
-    ngAfterViewInit() {
-
-        fromEvent(this.search.nativeElement, 'keyup')
-            .pipe(
-                debounceTime(1000),
-                distinctUntilChanged(),
-                tap(() => {
-                    this.paginator.pageIndex = 0;
-                    this.loadData();
-                })
-            ).subscribe();
-
-        this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
-        ).subscribe();
-
-        // reset the paginator after sorting
-        this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.loadData())
-            )
-            .subscribe();
-    }
-
-    /**
-     * Open Edit form
-     * @param interestType
-     */
-    openConfirmationDialog(interestType: EmailSettingModel) {
-
-        this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            disableClose: true
-        });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
-
-        this.dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-                this.delete(interestType);
-            }
-            this.dialogRef = null;
+        this.form = this.fb.group({
+            protocol: ['', [Validators.required,
+                Validators.minLength(2)]],
+            smpt_host: ['', [Validators.required,
+                Validators.minLength(2)]],
+            smpt_username: [''],
+            smpt_password: [''],
+            smpt_port: [''],
+            mail_gun_domain: [''],
+            mandrill_secret: [''],
+            from_name: [''],
+            from_email: ['']
         });
     }
 
+
+    ngOnInit(): void {
+        if (this.route.snapshot.data['setting']) {
+            this.prePopulateForm(this.route.snapshot.data['setting'].data);
+        }
+    }
+
     /**
-     * Remove reinterestType from db
-     * @param interestType
+     *
+     * @param setting
      */
-    delete(interestType: EmailSettingModel) {
+    prePopulateForm(setting: EmailSettingModel) {
+        this.setting = setting;
+
+        this.form.patchValue({
+            protocol: this.setting.protocol,
+            smpt_host: this.setting.smpt_host,
+            smpt_username: this.setting.smpt_username,
+            smpt_password: this.setting.smpt_password,
+            smpt_port: this.setting.smpt_port,
+            mail_gun_domain: this.setting.mail_gun_domain,
+            mandrill_secret: this.setting.mandrill_secret,
+            from_name: this.setting.from_name,
+            from_email: this.setting.from_email
+        });
+    }
+
+    update() {
+        const body = Object.assign({}, this.setting, this.form.value);
+
         this.loader = true;
-        this.service.delete(interestType)
+        this.emailSettingService.update(body)
             .subscribe((data) => {
+                    console.log('Update general Setting: ', data);
                     this.loader = false;
-                    this.loadData();
-                    this.notification.showNotification('success', 'Success !! Source has been deleted.');
+
+                    // notify success
+                    this.notification.showNotification('success', 'Success !! Setting has been updated.');
+
                 },
                 (error) => {
                     this.loader = false;
-                    if (!error.error['error']) {
-                        this.notification.showNotification('danger', 'Connection Error !! Nothing deleted.' +
-                            ' Check Connection and retry. ');
-                    } else {
-                        this.notification.showNotification('danger', 'Delete Error !! ');
+                    console.log('Error at edit payment component: ', error);
+
+                    if (error.payment === 0) {
+                        // notify error
+                        return;
+                    }
+                    // An array of all form errors as returned by server
+                    this.formErrors = error;
+
+                    if (this.formErrors) {
+                        // loop through from fields, If has an error, mark as invalid so mat-error can show
+                        for (const prop in this.formErrors) {
+                            console.log('Hallo: ', prop);
+                            if (this.form) {
+                                this.form.controls[prop].setErrors({incorrect: true});
+                            }
+                        }
                     }
                 });
-    }
-
-    /**
-     * Empty search box
-     */
-    clearSearch() {
-        this.search.nativeElement.value = '';
-        this.loadData()
     }
 }

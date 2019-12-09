@@ -43,3 +43,12 @@ export const branch = createSelector(
         }
     }
 );
+
+export const activeUser = createSelector(
+    selectAuthState,
+    auth => {
+        if (auth.user) {
+            return auth.user.first_name +' '+ auth.user.last_name;
+        }
+    }
+);

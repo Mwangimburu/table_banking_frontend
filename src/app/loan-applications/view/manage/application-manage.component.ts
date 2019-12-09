@@ -13,6 +13,8 @@ import { LoanModel } from '../../../loans/models/loan-model';
 import { LoanService } from '../../../loans/data/loan.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { MemberService } from '../../../members/data/member.service';
+import { UserSettingService } from '../../../settings/user/data/user-setting.service';
 
 
 @Component({
@@ -28,6 +30,7 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
     method: ApplicationManageModel;
 
     loader = false;
+    users: any = [];
 
     loanApplicationData: any;
     loanApplicationId = '';
@@ -49,7 +52,7 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
 
     loan: LoanModel;
 
-    constructor(private fb: FormBuilder, private router: Router,
+    constructor(private fb: FormBuilder, private router: Router, private userService: UserSettingService,
                 private methodService: ApplicationManageService, private loanService: LoanService,
                 private notification: NotificationService, private loanApplicationService: LoanApplicationService) {
 
@@ -72,6 +75,10 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
             2
         );
 
+        this.userService.list(['first_name', 'last_name', 'role_id'])
+            .subscribe((res) => this.users = res,
+                () => this.users = []
+            );
 
         this.form = this.fb.group({
             amount_applied: [{value: this.loanApplicationData.amount_applied, disabled: true}],
@@ -86,12 +93,12 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
             periodic_payments: [this.periodicPayments],
             start_date: [moment(), Validators.required],
             member_id: [{value: this.loanApplicationData.member.first_name, disabled: true}],
+            loan_officer_id: [this.loanApplicationData.loan_officer_id],
             review_notes: [''],
             collateral_check: ['', Validators.required],
             guarantor_check: ['', Validators.required],
 
         });
-
 
         this.loanAmountModelChangeSubscription = this.loanAmountModelChanged
             .pipe(
@@ -183,11 +190,16 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
         body.member_id = this.loanApplicationData.member_id;
         body.interest_rate = this.loanApplicationData.interest_rate;
         body.interest_type_id = this.loanApplicationData.interest_type_id;
-        body.payment_period = this.loanApplicationData.payment_period;
+        body.repayment_period = this.loanApplicationData.repayment_period;
         body.amount_approved = this.form.value.amount_approved;
         body.payment_frequency_id = this.loanApplicationData.payment_frequency_id;
         body.service_fee = this.loanApplicationData.service_fee;
         body.loan_type_id = this.loanApplicationData.loan_type_id;
+
+        body.penalty_type_id = this.loanApplicationData.penalty_type_id;
+        body.penalty_value = this.loanApplicationData.penalty_value;
+        body.penalty_frequency_id = this.loanApplicationData.penalty_frequency_id;
+        body.reduce_principal_early = this.loanApplicationData.reduce_principal_early;
 
         // xxx
         //  body.member_id = this.form.value.amount_disbursed;

@@ -36,7 +36,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         ApplicationSecurityComponent,
         AddApplicationSecurityComponent,
         EditApplicationSecurityComponent,
-        ApplicationManageComponent
+       // ApplicationManageComponent
     ],
     entryComponents: [
         EditLoanApplicationComponent,

@@ -65,7 +65,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'payment_date', 'desc');
+        this.dataSource.load('', 0, 0, 'receipt_number', 'desc');
 
         this.memberService.list(['first_name', 'last_name', 'id_number'])
             .subscribe((res) => this.members = res,

@@ -6,7 +6,7 @@ import { MemberService } from '../../data/member.service';
 import { Observable } from 'rxjs';
 
 @Component({
-    selector: 'app-edit-application-general',
+    selector: 'app-view-member-general',
     templateUrl: './view-member-general.component.html',
     styleUrls: ['./view-member-general.component.css']
 })

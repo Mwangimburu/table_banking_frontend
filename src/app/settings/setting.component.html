@@ -12,8 +12,23 @@
 
                     <div class="col-2">
 
+
                         <ul class="nav flex-column nav-pills">
-                            <li class="nav-item">
+                            <ng-container *ngFor="let menuItem of settingMenuItems">
+                                <li *appHasPermission = menuItem.permission class="nav-item">
+                                    <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: menuItem.activeOption}" class="nav-link" [routerLink]="[menuItem.path]">
+                                        <span class="nav-text"> {{menuItem.title}} </span>
+                                    </a>
+                                </li>
+                            </ng-container>
+                        </ul>
+
+
+
+
+
+                      <!--  <ul class="nav flex-column nav-pills">
+                            <li *appHasPermission = '' class="nav-item">
                                 <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" [routerLink]="['/settings']">
                                     <span class="nav-text"> General </span></a>
                             </li>
@@ -38,31 +53,10 @@
                                     <span class="nav-text"> Communication </span></a>
                             </li>
 
-                            <li class="nav-item">
+                           &lt;!&ndash; <li class="nav-item">
                                 <a routerLinkActive="active" class="nav-link" [routerLink]="['employee']">
                                     <span class="nav-text"> Employees </span></a>
-                            </li>
-
-                          <!--  <li class="nav-item">
-                                <a routerLinkActive="active" class="nav-link" [routerLink]="['currency']">
-                                    <span class="nav-text"> Currency </span></a>
-                            </li>-->
-
-                            <li class="nav-item">
-                                <a routerLinkActive="active" class="nav-link" [routerLink]="['email']">
-                                    <span class="nav-text"> Email </span></a>
-                            </li>
-
-
-                         <!--   <li class="nav-item">
-                                <a routerLinkActive="active" class="nav-link" [routerLink]="['expense']">
-                                    <span class="nav-text"> Expense </span></a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a routerLinkActive="active" class="nav-link" [routerLink]="['invoice']">
-                                    <span class="nav-text"> Invoice </span></a>
-                            </li>-->
+                            </li>&ndash;&gt;
 
                             <li class="nav-item">
                                 <a routerLinkActive="active" class="nav-link" [routerLink]="['expense']">
@@ -79,7 +73,7 @@
                                     <span class="nav-text"> Payments </span></a>
                             </li>
 
-                         <!--   <li class="nav-item">
+                         &lt;!&ndash;   <li class="nav-item">
                                 <a routerLinkActive="active" class="nav-link" [routerLink]="['quote']">
                                     <span class="nav-text"> Quote </span></a>
                             </li>
@@ -92,14 +86,14 @@
                             <li class="nav-item">
                                 <a routerLinkActive="active" class="nav-link" [routerLink]="['ticket']">
                                     <span class="nav-text"> Tickets </span></a>
-                            </li>-->
+                            </li>&ndash;&gt;
 
                             <li class="nav-item">
                                 <a routerLinkActive="active" class="nav-link" [routerLink]="['user']">
                                     <span class="nav-text"> Users & Roles </span></a>
                             </li>
 
-                        </ul>
+                        </ul>-->
 
                     </div>
                     <div class="col-10">

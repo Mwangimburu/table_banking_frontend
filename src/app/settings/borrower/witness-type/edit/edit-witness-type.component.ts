@@ -29,8 +29,9 @@ export class EditWitnessTypeComponent implements OnInit  {
         this.type = row.type;
 
         this.form = fb.group({
-            name: [this.type.name, [Validators.required,
+            name: [{value: this.type.name, disabled: true}, [Validators.required,
                 Validators.minLength(3)]],
+            display_name: [this.type.display_name],
             description: [this.type.description],
         });
     }

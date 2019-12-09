@@ -45,9 +45,13 @@ export class EditUserComponent implements OnInit  {
                 Validators.minLength(3)]],
             first_name: [this.user.first_name, [Validators.required,
                 Validators.minLength(3)]],
-            last_name: [this.user.last_name],
+            middle_name: [this.user.middle_name],
+            last_name: [this.user.last_name, [Validators.required,
+                Validators.minLength(3)]],
             role_id: [this.user.role_id],
+/*
             employee_id: [this.user.employee_id],
+*/
             email: [this.user.email],
             password: [''],
             password_confirmation: [''],

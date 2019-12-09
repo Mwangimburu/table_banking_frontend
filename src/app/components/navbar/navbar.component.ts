@@ -2,6 +2,12 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
+import { Logout } from '../../auth/auth.actions';
+import { AuthenticationService } from '../../auth/authentication.service';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
+import { activeUser } from '../../auth/auth.selectors';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +21,20 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(location: Location,  private element: ElementRef, private router: Router) {
+    loading = false;
+    activeUser: any;
+
+    constructor(private auth: AuthenticationService, location: Location,
+                private element: ElementRef, private router: Router, private store: Store<AppState>) {
       this.location = location;
           this.sidebarVisible = false;
+
+        this.store.pipe(select(activeUser)).subscribe(res => this.activeUser = res);
     }
 
+    /**
+     *
+     */
     ngOnInit() {
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
@@ -34,6 +49,9 @@ export class NavbarComponent implements OnInit {
      });
     }
 
+    /**
+     *
+     */
     sidebarOpen() {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
@@ -46,6 +64,9 @@ export class NavbarComponent implements OnInit {
         this.sidebarVisible = true;
     };
 
+    /**
+     *
+     */
     sidebarClose() {
         const body = document.getElementsByTagName('body')[0];
         this.toggleButton.classList.remove('toggled');
@@ -53,6 +74,9 @@ export class NavbarComponent implements OnInit {
         body.classList.remove('nav-open');
     };
 
+    /**
+     *
+     */
     sidebarToggle() {
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
@@ -111,6 +135,9 @@ export class NavbarComponent implements OnInit {
         }
     };
 
+    /**
+     *
+     */
     getTitle() {
       let title = this.location.prepareExternalUrl(this.location.path());
       if (title.charAt(0) === '#') {
@@ -124,5 +151,30 @@ export class NavbarComponent implements OnInit {
       const menu = title.split('/');
         return menu[1];
       return 'Dashboard';
+    }
+
+    /**
+     *
+     */
+    logout() {
+        this.loading = true;
+        this.auth.logout()
+            .pipe(tap(
+                user => {
+                    this.loading = false;
+                    this.store.dispatch(new Logout());
+                }
+            ))
+            .subscribe(
+                () => {},
+                (error) => {
+                    this.store.dispatch(new Logout());
+                    if (error.error.message) {
+                        //  this.loginError = error.error.message;
+                    } else {
+                        // this.loginError = 'Server Error. Please try again later.';
+                    }
+                    this.loading = false;
+                });
     }
 }

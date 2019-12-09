@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header card-header-danger">
-                <p class="card-category">Loan Setting</p>
+                <p class="card-category">Accounting Setting</p>
             </div>
 
             <div class="card-body">
@@ -12,11 +12,16 @@
                        [routerLink]="['/settings/loan']">
                         <span class="nav-text"> Sources</span></a>-->
 
-                    <a mat-tab-link routerLinkActive #type="routerLinkActive" [active]="type.isActive" [routerLinkActiveOptions]="{exact: true}"
+                 <!--   <a mat-tab-link routerLinkActive #type="routerLinkActive" [active]="type.isActive" [routerLinkActiveOptions]="{exact: true}"
                        [routerLink]="['/settings/account']">
-                        <span class="nav-text"> Fiscal Period</span></a>
+                        <span class="nav-text"> Fiscal Period</span></a>-->
 
-                    <a mat-tab-link routerLinkActive #interest_type="routerLinkActive" [active]="interest_type.isActive" [routerLink]="['capital']">
+                   <!-- <a mat-tab-link routerLinkActive #interest_type="routerLinkActive" [active]="interest_type.isActive"
+                       [routerLink]="['capital']">
+                        <span class="nav-text"> Capital</span></a>-->
+
+                    <a mat-tab-link routerLinkActive #interest_type="routerLinkActive" [active]="interest_type.isActive"
+                       [routerLink]="['/settings/account']">
                         <span class="nav-text"> Capital</span></a>
 
                 </nav>

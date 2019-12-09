@@ -13,6 +13,10 @@ import { ViewLoanGuarantorsComponent } from './view/guarantors/view-loan-guarant
 import { ViewLoanLoanApplicationsComponent } from './view/loan-applications/view-loan-loan-applications.component';
 import { ViewLoanPaymentsComponent } from './view/payments/view-loan-payments.component';
 import { ViewLoanAdjustmentComponent } from './view/adjustment/view-loan-adjustment.component';
+import { InterestTransactionComponent } from './view/payments/transactions/interest-transaction.component';
+import { PrincipalTransactionComponent } from './view/payments/transactions/principal/principal-transaction.component';
+import { PenaltyTransactionComponent } from './view/payments/transactions/penalty/penalty-transaction.component';
+import { PenaltyAdjustmentComponent } from './view/payments/adjustment/penalty/penalty-adjustment.component';
 
 @NgModule({
     imports: [
@@ -30,12 +34,20 @@ import { ViewLoanAdjustmentComponent } from './view/adjustment/view-loan-adjustm
         ViewLoanGuarantorsComponent,
         ViewLoanLoanApplicationsComponent,
         ViewLoanPaymentsComponent,
-        ViewLoanAdjustmentComponent
+        ViewLoanAdjustmentComponent,
+        InterestTransactionComponent,
+        PrincipalTransactionComponent,
+        PenaltyTransactionComponent,
+        PenaltyAdjustmentComponent
     ],
     entryComponents: [
         EditLoanComponent,
         AddLoanComponent,
-        LoanAmortizationComponent
+        LoanAmortizationComponent,
+        InterestTransactionComponent,
+        PrincipalTransactionComponent,
+        PenaltyTransactionComponent,
+        PenaltyAdjustmentComponent
     ]
 })
 

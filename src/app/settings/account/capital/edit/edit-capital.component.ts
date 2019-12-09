@@ -21,6 +21,7 @@ export class EditCapitalComponent implements OnInit  {
     loader = false;
 
     interestTypes: any = [];
+    branches: any = [];
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -28,20 +29,18 @@ export class EditCapitalComponent implements OnInit  {
                 private notification: NotificationService,
     private dialogRef: MatDialogRef<EditCapitalComponent>) {
 
+        this.branches = row.branches;
+
         this.type = row.type;
         this.interestTypes = row.interestTypes;
 
 
         this.form = fb.group({
+            branch_id: ['', [Validators.required,
+                Validators.minLength(2)]],
             name: [this.type.name, [Validators.required,
                 Validators.minLength(3)]],
             description: [this.type.description],
-            max_period_in_months: [this.type.max_period_in_months],
-            interest_rate: [this.type.interest_rate],
-            interest_type_id: [this.type.interest_type_id],
-            service_fee: [this.type.service_fee],
-            other_charges: [this.type.other_charges],
-            active_status: [this.type.active_status]
         });
     }
 

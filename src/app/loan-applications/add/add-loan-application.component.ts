@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { LoanTypeSettingService } from '../../settings/loan/type/data/loan-type-setting.service';
 import { MemberService } from '../../members/data/member.service';
 import * as moment from 'moment';
+import { WitnessTypeSettingService } from '../../settings/borrower/witness-type/data/witness-type-setting.service';
 
 @Component({
     selector: 'app-add-loan-application',
@@ -41,8 +42,12 @@ export class AddLoanApplicationComponent implements OnInit  {
 
     loanTypes: any = [];
     members: any = [];
+    users: any = [];
     accounts: any = [];
     memberAccounts: any = [];
+
+    userPhone = '';
+    lastName = '';
 
     nationalID = '';
 
@@ -51,9 +56,25 @@ export class AddLoanApplicationComponent implements OnInit  {
     interestType = '';
     interestTypeId = '';
     serviceFee: any;
+
+    penaltyTypeId: any;
+    penaltyValue: any;
+    penaltyFrequencyId: any;
+
+    reducePrincipalEarly: boolean;
+
     repaymentPeriod = '';
     repaymentFrequency = '';
     repaymentFrequencyId: any;
+
+    paymentMethods: any;
+    witnessTypes: any;
+
+    fileToUpload: File = null;
+    fileUrl = '';
+
+    applicationFormToUpload: File = null;
+    applicationFormUrl = '';
 
     options: string[] = ['One', 'Two', 'Three', 'Five'];
     filteredOptions: Observable<string[]>;
@@ -62,10 +83,12 @@ export class AddLoanApplicationComponent implements OnInit  {
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
         private fb: FormBuilder, private router: Router, private memberService: MemberService,
-                private loanTypeService: LoanTypeSettingService,
+                private witnessTypeService: WitnessTypeSettingService,
+                private loanTypeService: LoanTypeSettingService, private paymentMethodService: PaymentMethodSettingService,
                 private notification: NotificationService, private loanApplicationService: LoanApplicationService,
                 private memberMethodService: PaymentMethodSettingService, private dialogRef: MatDialogRef<AddLoanApplicationComponent>) {
         this.members = row.members;
+        this.users = row.users;
         this.loanTypes = row.loanTypes;
     }
 
@@ -73,10 +96,14 @@ export class AddLoanApplicationComponent implements OnInit  {
 
         this.firstFormGroup = this.fb.group({
             member_id: ['', Validators.required],
+            loan_officer_id: ['', Validators.required],
             loan_type_id: ['', Validators.required],
 
             account_id: [{value: '', disabled: true}],
             id_number: [{value: '', disabled: true}],
+
+            last_name: [{value: '', disabled: true}],
+            phone: [{value: '', disabled: true}],
 
             interest_rate: [{value: '', disabled: true}],
          //   interest_type: [{value: '', disabled: true}],
@@ -110,6 +137,67 @@ export class AddLoanApplicationComponent implements OnInit  {
             witness_residential_address: ['']
         });
 
+        this.paymentMethodService.list(['name', 'display_name'])
+            .subscribe((res) => this.paymentMethods = res,
+                () => this.paymentMethods = []
+            );
+
+        this.witnessTypeService.list(['name', 'display_name'])
+            .subscribe((res) => this.witnessTypes = res,
+                () => this.witnessTypes = []
+            );
+
+    }
+
+    /**
+     *
+     * @param file
+     */
+    onFileSelect(file: FileList) {
+        if (file.length > 0) {
+            this.fileToUpload = file.item(0);
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                this.fileUrl = event.target.result;
+            };
+            reader.readAsDataURL(this.fileToUpload);
+        }
+    }
+
+    /**
+     *
+     * @param event
+     */
+    fileChange(event) {
+        let fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            let file: File = fileList[0];
+            let formData: FormData = new FormData();
+
+
+        }
+    }
+
+    /**
+     *
+     * @param file
+     */
+    applicationFormUpload(file: FileList) {
+
+        if (file.length > 0) {
+            this.applicationFormToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.applicationFormUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.applicationFormToUpload);
+
+            //    this.form.get('passport_photo').setValue(this.profilePicFileToUpload);
+
+        }
     }
 
     /**
@@ -128,6 +216,20 @@ export class AddLoanApplicationComponent implements OnInit  {
     }
 
     /**
+     * Update supporting fields when LoanOfficer drop down changes content
+     * @param value
+     */
+    onLoanOfficerItemChange(value) {
+        this.lastName = this.users.find((item: any) => item.id === value).last_name;
+        this.userPhone = this.users.find((item: any) => item.id === value).phone;
+
+        this.firstFormGroup.patchValue({
+            last_name: this.lastName,
+            phone: this.userPhone,
+        });
+    }
+
+    /**
      * Update supporting fields when Loan Type drop down changes content
      * @param value
      */
@@ -136,9 +238,16 @@ export class AddLoanApplicationComponent implements OnInit  {
         this.interestType = this.loanTypes.find((item: any) => item.id === value).interest_type.display_name;
         this.interestTypeId = this.loanTypes.find((item: any) => item.id === value).interest_type.id;
         this.serviceFee = this.loanTypes.find((item: any) => item.id === value).service_fee;
+
+        this.penaltyTypeId = this.loanTypes.find((item: any) => item.id === value).penalty_type_id;
+        this.penaltyValue = this.loanTypes.find((item: any) => item.id === value).penalty_value;
+        this.penaltyFrequencyId = this.loanTypes.find((item: any) => item.id === value).penalty_frequency_id;
+
         this.repaymentPeriod = this.loanTypes.find((item: any) => item.id === value).repayment_period;
         this.repaymentFrequency = this.loanTypes.find((item: any) => item.id === value).payment_frequency.display_name;
         this.repaymentFrequencyId = this.loanTypes.find((item: any) => item.id === value).payment_frequency.id;
+
+        this.reducePrincipalEarly = this.loanTypes.find((item: any) => item.id === value).reduce_principal_early;
 
         this.firstFormGroup.patchValue({
             interest_rate: this.interestRate +  ' ( ' + this.interestType + ' )',
@@ -148,7 +257,6 @@ export class AddLoanApplicationComponent implements OnInit  {
         });
 
     }
-
 
 
     save() {
@@ -170,17 +278,33 @@ export class AddLoanApplicationComponent implements OnInit  {
         body.interest_rate = this.interestRate;
         body.interest_type_id = this.interestTypeId;
         body.service_fee = this.serviceFee;
+
+        body.penalty_type_id = this.penaltyTypeId;
+        body.penalty_value = this.penaltyValue;
+        body.penalty_frequency_id = this.penaltyFrequencyId;
+
         body.repayment_period = this.repaymentPeriod;
         body.payment_frequency_id = this.repaymentFrequencyId;
-       // body.periodic_payment_amount = 23000;
+        body.reduce_principal_early = this.reducePrincipalEarly;
+
+        const formData = new FormData();
+        formData.append('loan_application_form', this.applicationFormToUpload);
+
+        for (const key in body) {
+            if (body.hasOwnProperty(key)) {
+                formData.append(key, body[key]);
+            }
+        }
+
+        // body.periodic_payment_amount = 23000;
       //  body.attach_application_form = '';
 
         this.loader = true;
 
-        console.log('Data BODY: ', body);
+        console.log('Data BODY: ', formData);
 
 
-        this.loanApplicationService.create(body)
+        this.loanApplicationService.create(formData)
             .subscribe((res) => {
                     console.log('Create Source: ', res);
                     this.onSaveComplete();

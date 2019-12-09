@@ -12,10 +12,16 @@ export class LoanApplicationModel extends BaseModel {
     rejected_on: string;
 
     member_id: string;
+    loan_officer_id: string;
 
     loan_type_id: string;
     interest_type_id: string;
     service_fee: string;
+
+    penalty_type_id: string;
+    penalty_value: string;
+    penalty_frequency_id: string;
+    reduce_principal_early: string;
 
     application_date: string;
 
@@ -53,4 +59,5 @@ export class LoanApplicationModel extends BaseModel {
     member: {account_id};
     loanType: {};
 
+    loan_application_form: File | null;
 }

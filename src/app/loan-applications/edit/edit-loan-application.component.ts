@@ -37,6 +37,7 @@ export class EditLoanApplicationComponent implements OnInit  {
 
     loanTypes: any = [];
     members: any = [];
+    users: any = [];
     witnessTypes: any = [];
     disburseMethods: any = [];
     accounts: any = [];
@@ -44,12 +45,23 @@ export class EditLoanApplicationComponent implements OnInit  {
 
     nationalID = '';
 
+    userPhone = '';
+    lastName = '';
+
     accountNumber = '';
     interestRate = '';
     interestType = '';
     interestTypeId = '';
     serviceFee: any;
     repaymentPeriod = '';
+
+    penaltyTypeId: any;
+    penaltyValue: any;
+    penaltyFrequencyId: any;
+    reducePrincipalEarly: boolean;
+
+    applicationFormToUpload: File = null;
+    applicationFormUrl = '';
 
     options: string[] = ['One', 'Two', 'Three', 'Five'];
     filteredOptions: Observable<string[]>;
@@ -66,6 +78,7 @@ export class EditLoanApplicationComponent implements OnInit  {
                 private dialogRef: MatDialogRef<EditLoanApplicationComponent>) {
         this.loanApplication = row.loanApplication;
         this.members = row.members;
+        this.users = row.users;
         this.loanTypes = row.loanTypes;
     }
 
@@ -74,9 +87,20 @@ export class EditLoanApplicationComponent implements OnInit  {
         this.nationalID = this.members.find((item: any) => item.id === this.loanApplication.member_id).id_number;
         this.accountNumber = this.members.find((item: any) => item.id === this.loanApplication.member_id).account.account_number;
 
+        this.lastName = this.users.find((item: any) => item.id === this.loanApplication.loan_officer_id).last_name;
+        this.userPhone = this.users.find((item: any) => item.id === this.loanApplication.loan_officer_id).phone;
+
         this.interestRate = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).interest_rate;
         this.interestType = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).interest_type.display_name;
         this.interestTypeId = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).interest_type.id;
+
+        this.penaltyTypeId = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).penalty_type_id;
+        this.penaltyValue = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).penalty_value;
+        this.penaltyFrequencyId = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).penalty_frequency_id;
+
+        this.reducePrincipalEarly = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).reduce_principal_early;
+
+
         this.serviceFee = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).service_fee;
         this.repaymentPeriod = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).repayment_period;
 
@@ -94,18 +118,24 @@ export class EditLoanApplicationComponent implements OnInit  {
         this.firstFormGroup = this.fb.group({
             member_id: [this.loanApplication.member_id, [Validators.required,
                 Validators.minLength(3)]],
+            loan_officer_id: [this.loanApplication.loan_officer_id, [Validators.required,
+                Validators.minLength(3)]],
             loan_type_id: [this.loanApplication.loan_type_id, [Validators.required,
                 Validators.minLength(3)]],
             account_id: [{value: this.accountNumber, disabled: true}],
 
             id_number: [{value: this.nationalID, disabled: true}],
 
+            application_form: [{value: this.loanApplication.attach_application_form, disabled: true}],
+
+            last_name: [{value: this.lastName, disabled: true}],
+            phone: [{value: this.userPhone, disabled: true}],
+
             interest_rate: [{value: this.interestRate, disabled: true}],
             interest_type: [{value: this.interestType, disabled: true}],
             repayment_period: [{value: this.repaymentPeriod, disabled: true}],
 
             payment_frequency: [{value: this.loanApplication.payment_frequency, disabled: true}],
-
 
             application_date: [this.loanApplication.application_date, [Validators.required]],
             amount_applied: [this.loanApplication.amount_applied, [Validators.required]],
@@ -152,6 +182,20 @@ export class EditLoanApplicationComponent implements OnInit  {
     }
 
     /**
+     * Update supporting fields when LoanOfficer drop down changes content
+     * @param value
+     */
+    onLoanOfficerItemChange(value) {
+        this.lastName = this.users.find((item: any) => item.id === value).last_name;
+        this.userPhone = this.users.find((item: any) => item.id === value).phone;
+
+        this.firstFormGroup.patchValue({
+            last_name: this.lastName,
+            phone: this.userPhone,
+        });
+    }
+
+    /**
      * Update supporting fields when Loan Type drop down changes content
      * @param value
      */
@@ -170,12 +214,83 @@ export class EditLoanApplicationComponent implements OnInit  {
 
     /**
      *
+     * @param file
+     */
+    applicationFormUpload(file: FileList) {
+
+        if (file.length > 0) {
+            this.applicationFormToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.applicationFormUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.applicationFormToUpload);
+
+            const formData = new FormData();
+            formData.append('attach_application_form', this.applicationFormToUpload);
+            formData.append('id',  this.loanApplication.id);
+
+            // Upload Form
+            this.updateApplicationForm(formData);
+
+        }
+    }
+
+    /**
+     *
+     * @param formData
+     */
+    private updateApplicationForm(formData: FormData) {
+        // Upload photo
+        this.loanApplicationService.updateApplicationForm(formData)
+            .subscribe((data) => {
+                    this.loader = false;
+                  //  this.getImageFromService();
+                    // notify success
+                    this.notification.showNotification('success', 'Success !! Application Form has been replaced.');
+                },
+                (error) => {
+                    this.loader = false;
+                    this.notification.showNotification('danger', 'Error !! Unable to upload Application Form. File too large?');
+                    console.log('Error at Application Form update: ', error);
+                    if (error.payment === 0) {
+                        // notify error
+                        return;
+                    }
+                    // An array of all form errors as returned by server
+                    this.formErrors = error;
+
+                    if (this.formErrors) {
+                        // loop through from fields, If has an error, mark as invalid so mat-error can show
+                        for (const prop in this.formErrors) {
+                            console.log('Hallo: ', prop);
+                            if (this.form) {
+                                this.form.controls[prop].setErrors({incorrect: true});
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     *
      */
     update() {
         const data = {...this.firstFormGroup.value, ...this.secondFormGroup.value, ...this.thirdFormGroup.value};
         const body = Object.assign({}, this.loanApplication, data);
         body.interest_type_id = this.interestTypeId;
         body.service_fee = this.serviceFee;
+
+        body.penalty_type_id = this.penaltyTypeId;
+        body.penalty_value = this.penaltyValue;
+        body.penalty_frequency_id = this.penaltyFrequencyId;
+
+        body.reduce_principal_early = this.reducePrincipalEarly;
+
+        delete body.attach_application_form;
 
         this.loader = true;
 

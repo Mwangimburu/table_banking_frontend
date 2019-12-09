@@ -13,6 +13,7 @@ import { NotificationService } from '../shared/notification.service';
 import { MemberService } from '../members/data/member.service';
 import { LoanService } from '../loans/data/loan.service';
 import { LoanTypeSettingService } from '../settings/loan/type/data/loan-type-setting.service';
+import { UserSettingService } from '../settings/user/data/user-setting.service';
 
 @Component({
     selector: 'app-loan-applications',
@@ -22,11 +23,11 @@ import { LoanTypeSettingService } from '../settings/loan/type/data/loan-type-set
 export class LoanApplicationComponent implements OnInit, AfterViewInit {
     displayedColumns = [
         'application_date',
+        'loan_officer',
         'amount_applied',
         'member_id',
         'loan_type_id',
         'repayment_period',
-        'status_id',
         'actions',
     ];
 
@@ -53,11 +54,12 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
     selectedRowIndex = '';
 
     members: any = [];
+    users: any = [];
     loanTypes: any = [];
 
     constructor(private service: LoanApplicationService, private notification: NotificationService,
                 private dialog: MatDialog, private membersService: MemberService,
-                private loansService: LoanService, private memberService: MemberService,
+                private loansService: LoanService, private memberService: MemberService, private userService: UserSettingService,
                 private loanTypeService: LoanTypeSettingService) {
     }
 
@@ -81,13 +83,22 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
                 () => this.members = []
             );
 
+        this.userService.list(['first_name', 'last_name', 'role_id'])
+            .subscribe((res) => this.users = res,
+                () => this.users = []
+            );
+
         this.loanTypeService.list([
             'name',
             'interest_rate',
             'service_fee',
             'interest_type_id',
             'payment_frequency_id',
-            'repayment_period'
+            'repayment_period',
+            'penalty_type_id',
+            'penalty_value',
+            'penalty_frequency_id',
+            'reduce_principal_early'
         ])
             .subscribe((res) => this.loanTypes = res,
                 () => this.loanTypes = []
@@ -117,6 +128,7 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
 
         dialogConfig.data = {
             members: this.members,
+            users: this.users,
             loanTypes: this.loanTypes
         };
 
@@ -142,6 +154,7 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
         dialogConfig.data = {loanApplication,
             members: this.members,
+            users: this.users,
             loanTypes: this.loanTypes
         };
 
@@ -165,7 +178,8 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
             (this.paginator.pageIndex + 1),
             (this.paginator.pageSize),
             this.sort.active,
-            this.sort.direction
+            this.sort.direction,
+            'reviewed_on'
         );
     }
 

@@ -10,7 +10,7 @@ export const ROUTES: Routes = [
         children: [
             { path: '', component: LedgerComponent},
               { path: 'journal', component: JournalComponent },
-              { path: 'finances', component: FinanceComponent }
+              { path: 'other_reports', component: FinanceComponent }
         ]
     }
 ];

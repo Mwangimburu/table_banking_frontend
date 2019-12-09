@@ -55,12 +55,6 @@ const routes: Routes = [
       },
       {
         path: 'reports',
-        loadChildren: './reports/report.module#ReportModule',
-        data: { preload: true, delay: true },
-
-      },
-      {
-        path: 'accounts',
         loadChildren: './accounting/accounting.module#AccountingModule',
         data: { preload: true, delay: true },
 
@@ -79,14 +73,20 @@ const routes: Routes = [
       {
         path: 'settings',
         loadChildren: './settings/setting.module#SettingModule',
-        canLoad: [PermGuard],
+       /* canLoad: [PermGuard],
         data: {
-          expectedPermission: ['create-branch'],
+          permissions: ['create-branch'],
           preload: true,
           delay: true
-        }
+        }*/
 
-      }
+      },
+      {
+        path: 'user-profile',
+        loadChildren: './user-profile/user-profile.module#UserProfileModule',
+        data: { preload: true, delay: true },
+
+      },
     ]
   }
 ];

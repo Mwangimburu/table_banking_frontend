@@ -18,7 +18,6 @@ import { CollateralModel } from '../../../collateral/models/collateral-model';
 })
 export class ApplicationSecurityComponent implements OnInit, AfterViewInit {
     collateralColumns = [
-        'asset_number',
         'title',
         'valuation_date',
         'valuation_amount',

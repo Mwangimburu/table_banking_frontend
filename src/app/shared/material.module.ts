@@ -36,6 +36,7 @@ import {
 } from '@angular/material';
 import { DeleteModule } from './delete/delete.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { HasPermissionDirective } from './directives/has-permission-directive';
 
 @NgModule({
     imports: [
@@ -111,9 +112,10 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         MatTooltipModule,
         MatStepperModule,
         DeleteModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        HasPermissionDirective
     ],
-    declarations: [],
+    declarations: [HasPermissionDirective],
     entryComponents: [],
 })
 

@@ -11,6 +11,11 @@
         <mat-error align="start" *ngIf="formErrors?.name" class="form__error">{{ formErrors.name }}</mat-error>
     </mat-form-field>
 
+    <mat-form-field class="full-width">
+        <input matInput formControlName="display_name" placeholder="Display Name">
+        <mat-error align="start" *ngIf="formErrors?.display_name" class="form__error">{{ formErrors.display_name }}</mat-error>
+    </mat-form-field>
+
     <mat-form-field class="full-width"  color="accent">
         <textarea  formControlName="description" matInput #description placeholder="Description" maxlength="150" rows="5"></textarea>
         <mat-hint align="end">{{description.value.length}} / 150</mat-hint>

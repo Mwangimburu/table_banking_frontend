@@ -10,6 +10,8 @@ import { CapitalSettingModel } from './model/capital-setting.model';
 import { EditCapitalComponent } from './edit/edit-capital.component';
 import { NotificationService } from '../../../shared/notification.service';
 import { PeriodSettingService } from '../period/data/period-setting.service';
+import { MemberService } from '../../../members/data/member.service';
+import { BranchService } from '../../branch/general/data/branch.service';
 
 @Component({
     selector: 'app-capital-setting',
@@ -18,11 +20,9 @@ import { PeriodSettingService } from '../period/data/period-setting.service';
 })
 export class CapitalSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'name',
-        'interest_rate',
-        'interest_type_id',
-        'max_period_in_months',
-        'actions',
+        'branch_id',
+        'amount',
+        'description'
     ];
 
     loader = false;
@@ -44,9 +44,11 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
     dataSource: CapitalSettingDataSource;
 
     interestTypes: any = [];
+    branches: any = [];
+
 
     constructor(private service: CapitalSettingService, private interestTypeService: PeriodSettingService,
-                private notification: NotificationService, private dialog: MatDialog) {
+                private notification: NotificationService, private dialog: MatDialog, private branchService: BranchService) {
     }
 
     /**
@@ -62,13 +64,12 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'name', 'asc');
+        this.dataSource.load('', 0, 0, 'amount', 'asc');
 
-        this.interestTypeService.list(['name', 'display_name'])
-            .subscribe((res) => this.interestTypes = res,
-                () => this.interestTypes = []
+        this.branchService.list('name')
+            .subscribe((res) => this.branches = res,
+                () => this.branches = []
             );
-
     }
 
     /**
@@ -80,7 +81,7 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
 
         dialogConfig.data = {
-            interestTypes: this.interestTypes
+            branches: this.branches
         };
 
         const dialogRef = this.dialog.open(AddCapitalComponent, dialogConfig);
@@ -103,9 +104,8 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-
-        dialogConfig.data = {type,
-            interestTypes: this.interestTypes
+        dialogConfig.data = {
+            branches: this.branches
         };
 
         const dialogRef = this.dialog.open(EditCapitalComponent, dialogConfig);
@@ -193,7 +193,7 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Type has been deleted.');
+                    this.notification.showNotification('success', 'Success !! Capital has been deleted.');
                 },
                 (error) => {
                     this.loader = false;

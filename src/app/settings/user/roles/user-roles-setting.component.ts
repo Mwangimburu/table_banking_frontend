@@ -70,11 +70,11 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
         this.dataSource.load('', 0, 0, 'name', 'asc');
 
         // Fetch all permissions
-        this.permissionService.list('name')
+        this.permissionService.list(['name', 'display_name'])
             .subscribe((res) => {
                     this.allPermissions = res;
                     this.allPermissionsOptions = this.allPermissions.map(
-                        x => new CheckboxItem(x.id, x.name));
+                        x => new CheckboxItem(x.id, x.display_name));
                       /*console.log(res[0].name);
                       console.log(res[0].id);*/
 

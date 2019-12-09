@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 import { EmailSettingRoutingModule } from './email-setting-routing.module';
 import { MaterialModule } from '../../../shared/material.module';
 import { EmailSettingComponent } from './email-setting.component';
-import { AddEmailComponent } from './add/add-email.component';
-import { EditEmailComponent } from './edit/edit-email.component';
 
 @NgModule({
     imports: [
@@ -12,13 +10,9 @@ import { EditEmailComponent } from './edit/edit-email.component';
         EmailSettingRoutingModule,
     ],
     declarations: [
-        EmailSettingComponent,
-        AddEmailComponent,
-        EditEmailComponent
+        EmailSettingComponent
     ],
     entryComponents: [
-        AddEmailComponent,
-        EditEmailComponent
     ]
 })
 

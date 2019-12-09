@@ -10,6 +10,16 @@ import { GeneralSettingService } from '../settings/general/data/general-setting.
 })
 export class DashboardComponent implements OnInit {
 
+    loansDueColumns = [
+        'loan_officer',
+        'member_first_name',
+        'member_last_name',
+        'member_phone',
+        'loan_reference_number',
+        'loan_type_name',
+        'totalDue'
+    ];
+
     paymentColumns = [
         'member_id',
         'amount',
@@ -29,11 +39,23 @@ export class DashboardComponent implements OnInit {
     activeLoans: any;
     activeMembers: any;
     loansSum: any;
+    totalOverDue: any;
     countLoanApplications: any;
     applicationsSum: any;
 
     latestPaymentsDataSource: any;
     loanApplicationsDataSource: any;
+    loansDueTodayDataSource: any;
+    loansOverDueDataSource: any;
+
+    count_branches: any;
+    current_branch: any;
+    count_users: any;
+    count_members: any;
+    count_loans: any;
+    count_loans_over_due: any;
+    count_loans_due_today: any;
+    count_loan_applications: any;
 
   constructor(private route: ActivatedRoute) {
       if (this.route.snapshot.data['summary']) {
@@ -101,14 +123,27 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
       if (this.data !== null) {
+          this.current_branch = this.data.current_branch;
+          this.count_branches = this.data.count_branches;
+          this.count_users = this.data.count_users;
+          this.count_members = this.data.count_members;
+          this.count_loans = this.data.count_loans;
+          this.count_loans_over_due = this.data.count_loans_over_due;
+          this.count_loans_due_today = this.data.count_loans_due_today;
+          this.count_loan_applications = this.data.count_loan_applications;
+
+
           this.activeLoans = this.data.count_loans;
           this.activeMembers = this.data.count_members;
           this.loansSum = this.data.loans_sum;
+          this.totalOverDue = this.data.total_amount_over_due;
 
           this.countLoanApplications = this.data.count_pending_applications;
           this.applicationsSum = this.data.applications_sum;
           this.latestPaymentsDataSource = this.data.latest_payments;
           this.loanApplicationsDataSource = this.data.pending_applications;
+          this.loansDueTodayDataSource = this.data.loans_due_today;
+          this.loansOverDueDataSource = this.data.loans_over_due;
       }
 
    //   console.log(this.route.snapshot.data['summary']);
@@ -133,7 +168,7 @@ export class DashboardComponent implements OnInit {
 
       var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-      this.startAnimationForLineChart(dailySalesChart);
+     // this.startAnimationForLineChart(dailySalesChart);
 
 
       /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
@@ -157,7 +192,7 @@ export class DashboardComponent implements OnInit {
       var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
 
       // start animation for the Completed Tasks Chart - Line Chart
-      this.startAnimationForLineChart(completedTasksChart);
+     // this.startAnimationForLineChart(completedTasksChart);
 
 
 
@@ -191,7 +226,7 @@ export class DashboardComponent implements OnInit {
       var websiteViewsChart = new Chartist.Bar('#websiteViewsChart', datawebsiteViewsChart, optionswebsiteViewsChart, responsiveOptions);
 
       //start animation for the Emails Subscription Chart
-      this.startAnimationForBarChart(websiteViewsChart);
+    //  this.startAnimationForBarChart(websiteViewsChart);
   }
 
 }

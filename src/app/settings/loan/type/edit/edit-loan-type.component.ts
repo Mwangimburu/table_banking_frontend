@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoanTypeSettingModel } from '../model/loan-type-setting.model';
 import { LoanTypeSettingService } from '../data/loan-type-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
+import { PenaltyTypeSettingService } from '../../penalty/data/penalty-type-setting.service';
+import { PenaltyFrequencySettingService } from '../../penalty/data/penalty-frequency-setting.service';
 
 @Component({
     selector: 'app-edit-tax-type',
@@ -23,6 +25,9 @@ export class EditLoanTypeComponent implements OnInit  {
     interestTypes: any = [];
     paymentFrequencies: any = [];
 
+    penaltyTypes: any = [];
+    penaltyFrequencies: any = [];
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private typeService: LoanTypeSettingService,
@@ -32,7 +37,8 @@ export class EditLoanTypeComponent implements OnInit  {
         this.type = row.type;
         this.interestTypes = row.interestTypes;
         this.paymentFrequencies = row.paymentFrequencies;
-
+        this.penaltyTypes = row.penaltyTypes;
+        this.penaltyFrequencies = row.penaltyFrequencies;
 
         this.form = fb.group({
             name: [this.type.name, [Validators.required,
@@ -43,7 +49,11 @@ export class EditLoanTypeComponent implements OnInit  {
             interest_type_id: [this.type.interest_type_id],
             service_fee: [this.type.service_fee],
             payment_frequency_id: [this.type.payment_frequency_id],
-            active_status: [this.type.active_status]
+            active_status: [this.type.active_status],
+            penalty_type_id: [this.type.penalty_type_id],
+            penalty_value: [this.type.penalty_value],
+            penalty_frequency_id: [this.type.penalty_frequency_id],
+            reduce_principal_early: [this.type.reduce_principal_early]
         });
     }
 

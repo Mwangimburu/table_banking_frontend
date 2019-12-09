@@ -9,7 +9,7 @@ import { MemberService } from '../../data/member.service';
 import { PaymentModel } from '../../../payments/models/payment-model';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-member-payment',
     templateUrl: './member-payment.component.html',
     styleUrls: ['./member-payment.component.css']
 })

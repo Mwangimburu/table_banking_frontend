@@ -10,4 +10,11 @@ export class LoanTypeSettingModel extends BaseModel {
     payment_frequency_id: string;
     repayment_period: string;
     paymentFrequency: {};
+
+    penalty_type_id: string;
+    penalty_value: string;
+    penalty_frequency_id: string;
+
+    reduce_principal_early: string;
+
 }

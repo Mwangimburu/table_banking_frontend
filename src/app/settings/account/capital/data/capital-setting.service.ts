@@ -6,6 +6,6 @@ import { BaseService } from '../../../../shared/base-service';
 @Injectable({ providedIn: 'root' })
 export class CapitalSettingService extends BaseService<CapitalSettingModel> {
     constructor(httpClient: HttpClient) {
-        super( httpClient, 'loan_types');
+        super( httpClient, 'capitals');
     }
 }

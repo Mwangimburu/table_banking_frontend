@@ -32,6 +32,7 @@ import { MaterialModule } from './shared/material.module';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { AppPreloadingStrategy } from './app-preloading-strategy';
+import { HasPermissionDirective } from './shared/directives/has-permission-directive';
 
 @NgModule({
   imports: [
@@ -49,8 +50,7 @@ import { AppPreloadingStrategy } from './app-preloading-strategy';
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
-
+    AdminLayoutComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

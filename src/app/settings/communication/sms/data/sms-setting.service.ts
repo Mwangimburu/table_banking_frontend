@@ -6,6 +6,6 @@ import { BaseService } from '../../../../shared/base-service';
 @Injectable({ providedIn: 'root' })
 export class SmsSettingService extends BaseService<SmsSettingModel> {
     constructor(httpClient: HttpClient) {
-        super( httpClient, 'loan_types');
+        super( httpClient, 'email_settings');
     }
 }

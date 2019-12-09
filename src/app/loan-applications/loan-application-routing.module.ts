@@ -8,6 +8,7 @@ import { ApplicationGuarantorComponent } from './view/guarantor/application-guar
 import { ApplicationSecurityComponent } from './view/securitty/application-security.component';
 import { ApplicationManageComponent } from './view/manage/application-manage.component';
 import { LoanApplicationResolverService } from './data/loan-application-resolver.service';
+import { PermissionGuardService as PermGuard } from '../auth/permission-guard-service';
 
 export const ROUTES: Routes = [
     { path: '', component: LoanApplicationComponent },
@@ -24,7 +25,16 @@ export const ROUTES: Routes = [
             { path: 'guarantors', component: ApplicationGuarantorComponent },
 
             { path: 'collateral', component: ApplicationSecurityComponent },
-            { path: 'management', component: ApplicationManageComponent },
+            {
+                path: 'management',
+                loadChildren: 'app/loan-applications/view/manage/application-manage.module#ApplicationManageModule',
+                canLoad: [PermGuard],
+                data: {
+                    permissions: ['loan-application-review'],
+                    preload: true,
+                    delay: true
+                }
+           },
         ]
     },
 

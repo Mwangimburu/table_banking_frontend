@@ -42,9 +42,11 @@ export class AddUserComponent implements OnInit  {
                 Validators.minLength(3)]],
             first_name: ['', [Validators.required,
                 Validators.minLength(3)]],
-            last_name: [''],
+            middle_name: [''],
+            last_name: ['', [Validators.required,
+                Validators.minLength(3)]],
             role_id: [''],
-            employee_id: [''],
+           /* employee_id: [''],*/
             email: [''],
             password: [''],
             password_confirmation: [''],

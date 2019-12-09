@@ -22,16 +22,21 @@
 
                         <div class="table-responsive">
 
-                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="amount_approved" matSortDirection="desc" matSortDisableClear>
+                            <mat-table #table [dataSource]="dataSource" matSort matSortActive="loan_reference_number" matSortDirection="desc" matSortDisableClear>
 
-                                <ng-container matColumnDef="member_id">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.member?.first_name}} </mat-cell>
+                                <ng-container matColumnDef="loan_officer">
+                                    <mat-header-cell *matHeaderCellDef> Officer </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.loanOfficer?.first_name}} ({{row.loanOfficer?.role?.display_name}})</mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="loan_reference_number">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Ref Number </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.loan_reference_number}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="member_id">
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.member?.first_name}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="amount_approved">
@@ -44,18 +49,13 @@
                                     <mat-cell *matCellDef="let row"> {{row.loanType?.name}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="repayment_period">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Period </mat-header-cell>
-                                    <mat-cell *matCellDef="let row"> {{row.repayment_period}} </mat-cell>
-                                </ng-container>
-
                                 <ng-container matColumnDef="balance">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Balance </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.balance}} </mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="next_repayment_date">
-                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Next Cycle Due </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef mat-sort-header> Next Cycle </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.next_repayment_date}} </mat-cell>
                                 </ng-container>
 

@@ -1,13 +1,27 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ApplicationGuarantorService } from '../../../members/view/payment/data/application-guarantor.service';
 import { NotificationService } from '../../../shared/notification.service';
-import { MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatPaginator, MatSort } from '@angular/material';
 import { LoanService } from '../../data/loan.service';
 import { TransactionDataSource } from '../../../transactions/data/transaction-data.source';
 import { PaymentModel } from '../../../payments/models/payment-model';
 import { TransactionService } from '../../../transactions/data/transaction.service';
 import { tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
+import { LoanPenaltyDataSource } from '../../data/penalty/loan-penalty-data.source';
+import { LoanPenaltyService } from '../../data/penalty/loan-penalty.service';
+import { LoanInterestDataSource } from '../../data/interest/loan-interest-data.source';
+import { LoanPrincipalDataSource } from '../../data/principal/loan-principal-data.source';
+import { LoanInterestService } from '../../data/interest/loan-interest.service';
+import { LoanPrincipalService } from '../../data/principal/loan-principal.service';
+import { PaymentDetailComponent } from '../../../payments/details/payment-detail.component';
+import { LoanInterestModel } from '../../data/interest/loan-interest-model';
+import { InterestTransactionComponent } from './transactions/interest-transaction.component';
+import { LoanPrincipalModel } from '../../data/principal/loan-principal-model';
+import { LoanPenaltyModel } from '../../data/penalty/loan-penalty-model';
+import { PrincipalTransactionComponent } from './transactions/principal/principal-transaction.component';
+import { PenaltyTransactionComponent } from './transactions/penalty/penalty-transaction.component';
+import { PenaltyAdjustmentComponent } from './adjustment/penalty/penalty-adjustment.component';
 
 @Component({
     selector: 'app-application-guarantor',
@@ -16,13 +30,34 @@ import { merge } from 'rxjs';
 })
 export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
 
-    transactionColumns = [
+    penaltiesColumns = [
         'loan_id',
-        'payment_id',
         'amount',
-        'transaction_date',
-        'transaction_type'
+        'balance',
+        'due_date',
+        'actions'
     ];
+
+    interestColumns = [
+        'loan_id',
+        'amount',
+        'balance',
+        'due_date',
+        'actions'
+    ];
+
+    principalColumns = [
+        'loan_id',
+        'amount',
+        'balance',
+        'due_date',
+        'actions'
+    ];
+
+    penaltiesDataSource: LoanPenaltyDataSource;
+    interestDataSource: LoanInterestDataSource;
+    principalDataSource: LoanPrincipalDataSource;
+
 
     // Data for the list table display
     transactionDataSource: TransactionDataSource;
@@ -34,6 +69,10 @@ export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
     pageIndex = 0;
     pageSizeOptions: number[] = [5, 10, 25, 50, 100];
     meta: any;
+
+    penaltyMeta: any;
+    interestMeta: any;
+    principalMeta: any;
     @ViewChild(MatSort, {static: true}) sort: MatSort;
 
     payment: PaymentModel;
@@ -44,7 +83,8 @@ export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
     loanData$: any;
 
     constructor(private service: ApplicationGuarantorService,  private transactionService: TransactionService,
-                private notification: NotificationService,
+                private notification: NotificationService, private penaltyService: LoanPenaltyService,
+                private interestService: LoanInterestService, private principalService: LoanPrincipalService,
                 private dialog: MatDialog, private loanService: LoanService) {}
 
     ngOnInit() {
@@ -58,11 +98,20 @@ export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.transactionDataSource = new TransactionDataSource(this.transactionService);
-        // Load pagination data
-        this.transactionDataSource.meta$.subscribe((res) => this.meta = res);
-        // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.transactionDataSource.load('', 0, 0, 'amount', 'desc', 'loan_id', this.loanId);
+        // Penalties
+        this.penaltiesDataSource = new LoanPenaltyDataSource(this.penaltyService);
+        this.penaltiesDataSource.meta$.subscribe((res) => this.penaltyMeta = res);
+        this.penaltiesDataSource.load('', 0, 0, 'due_date', 'desc', 'loan_id', this.loanId);
+
+        // Interest
+        this.interestDataSource = new LoanInterestDataSource(this.interestService);
+        this.interestDataSource.meta$.subscribe((res) => this.interestMeta = res);
+        this.interestDataSource.load('', 0, 0, 'due_date', 'desc', 'loan_id', this.loanId);
+
+        // Principal
+        this.principalDataSource = new LoanPrincipalDataSource(this.principalService);
+        this.principalDataSource.meta$.subscribe((res) => this.principalMeta = res);
+        this.principalDataSource.load('', 0, 0, 'due_date', 'desc', 'loan_id', this.loanId);
     }
 
     /**
@@ -98,6 +147,94 @@ export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
                 tap(() => this.loadData())
             )
             .subscribe();
+    }
+
+    /**
+     *
+     * @param data
+     */
+    principalTransactionDetails(data: LoanPrincipalModel) {
+        const id = data.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {data};
+
+        const dialogRef = this.dialog.open(PrincipalTransactionComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    //  this.loadData();
+                }
+            }
+        );
+    }
+
+    /**
+     *
+     * @param data
+     */
+    interestTransactionDetails(data: LoanInterestModel) {
+        const id = data.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {data};
+
+        const dialogRef = this.dialog.open(InterestTransactionComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    //  this.loadData();
+                }
+            }
+        );
+    }
+
+    /**
+     *
+     * @param data
+     */
+    penaltyTransactionDetails(data: LoanPenaltyModel) {
+        const id = data.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {data};
+
+        const dialogRef = this.dialog.open(PenaltyTransactionComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    //  this.loadData();
+                }
+            }
+        );
+    }
+
+    /**
+     *
+     * @param data
+     */
+    penaltyAdjustment(data: LoanPenaltyModel) {
+        const id = data.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.data = {data};
+
+        const dialogRef = this.dialog.open(PenaltyAdjustmentComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    //  this.loadData();
+                }
+            }
+        );
     }
 
 }

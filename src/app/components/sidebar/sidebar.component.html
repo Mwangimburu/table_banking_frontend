@@ -1,21 +1,35 @@
 <div class="logo">
-    <a href="#" class="simple-text">
+<!--    <a href="#" class="simple-text">
         <div class="logo-img">
             <img src="/assets/img/angular2-logo-red.png"/>
         </div>
-        <!--{{businessName}}-->
-   <!-- {{((currentSettings$|async)|json)?.business_name}}
+        &lt;!&ndash;{{businessName}}&ndash;&gt;
+   &lt;!&ndash; {{((currentSettings$|async)|json)?.business_name}}
 
    {{businessName}}
-        {{((currentSettings$|async)|json)?.business_name}}-->
+        {{((currentSettings$|async)|json)?.business_name}}&ndash;&gt;
 
         {{(currentSettings$|async)?.business_name}}
 
-    </a>
+    </a>-->
+
+    <figure class="item simple-text">
+       <!-- <img src=""/>-->
+        <figcaption class="caption"> {{(currentSettings$|async)?.business_name}}</figcaption>
+        <div class="card-avatar active-user">
+          <!--  <img class="img" src="./assets/img/faces/marc.jpg" />
+            Devtest
+            <span>Logout</span>-->
+            <!--<img class="img" [src]="showPhoto | async" alt="Profile Photo">-->
+        </div>
+    </figure>
 </div>
+
+
+
 <div class="sidebar-wrapper">
-  <div *ngIf="isMobileMenu()">
-    <form class="navbar-form">
+<!--  <div *ngIf="isMobileMenu()">
+ &lt;!&ndash;   <form class="navbar-form">
       <span class="bmd-form-group">
         <div class="input-group no-border">
           <input type="text" value="" class="form-control" placeholder="Search...">
@@ -25,17 +39,17 @@
           </button>
         </div>
       </span>
-    </form>
+    </form>&ndash;&gt;
     <ul class="nav navbar-nav nav-mobile-menu">
-        <li class="nav-item">
+     &lt;!&ndash;   <li class="nav-item">
             <a class="nav-link" href="#pablo">
                 <i class="material-icons">dashboard</i>
                 <p>
                     <span class="d-lg-none d-md-block">Stats</span>
                 </p>
             </a>
-        </li>
-        <li class="nav-item dropdown">
+        </li>&ndash;&gt;
+      &lt;!&ndash;  <li class="nav-item dropdown">
             <a class="nav-link" href="#pablo" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="material-icons">notifications</i>
                 <span class="notification">5</span>
@@ -50,26 +64,34 @@
                 <a class="dropdown-item" href="#">Another Notification</a>
                 <a class="dropdown-item" href="#">Another One</a>
             </div>
-        </li>
-        <li class="nav-item">
+        </li>&ndash;&gt;
+     &lt;!&ndash;   <li class="nav-item">
             <a class="nav-link" href="#pablo">
                 <i class="material-icons">person</i>
                 <p>
                     <span class="d-lg-none d-md-block">Account</span>
                 </p>
             </a>
-        </li>
+        </li>&ndash;&gt;
     </ul>
-  </div>
+  </div>-->
     <ul class="nav">
-        <ng-container *ngFor="let menuItem of menuItems">
-            <li routerLinkActive="active" *appHasPermission = menuItem.permission class="{{menuItem.class}} nav-item">
-                <a class="nav-link" [routerLink]="[menuItem.path]">
-                    <i class="material-icons">{{menuItem.icon}}</i>
-                    <p>{{menuItem.title}}</p>
-                </a>
-            </li>
-        </ng-container>
+            <ng-container *ngFor="let menuItem of menuItems">
+                <li routerLinkActive="active" *appHasPermission = menuItem.permission class="{{menuItem.class}} nav-item">
+                    <a class="nav-link" [routerLink]="[menuItem.path]">
+                        <i class="material-icons">{{menuItem.icon}}</i>
+                        <p>{{menuItem.title}}</p>
+                    </a>
+                </li>
+            </ng-container>
+
+        <li routerLinkActive="active" class="nav-item pointer" (click)="logout()">
+            <a class="nav-link">
+                <i class="material-icons">power_settings_new</i>
+                <p *ngIf="!loading">Logout</p>
+                <p *ngIf="loading">clean up ...</p>
+            </a>
+        </li>
 
        <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
             <a class="nav-link" [routerLink]="[menuItem.path]">
@@ -78,12 +100,6 @@
             </a>
         </li>-->
 
-        <li routerLinkActive="active" class="nav-item pointer" (click)="logout()">
-            <a class="nav-link">
-            <i class="material-icons">power_settings_new</i>
-            <p *ngIf="!loading">Logout</p>
-            <p *ngIf="loading">clean up ...</p>
-            </a>
-        </li>
+
     </ul>
 </div>

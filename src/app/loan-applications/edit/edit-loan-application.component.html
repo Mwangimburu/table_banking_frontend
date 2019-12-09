@@ -146,6 +146,52 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-4">
+
+                        <mat-form-field class="full-width" color="primary">
+                            <mat-select placeholder="Loan Officer*" formControlName="loan_officer_id" #loanOfficerSelect (selectionChange)="onLoanOfficerItemChange(loanOfficerSelect.value)">
+                                <mat-option *ngFor="let user of users" [value]="user.id">
+                                    {{user.first_name}} ( {{user.role.display_name}} )
+                                </mat-option>
+                            </mat-select>
+                            <mat-error align="start" *ngIf="formErrors?.loan_officer_id" class="form__error">{{ formErrors.loan_officer_id }}</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-4">
+
+                        <mat-form-field class="full-width">
+                            <input matInput formControlName="last_name" placeholder="Last Name">
+                            <mat-error align="start" *ngIf="formErrors?.last_name" class="form__error">{{ formErrors.last_name }}</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                    <div class="col-4">
+
+                        <mat-form-field class="full-width">
+                            <input matInput formControlName="phone" placeholder="Loan Officer Phone">
+                            <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <mat-form-field class="full-width"  color="accent">
+                            <textarea  formControlName="application_form" matInput placeholder="Loan Application Form" maxlength="150" rows="3"></textarea>
+                            <mat-error align="start" *ngIf="formErrors?.application_form" class="form__error">{{ formErrors.application_form }}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Change Application Form</label>
+                        <input type="file" (change)="applicationFormUpload($event.target.files)" placeholder="" accept=".pdf,.doc,.docx">
+                    </div>
+                </div>
+
 
                 <div>
                     <button mat-button matStepperNext type="button">Next</button>

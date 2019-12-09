@@ -8,49 +8,86 @@
 
                 <form [formGroup] = "form" (ngSubmit)="onSubmit()">
                     <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Business Name" formControlName="business_name">
-                            </mat-form-field>
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="full-width" color="accent">
+                                        <input matInput placeholder="Business Name" formControlName="business_name">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="full-width" color="accent">
+                                        <input matInput placeholder="Business Type" formControlName="business_type">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="full-width" color="accent">
+                                        <input matInput placeholder="Contact Email" formControlName="email">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-form-field class="full-width" color="accent">
+                                        <input matInput placeholder="Phone" formControlName="phone">
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Business Type" formControlName="business_type">
-                            </mat-form-field>
-                        </div>
-                    </div>
+                        <div class="col-md-5">
+                    <!--        <div class="card card-profile">
+                                <div class="card-avatar" *ngIf="showPhoto">
+                                    <img class="img" [src]="showPhoto | async" alt="Logo">
+                                </div>
+                                <div class="card-body">
+                                    <div>
+                                        <input type="file" #logoFileInput style="display: none" accept="image/*" (change)="onProfilePhotoSelect($event.target.files)">
+                                        <button mat-button class="mat-raised-button" (click)="logoFileInput.click()">
+                                            <i class="material-icons">attachment</i>
+                                            Logo</button>
+                                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Contact Email" formControlName="email">
-                            </mat-form-field>
-                        </div>
-                    </div>
+                                </div>
+                            </div>-->
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="First Name" formControlName="contact_first_name">
-                            </mat-form-field>
-                        </div>
-                    </div>
+                            <div class="logo centerTop">
+                                <figure class="item simple-text" *ngIf="showPhoto">
+                                    <img class="img" [src]="showPhoto | async" alt="Logo">
+                                </figure>
+                                <div>
+                                    <input type="file" #logoFileInput style="display: none" accept="image/*" (change)="onProfilePhotoSelect($event.target.files)">
+                                    <button mat-button class="mat-raised-button" (click)="logoFileInput.click()">
+                                        <i class="material-icons">attachment</i>
+                                        Logo</button>
+                                </div>
+                            </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Last Name" formControlName="contact_last_name">
-                            </mat-form-field>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Phone" formControlName="phone">
-                            </mat-form-field>
+
+
+                            <!--       <div class="row">
+                                       <div class="col-md-4">
+                                           <div class="col-md-12" *ngIf="logoUrl">
+                                               <img [src]="logoUrl" style="width: 150px; height: 150px;">
+                                           </div>
+                                           <div *ngIf="showLogo">
+                                               <img [src]="showLogo" alt="Company Logo" style="width: 150px; height: 150px;">
+                                           </div>
+                                       </div>
+                                       <div class="col-md-4">
+                                           <input type="file" #logoFileInput style="display: none" accept="image/*"
+                                                  (change)="onLogoSelect($event.target.files)">
+                                           <button mat-button class="mat-raised-button" (click)="logoFileInput.click()">
+                                               <i class="material-icons">attachment</i>Logo</button>
+                                       </div>
+                                   </div>-->
+
+
+
                         </div>
                     </div>
 
@@ -107,30 +144,14 @@
                     <div class="row">
                         <div class="col-md-12">
                             <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Kra Pin" formControlName="kra_pin">
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Logo" formControlName="logo">
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <mat-form-field class="full-width" color="accent">
-                                <input matInput placeholder="Favicon" formControlName="favicon">
+                                <input matInput placeholder="ZIP/Postal Code" formControlName="postal_code">
                             </mat-form-field>
                         </div>
                     </div>
 
                     <div class="divider divider-md"></div>
 
-                    <div class="additional-info">
+                    <div class="additional-info" align="center">
                         <button class="mat-raised-button mat-primary" (click)="update()" [disabled]="!form.valid">Update</button>
                     </div>
 

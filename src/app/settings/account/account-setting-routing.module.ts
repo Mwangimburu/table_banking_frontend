@@ -10,6 +10,10 @@ export const ROUTES: Routes = [
                 path: '',
                 loadChildren: 'app/settings/account/source/loan-source-setting.module#LoanSourceSettingModule'
             },*/
+          /*  {
+                path: '',
+                loadChildren: 'app/settings/account/capital/capital-setting.module#CapitalSettingModule'
+            },*/
             {
                 path: '',
                 loadChildren: 'app/settings/account/capital/capital-setting.module#CapitalSettingModule'

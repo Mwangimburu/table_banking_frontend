@@ -88,6 +88,21 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <div class="col-6"></div>
+                                    <div class="col-6">
+                                        <div class="d-flex spinner-container" *ngIf="loader">
+                                            <mat-spinner [diameter]="40"></mat-spinner>
+                                        </div>
+
+                                        <button mat-raised-button *ngIf="!loader" (click)="downloadForm()">
+                                            <i class="material-icons">
+                                                cloud_download
+                                            </i> Loan Application Form
+                                        </button>
+                                    </div>
+                                </div>
+
                                 <mat-action-row>
                                     <button mat-button color="primary" (click)="nextStep()">Next</button>
                                 </mat-action-row>

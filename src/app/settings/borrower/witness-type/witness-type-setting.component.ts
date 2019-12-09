@@ -18,7 +18,7 @@ import { NotificationService } from '../../../shared/notification.service';
 export class WitnessTypeSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
         'name',
-        'description',
+        'display_name',
         'actions',
     ];
 

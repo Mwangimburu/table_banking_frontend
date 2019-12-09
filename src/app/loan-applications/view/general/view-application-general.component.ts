@@ -4,6 +4,7 @@ import { NotificationService } from '../../../shared/notification.service';
 import { MatDialog } from '@angular/material';
 import { LoanApplicationService } from '../../data/loan-application.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-edit-application-general',
@@ -18,6 +19,7 @@ export class ViewApplicationGeneralComponent implements OnInit {
     loanApplicationData$: any;
 
     step = 0;
+    loader = false;
 
     constructor(private service: ApplicationGuarantorService, private notification: NotificationService,
                 private activeRoute: ActivatedRoute, private dialog: MatDialog,
@@ -49,5 +51,30 @@ export class ViewApplicationGeneralComponent implements OnInit {
 
     prevStep() {
         this.step--;
+    }
+
+    /**
+     *
+     */
+    downloadForm() {
+        this.getApplicationFomFromService();
+    }
+
+    /**
+     *
+     */
+    getApplicationFomFromService() {
+        this.loader = true;
+        if (this.loanApplicationData && this.loanApplicationData.attach_application_form !== null) {
+            this.loanApplicationService.fetchApplicationForm(this.loanApplicationData.attach_application_form).subscribe(res => {
+                const fileURL = URL.createObjectURL(res);
+                window.open(fileURL, '_blank');
+                this.loader = false;
+            }, error => {
+                this.loader = false;
+                console.log('Error getting image from API');
+                console.log(error);
+            });
+        }
     }
 }

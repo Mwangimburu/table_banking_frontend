@@ -29,6 +29,8 @@
     "@angular/platform-browser-dynamic": "^8.2.12",
     "@angular/platform-server": "^8.2.12",
     "@angular/router": "^8.2.12",
+    "@ckeditor/ckeditor5-angular": "^1.1.2",
+    "@ckeditor/ckeditor5-build-classic": "^15.0.0",
     "@ngrx/data": "^8.0.1",
     "@ngrx/effects": "^8.0.1",
     "@ngrx/entity": "^8.0.1",

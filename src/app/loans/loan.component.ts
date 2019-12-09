@@ -20,15 +20,14 @@ import { LoanAmortizationComponent } from './amortization/loan-amortization.comp
 })
 export class LoanComponent implements OnInit, AfterViewInit {
     displayedColumns = [
-        'member_id',
+        'loan_officer',
         'loan_reference_number',
+        'member_id',
         'loan_type_id',
-        'repayment_period',
         'amount_approved',
         'balance',
         'next_repayment_date',
         'amortization',
-
         'actions',
     ];
 
@@ -69,7 +68,7 @@ export class LoanComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'updated_at', 'desc');
+        this.dataSource.load('', 0, 0, 'loan_reference_number', 'desc', 'closed_on');
 
       /*  this.dataSource.connect(null).subscribe(data => {
             if (data && data.length > 0) {
@@ -164,7 +163,8 @@ export class LoanComponent implements OnInit, AfterViewInit {
             (this.paginator.pageIndex + 1),
             (this.paginator.pageSize),
             this.sort.active,
-            this.sort.direction
+            this.sort.direction,
+            'closed_on'
         );
     }
 

@@ -30,13 +30,17 @@
 
     <div class="row">
         <div class="col-4">
-            <mat-form-field class="full-width" color="primary">
+           <!-- <mat-form-field class="full-width" color="primary">
                 <mat-select placeholder="Branch" formControlName="branch_id">
                     <mat-option *ngFor="let branch of branches" [value]="branch.id">
                         {{branch.name}}
                     </mat-option>
                 </mat-select>
                 <mat-error align="start" *ngIf="formErrors?.branch_id" class="form__error">{{ formErrors.branch_id }}</mat-error>
+            </mat-form-field>-->
+            <mat-form-field class="full-width">
+                <input matInput formControlName="phone" placeholder="Phone">
+                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
             </mat-form-field>
         </div>
         <div class="col-4">
@@ -77,8 +81,8 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="phone" placeholder="Phone">
-                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
+                <input matInput formControlName="passport_number" placeholder="Passport Number">
+                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
             </mat-form-field>
         </div>
 
@@ -107,8 +111,8 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="passport_number" placeholder="Passport Number">
-                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
+                <input matInput formControlName="residential_address" placeholder="Residential Address">
+                <mat-error align="start" *ngIf="formErrors?.residential_address" class="form__error">{{ formErrors.residential_address }}</mat-error>
             </mat-form-field>
         </div>
 
@@ -131,10 +135,6 @@
             </mat-form-field>
         </div>
         <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="residential_address" placeholder="Residential Address">
-                <mat-error align="start" *ngIf="formErrors?.residential_address" class="form__error">{{ formErrors.residential_address }}</mat-error>
-            </mat-form-field>
         </div>
     </div>
 

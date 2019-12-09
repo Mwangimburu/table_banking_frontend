@@ -36,6 +36,8 @@ export class EditPermissionComponent implements OnInit  {
                 Validators.minLength(3)]],
             display_name: [this.permission.display_name, [Validators.required,
                 Validators.minLength(3)]],
+            description: [this.permission.description, [Validators.required,
+                Validators.minLength(3)]],
         });
     }
 

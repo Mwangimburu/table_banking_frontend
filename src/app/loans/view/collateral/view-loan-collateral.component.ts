@@ -18,7 +18,6 @@ import { CollateralDataSource } from '../../../collateral/data/collateral-data.s
 export class ViewLoanCollateralComponent implements OnInit, AfterViewInit {
 
     collateralColumns = [
-        'asset_number',
         'title',
         'valuation_date',
         'valuation_amount',

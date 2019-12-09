@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoanTypeSettingModel } from '../model/loan-type-setting.model';
 import { LoanTypeSettingService } from '../data/loan-type-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
+import { PenaltyTypeSettingService } from '../../penalty/data/penalty-type-setting.service';
+import { PenaltyFrequencySettingService } from '../../penalty/data/penalty-frequency-setting.service';
 
 @Component({
     selector: 'app-add-tax-type',
@@ -23,6 +25,9 @@ export class AddLoanTypeComponent implements OnInit  {
     interestTypes: any;
     paymentFrequencies: any;
 
+    penaltyTypes: any = [];
+    penaltyFrequencies: any = [];
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private typeService: LoanTypeSettingService,
@@ -30,7 +35,8 @@ export class AddLoanTypeComponent implements OnInit  {
                 private dialogRef: MatDialogRef<AddLoanTypeComponent>) {
         this.interestTypes = row.interestTypes;
         this.paymentFrequencies = row.paymentFrequencies;
-
+        this.penaltyTypes = row.penaltyTypes;
+        this.penaltyFrequencies = row.penaltyFrequencies;
     }
 
     ngOnInit() {
@@ -40,10 +46,15 @@ export class AddLoanTypeComponent implements OnInit  {
             repayment_period: [''],
             interest_rate: [''],
             interest_type_id: [''],
-            service_fee: [''],
+            service_fee: [0],
             payment_frequency_id: [''],
             description: [''],
-            active_status: ['']
+            active_status: [''],
+            penalty_type_id: [''],
+            penalty_value: [0],
+            penalty_frequency_id: [''],
+            reduce_principal_early: new FormControl(false)
+
         });
     }
 
@@ -64,9 +75,11 @@ export class AddLoanTypeComponent implements OnInit  {
 
         this.loader = true;
 
+        console.log('Create Type: ', body);
+
+
         this.typeService.create(body)
             .subscribe((data) => {
-                    console.log('Create Type: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New type created.');
                 },

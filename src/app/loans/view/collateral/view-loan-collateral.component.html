@@ -11,11 +11,6 @@
 
     <mat-table #table [dataSource]="collateralDataSource" matSort matSortActive="valuation_date" matSortDirection="desc" matSortDisableClear>
 
-        <ng-container matColumnDef="asset_number">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Collateral Number </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.asset_number}} </mat-cell>
-        </ng-container>
-
         <ng-container matColumnDef="title">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
@@ -27,7 +22,7 @@
         </ng-container>
 
         <ng-container matColumnDef="valuation_amount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Valuation Amount </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.valuation_amount|number:'1.2'}} </mat-cell>
         </ng-container>
 

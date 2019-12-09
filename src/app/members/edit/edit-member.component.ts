@@ -47,7 +47,7 @@ export class EditMemberComponent implements OnInit  {
                 Validators.minLength(3)]],
             middle_name: [this.member.middle_name],
             last_name: [this.member.last_name],
-            branch_id: [this.member.branch_id],
+            /*branch_id: [this.member.branch_id],*/
             nationality: [this.member.nationality],
             id_number: [this.member.id_number],
             passport_number: [this.member.passport_number],

@@ -18,7 +18,6 @@
 
                             </div>
 
-
                             <div class="col-7">
                                 <mat-form-field class="search-form-field">
                                     <input matInput #search placeholder="Filter" autocomplete="off" [disabled]="meta?.total===0">
@@ -35,6 +34,11 @@
                                 <ng-container matColumnDef="application_date">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.application_date| date: 'dd/MM/yyyy'}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="loan_officer">
+                                    <mat-header-cell *matHeaderCellDef> Officer </mat-header-cell>
+                                    <mat-cell *matCellDef="let row"> {{row.loanOfficer?.first_name}} ({{row.loanOfficer?.role?.display_name}})</mat-cell>
                                 </ng-container>
 
                                 <ng-container matColumnDef="member_id">
@@ -57,10 +61,10 @@
                                     <mat-cell *matCellDef="let row"> {{row.repayment_period}} </mat-cell>
                                 </ng-container>
 
-                                <ng-container matColumnDef="status_id">
+                               <!-- <ng-container matColumnDef="status_id">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Status </mat-header-cell>
                                     <mat-cell *matCellDef="let row"> {{row.status_id}} </mat-cell>
-                                </ng-container>
+                                </ng-container>-->
 
                                 <ng-container matColumnDef="actions">
                                     <mat-header-cell *matHeaderCellDef> Actions  </mat-header-cell>
@@ -85,16 +89,6 @@
                                                 </button>
                                             </mat-menu>
                                     </mat-cell>
-
-                                   <!-- <mat-cell *matCellDef="let row" class="button-row">
-                                        <button mat-raised-button type="button" matTooltip="Edit Member" [matTooltipPosition]="'above'" (click)="editDialog(row)"
-                                                class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button mat-raised-button routerLink="{{row.id}}/edit" type="button" matTooltip="View Member Details" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                            <mat-icon color="primary">visibility</mat-icon>
-                                        </button>
-                                    </mat-cell>-->
                                 </ng-container>
 
                                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -116,137 +110,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-           <!-- <div class="col-md-7">
-                <div class="card">
-                    <div class="card-header card-header-danger row">
-                        <div class="col-md-12"> <h4 class="card-title ">Loan Applications</h4></div>
-                    </div>
-                    <div class="card-body">
-
-                        <div class="row search-form-section">
-
-                            <div class="col-5">
-                               &lt;!&ndash; <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
-                                    <mat-icon>add</mat-icon>Add New
-                                </button>&ndash;&gt;
-
-                                <button mat-button matPrefix mat-stroked-button aria-label="add new" routerLink="create">
-                                    <mat-icon>add</mat-icon>Add New
-                                </button>
-
-                            </div>
-
-
-                            <div class="col-7">
-                                <mat-form-field class="search-form-field">
-                                    <input matInput #search placeholder="Search" autocomplete="off" [disabled]="meta?.total===0">
-                                    <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="search.value" (click)="clearSearch()">
-                                        <mat-icon>close</mat-icon></button>
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-            <div class="row">
-
-                <div class="table-responsive">
-
-                    <mat-table class="mat-elevation-z8" #table [dataSource]="dataSource" matSort matSortActive="" matSortDirection="asc" matSortDisableClear>
-
-                        <ng-container matColumnDef="member_id">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.member?.first_name}} </mat-cell>
-                        </ng-container>
-
-                        &lt;!&ndash;<ng-container matColumnDef="application_date">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Application Date </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.application_date}} </mat-cell>
-                        </ng-container>&ndash;&gt;
-
-                        <ng-container matColumnDef="amount_applied">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Amount Applied </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.amount_applied}} </mat-cell>
-                        </ng-container>
-
-                       &lt;!&ndash; <ng-container matColumnDef="date_approved">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Date Approved </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.date_approved}} </mat-cell>
-                        </ng-container>&ndash;&gt;
-
-                        <ng-container matColumnDef="status_id">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Status </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.status_id}} </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="actions">
-                            <mat-header-cell *matHeaderCellDef> Actions  </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="button-row">
-                                <button mat-icon-button [matMenuTriggerFor]="menu">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
-                                <mat-menu #menu="matMenu">
-
-                                    <button mat-menu-item routerLink="{{row.id}}/edit">
-                                        <mat-icon color="accent">edit</mat-icon>
-                                        <span>Edit</span>
-                                    </button>
-
-
-                                    &lt;!&ndash;<button mat-menu-item routerLink="{{row.id}}/edit">
-                                        <mat-icon color="accent">edit</mat-icon>
-                                        <span>Edit with data</span>
-                                    </button>&ndash;&gt;
-
-                                    <a routerLink="{{row.id}}/edit" [state]="{ id: row.id }" (click)="onSelected(row)">
-                                        Hello World
-                                    </a>
-
-    &lt;!&ndash;
-                                    <button routerLink="{{row.id}}/edit"> Button Label</button>
-    &ndash;&gt;
-
-
-                                    <button mat-menu-item (click)="openConfirmationDialog(row)">
-                                        <mat-icon color="warn">delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </mat-menu>
-                            </mat-cell>
-                        </ng-container>
-
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}"
-                                 (click)="onSelected(row)"> </mat-row>
-
-                    </mat-table>
-                    <span *ngIf="meta?.total===0">No Data</span>
-
-                    <div class="d-flex justify-content-center spinner-container" *ngIf="(dataSource?.loading$ | async) || loader">
-                        <mat-spinner [diameter]="40"></mat-spinner>
-                    </div>
-
-                    <mat-paginator #pagination
-                                   [length]="meta?.total"
-                                   [pageIndex]="pageIndex"
-                                   [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
-                    </mat-paginator>
-
-                 </div>
-
-            </div>
-                    </div>
-                </div>
-            </div>-->
-
-          <!--  <div class="col-md-5" *ngIf="meta?.total!==0">
-                <app-loan-application-detail></app-loan-application-detail>
-            </div>-->
 
         </div>
     </div>

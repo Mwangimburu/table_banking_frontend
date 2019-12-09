@@ -11,6 +11,9 @@ import { EditLoanTypeComponent } from './edit/edit-loan-type.component';
 import { NotificationService } from '../../../shared/notification.service';
 import { InterestTypeSettingService } from '../interest-type/data/interest-type-setting.service';
 import { PaymentFrequencySettingService } from '../payment-frequency/data/payment-frequency-setting.service';
+import { FormBuilder } from '@angular/forms';
+import { PenaltyTypeSettingService } from '../penalty/data/penalty-type-setting.service';
+import { PenaltyFrequencySettingService } from '../penalty/data/penalty-frequency-setting.service';
 
 @Component({
     selector: 'app-loan-type-setting',
@@ -48,9 +51,13 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
     interestTypes: any = [];
     paymentFrequencies: any = [];
 
+    penaltyTypes: any = [];
+    penaltyFrequencies: any = [];
+
     constructor(private service: LoanTypeSettingService, private interestTypeService: InterestTypeSettingService,
                 private notification: NotificationService, private dialog: MatDialog,
-                private paymentFrequencyService: PaymentFrequencySettingService) {
+                private paymentFrequencyService: PaymentFrequencySettingService, private penaltyTypeService: PenaltyTypeSettingService,
+                private penaltyFrequencyService: PenaltyFrequencySettingService) {
     }
 
     /**
@@ -78,6 +85,16 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
                 () => this.paymentFrequencies = []
             );
 
+        this.penaltyTypeService.list(['name', 'display_name'])
+            .subscribe((res) => this.penaltyTypes = res,
+                () => this.penaltyTypes = []
+            );
+
+        this.penaltyFrequencyService.list(['name', 'display_name'])
+            .subscribe((res) => this.penaltyFrequencies = res,
+                () => this.penaltyFrequencies = []
+            );
+
     }
 
     /**
@@ -90,7 +107,9 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
 
         dialogConfig.data = {
             interestTypes: this.interestTypes,
-            paymentFrequencies: this.paymentFrequencies
+            paymentFrequencies: this.paymentFrequencies,
+            penaltyTypes: this.penaltyTypes,
+            penaltyFrequencies: this.penaltyFrequencies
         };
 
         const dialogRef = this.dialog.open(AddLoanTypeComponent, dialogConfig);
@@ -116,7 +135,9 @@ export class LoanTypeSettingComponent implements OnInit, AfterViewInit {
 
         dialogConfig.data = {type,
             interestTypes: this.interestTypes,
-            paymentFrequencies: this.paymentFrequencies
+            paymentFrequencies: this.paymentFrequencies,
+            penaltyTypes: this.penaltyTypes,
+            penaltyFrequencies: this.penaltyFrequencies
         };
 
         const dialogRef = this.dialog.open(EditLoanTypeComponent, dialogConfig);

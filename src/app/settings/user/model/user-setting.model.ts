@@ -5,6 +5,7 @@ export class UserSettingModel extends BaseModel {
     role_id: string;
     email: string;
     first_name: string;
+    middle_name: string;
     last_name: string;
     employee_id: string;
     salutation: string;

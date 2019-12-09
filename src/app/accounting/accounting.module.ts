@@ -8,6 +8,7 @@ import { StatementComponent } from './statement/statement.component';
 import { LedgerComponent } from './ledger/ledger.component';
 import { JournalComponent } from './journal/journal.component';
 import { FinanceComponent } from './finance/finance.component';
+import { OtherReportsComponent } from './other-reports/other-reports.component';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { FinanceComponent } from './finance/finance.component';
         StatementComponent,
         LedgerComponent,
         JournalComponent,
-        FinanceComponent
+        FinanceComponent,
+        OtherReportsComponent
     ],
     entryComponents: [
         StatementComponent

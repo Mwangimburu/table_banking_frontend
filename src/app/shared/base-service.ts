@@ -16,13 +16,23 @@ export class BaseService<T extends BaseModel> {
        // this.resourceUrl = `http://localhost/19/dan/smartmicro/public/api/v1/` + this.endpoint;
         this.resourceUrl = this.apiUrl + `/` + this.endpoint;
 
+   /*     this.httpClient.get('../assets/config/data.json')
+            .subscribe(data => console.log(data));*/
+
         // Demo1
       //  this.resourceUrl = `http://africomit.co.ke/backend/api/v1/` + this.endpoint;
 
     }
 
     /**
-     * API URL
+     *
+     */
+    protected getApiUrl(): string {
+        return this.apiUrl;
+    }
+
+    /**
+     *
      */
     protected getResourceUrl(): string {
         return this.resourceUrl;
@@ -32,7 +42,7 @@ export class BaseService<T extends BaseModel> {
      * API item url
      * @param uuid
      */
-    private getItemUrl(uuid: string): string {
+    protected getItemUrl(uuid: string): string {
         return `${this.resourceUrl}/${uuid}`;
     }
 

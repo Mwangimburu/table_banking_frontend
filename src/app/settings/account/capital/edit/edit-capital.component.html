@@ -7,46 +7,20 @@
 <mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="updateType()">
 
     <div class="row">
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="name" placeholder="Name">
-                <mat-error align="start" *ngIf="formErrors?.name" class="form__error">{{ formErrors.name }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="max_period_in_months" placeholder="Max Period in Months">
-                <mat-error align="start" *ngIf="formErrors?.max_period_in_months" class="form__error">{{ formErrors.max_period_in_months }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="interest_rate" placeholder="Interest Rate">
-                <mat-error align="start" *ngIf="formErrors?.interest_rate" class="form__error">{{ formErrors.interest_rate }}</mat-error>
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-4">
+        <div class="col-6">
             <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Interest Type" formControlName="interest_type_id">
-                    <mat-option *ngFor="let interestType of interestTypes" [value]="interestType.id">
-                        {{interestType.display_name}}
+                <mat-select placeholder="Branch" formControlName="branch_id">
+                    <mat-option *ngFor="let branch of branches" [value]="branch.id">
+                        {{branch.name}}
                     </mat-option>
                 </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.interest_type_id" class="form__error">{{ formErrors.interest_type_id }}</mat-error>
+                <mat-error align="start" *ngIf="formErrors?.branch_id" class="form__error">{{ formErrors.branch_id }}</mat-error>
             </mat-form-field>
         </div>
-        <div class="col-4">
+        <div class="col-6">
             <mat-form-field class="full-width">
-                <input matInput formControlName="service_fee" placeholder="Service Fee">
-                <mat-error align="start" *ngIf="formErrors?.service_fee" class="form__error">{{ formErrors.service_fee }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="other_charges" placeholder="Other Charges">
-                <mat-error align="start" *ngIf="formErrors?.other_charges" class="form__error">{{ formErrors.other_charges }}</mat-error>
+                <input matInput formControlName="amount" placeholder="Amount">
+                <mat-error align="start" *ngIf="formErrors?.amount" class="form__error">{{ formErrors.amount }}</mat-error>
             </mat-form-field>
         </div>
     </div>
@@ -59,6 +33,7 @@
             </mat-form-field>
         </div>
     </div>
+
 
 </mat-dialog-content>
 

@@ -4,7 +4,9 @@
 <!--
           <a class="navbar-brand" href="#">{{getTitle()}}</a>
 -->
-          <a class="navbar-brand input-group no-border" href="#">Welcome, Devtest.</a>
+<!--
+          <a class="navbar-brand input-group no-border" href="#">Welcome, Devtest Devtest.</a>
+-->
         </div>
         <button mat-raised-button class="navbar-toggler" type="button" (click)="sidebarToggle()">
             <span class="sr-only">Toggle navigation</span>
@@ -22,8 +24,8 @@
                     </button>
                 </div>
             </form>-->
-         <!--   <ul class="navbar-nav">
-                <li class="nav-item">
+            <ul class="navbar-nav">
+               <!-- <li class="nav-item">
                     <a class="nav-link" routerLink="/">
                         <i class="material-icons">dashboard</i>
                         <p>
@@ -31,7 +33,7 @@
                         </p>
                     </a>
                 </li>
-         &lt;!&ndash;       <li class="nav-item dropdown">
+              <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons">notifications</i>
                         <span class="notification">5</span>
@@ -46,16 +48,22 @@
                         <a class="dropdown-item" href="#">Another Notification</a>
                         <a class="dropdown-item" href="#">Another One</a>
                     </div>
-                </li>&ndash;&gt;
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/">
-                        <i class="material-icons">person</i>
-                        <p>
-                            <span class="d-lg-none d-md-block">Account</span>
-                        </p>
+                </li>-->
+                <li class="nav-item" *ngIf="!loading">
+                    Welcome, {{activeUser}}.
+                </li>
+                <li class="nav-item pointer" (click)="logout()" *ngIf="!loading">
+                    <a class="nav-link">
+                        <i class="material-icons">power_settings_new</i>
+                        <span>Logout</span>
+
                     </a>
                 </li>
-            </ul>-->
+                <li class="nav-item" *ngIf="loading">
+                    <span>clean up ...</span>
+                </li>
+
+            </ul>
         </div>
     </div>
 </nav>

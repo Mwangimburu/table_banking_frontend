@@ -16,26 +16,15 @@ declare interface RouteInfo {
     permission?: any;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '', permission: ['create-branch'] },
-    /*{ path: '/user-profile', title: 'User Profile',  icon: 'person', class: '' },
-    { path: '/table-list', title: 'Table List',  icon: 'content_paste', class: '' },
-    { path: '/typography', title: 'Typography',  icon: 'library_books', class: '' },
-    { path: '/icons', title: 'Icons',  icon: 'bubble_chart', class: '' },
-    { path: '/notifications', title: 'Notifications',  icon: 'notifications', class: '' },
-    { path: '/branches', title: 'Branches',  icon: 'business', class: '' },*/
-    { path: '/expenses', title: 'Expenses',  icon: 'local_airport', class: '', permission: ['delete-branch'] },
-    { path: '/members', title: 'Members',  icon: 'people', class: '', permission: ['delete-branch'] },
-    /*{ path: '/borrowers', title: 'Borrowers',  icon: 'people', class: '', permission: ['create-branch'] },
-    { path: '/guarantors', title: 'Guarantors',  icon: 'people', class: '', permission: ['create-branch'] },*/
-    { path: '/loans', title: 'Loans -  Active',  icon: 'business', class: '', permission: ['create-branch'] },
-    { path: '/loan-applications', title: 'Loan Applications',  icon: 'attach_file', class: '', permission: ['create-branch'] },
-    { path: '/payments', title: 'Payments',  icon: 'attach_money', class: '', permission: ['create-branch'] },
-
-    { path: '/settings', title: 'Setting',  icon: 'settings', class: '', permission: ['create-branch'] },
-
-    { path: '/accounts', title: 'Accounting',  icon: 'account_tree', class: '', permission: ['create-branch'] },
-    { path: '/reports', title: 'Reports',  icon: 'bar_chart', class: '', permission: ['create-branch'] },
-
+    { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '', permission: ['expense-add'] },
+    { path: '/expenses', title: 'Expenses',  icon: 'local_airport', class: '', permission: ['expense-add'] },
+    { path: '/members', title: 'Members',  icon: 'people', class: '', permission: ['member-add'] },
+    { path: '/loans', title: 'Loans -  Active',  icon: 'business', class: '', permission: ['loans-view'] },
+    { path: '/loan-applications', title: 'Loan Applications',  icon: 'attach_file', class: '', permission: ['loan-application-add'] },
+    { path: '/payments', title: 'Payments',  icon: 'attach_money', class: '', permission: ['payments-add'] },
+    { path: '/settings', title: 'Setting',  icon: 'settings', class: '', permission: ['settings-general'] },
+    { path: '/reports', title: 'Reports',  icon: 'account_tree', class: '', permission: ['view-reports'] },
+    { path: '/user-profile', title: 'Profile',  icon: 'person', class: '', permission: ['my-profile'] }
 ];
 
 @Component({
