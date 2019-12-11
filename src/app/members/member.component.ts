@@ -68,7 +68,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'first_name', 'desc');
+        this.dataSource.load('', 0, 0, 'created_at', 'desc');
 
        /* this.dataSource.connect(null).subscribe(data => {
             if (data && data.length > 0) {

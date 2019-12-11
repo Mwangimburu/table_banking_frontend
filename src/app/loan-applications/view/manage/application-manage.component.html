@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-4">
                             <mat-form-field class="full-width" color="primary">
-                                <mat-select placeholder="Loan Officer*" formControlName="loan_officer_id" #loanOfficerSelect (selectionChange)="onItemChange(loanOfficerSelect.value)">
+                                <mat-select placeholder="Loan Officer*" formControlName="loan_officer_id">
                                     <mat-option *ngFor="let user of users" [value]="user.id">
                                         {{user.first_name}} ( {{user.role.display_name}} )
                                     </mat-option>

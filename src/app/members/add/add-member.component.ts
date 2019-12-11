@@ -33,13 +33,13 @@ export class AddMemberComponent implements OnInit  {
     branches: any = [];
 
     profilePicFileToUpload: File = null;
-    nationalIdFileToUpload: File = null;
     membershipFormFileToUpload: File = null;
     profilePicUrl = '';
-    nationalIdUrl = '';
 
     membershipFormToUpload: File = null;
     membershipFormUrl = '';
+
+    urls = new Array<string>();
 
     @ViewChild('stepper', {static: true }) stepper: MatStepper;
 
@@ -85,8 +85,8 @@ export class AddMemberComponent implements OnInit  {
             date_of_birth: ['', [Validators.required,
                 Validators.minLength(2)]],
             date_became_member: [moment(), Validators.required],
-            passport_photo: [''],
-            national_id_image: [''],
+           // passport_photo: [''],
+           // national_id_image: [''],
         });
     }
 
@@ -96,6 +96,24 @@ export class AddMemberComponent implements OnInit  {
 
     close() {
         this.dialogRef.close();
+    }
+
+    /**
+     *
+     * @param event
+     */
+    detectFiles(event) {
+        this.urls = [];
+        let files = event.target.files;
+        if (files) {
+            for (let file of files) {
+                let reader = new FileReader();
+                reader.onload = (e: any) => {
+                    this.urls.push(e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
     }
 
     /**
@@ -128,30 +146,7 @@ export class AddMemberComponent implements OnInit  {
             reader.onload = (event: any) => {
                 this.profilePicUrl = event.target.result;
             };
-
             reader.readAsDataURL(this.profilePicFileToUpload);
-
-        //    this.form.get('passport_photo').setValue(this.profilePicFileToUpload);
-
-        }
-    }
-
-    /**
-     *
-     * @param file
-     */
-    onNationalIdFileInputSelect(file: FileList) {
-
-        if (file.length > 0) {
-            this.nationalIdFileToUpload = file.item(0);
-
-            const reader = new FileReader();
-
-            reader.onload = (event: any) => {
-                this.nationalIdUrl = event.target.result;
-            };
-
-            reader.readAsDataURL(this.nationalIdFileToUpload);
         }
     }
 
@@ -211,9 +206,10 @@ export class AddMemberComponent implements OnInit  {
         const body = Object.assign({}, this.member, this.form.value);
 
         const formData = new FormData();
-        formData.append('passport_photo', this.profilePicFileToUpload);
-        formData.append('membership_form', this.membershipFormToUpload);
-       // formData.append('first_name', this.form.get('first_name').value);
+        if(this.profilePicFileToUpload != null)
+            formData.append('passport_photo', this.profilePicFileToUpload);
+        if(this.membershipFormToUpload != null)
+            formData.append('membership_form', this.membershipFormToUpload);
 
         for (const key in body) {
             if (body.hasOwnProperty(key)) {

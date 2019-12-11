@@ -38,16 +38,6 @@
                 </mat-select>
                 <mat-error align="start" *ngIf="formErrors?.branch_id" class="form__error">{{ formErrors.branch_id }}</mat-error>
             </mat-form-field>-->
-            <mat-form-field class="full-width">
-                <input matInput formControlName="phone" placeholder="Phone">
-                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-          <!--  <mat-form-field class="full-width">
-                <input matInput formControlName="date_of_birth" placeholder="Date Of Birth">
-                <mat-error align="start" *ngIf="formErrors?.date_of_birth" class="form__error">{{ formErrors.date_of_birth }}</mat-error>
-            </mat-form-field>-->
 
             <mat-form-field  class="full-width">
                 <input matInput [matDatepicker]="date_of_birth" formControlName="date_of_birth" placeholder="Date of Birth">
@@ -56,44 +46,21 @@
                 <mat-error align="start" *ngIf="formErrors?.date_of_birth" class="form__error">{{ formErrors.date_of_birth }}</mat-error>
             </mat-form-field>
         </div>
-
         <div class="col-4">
-          <!--  <mat-form-field class="full-width">
-                <input matInput formControlName="date_became_member" placeholder="Membership Date">
-                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
-            </mat-form-field>-->
-
-            <mat-form-field  class="full-width">
-                <input matInput [matDatepicker]="date_became_member" formControlName="date_became_member" placeholder="Date Became Member">
-                <mat-datepicker-toggle matSuffix [for]="date_became_member"></mat-datepicker-toggle>
-                <mat-datepicker #date_became_member></mat-datepicker>
-                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
+            <mat-form-field class="full-width">
+                <input matInput formControlName="phone" placeholder="Phone">
+                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
             </mat-form-field>
         </div>
-    </div>
 
-    <div class="row">
         <div class="col-4">
             <mat-form-field class="full-width">
                 <input matInput formControlName="email" placeholder="Email">
                 <mat-error align="start" *ngIf="formErrors?.email" class="form__error">{{ formErrors.email }}</mat-error>
             </mat-form-field>
-        </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="passport_number" placeholder="Passport Number">
-                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
-            </mat-form-field>
-        </div>
 
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="postal_address" placeholder="Postal Address">
-                <mat-error align="start" *ngIf="formErrors?.postal_address" class="form__error">{{ formErrors.postal_address }}</mat-error>
-            </mat-form-field>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-4">
@@ -104,7 +71,7 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="id_number" placeholder="National ID">
+                <input matInput formControlName="id_number" placeholder="National ID or Passport">
                 <mat-error align="start" *ngIf="formErrors?.id_number" class="form__error">{{ formErrors.id_number }}</mat-error>
             </mat-form-field>
 
@@ -118,8 +85,13 @@
 
     </div>
 
-
     <div class="row">
+        <div class="col-4">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="postal_address" placeholder="Postal Address">
+                <mat-error align="start" *ngIf="formErrors?.postal_address" class="form__error">{{ formErrors.postal_address }}</mat-error>
+            </mat-form-field>
+        </div>
 
         <div class="col-4">
             <mat-form-field class="full-width">
@@ -134,46 +106,32 @@
                 <mat-error align="start" *ngIf="formErrors?.city" class="form__error">{{ formErrors.city }}</mat-error>
             </mat-form-field>
         </div>
+
+       <!-- <div class="col-4">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="passport_number" placeholder="Passport Number">
+                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
+            </mat-form-field>
+        </div>-->
+
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-4">
+            <mat-form-field  class="full-width">
+                <input matInput [matDatepicker]="date_became_member" formControlName="date_became_member" placeholder="Date Became Member">
+                <mat-datepicker-toggle matSuffix [for]="date_became_member"></mat-datepicker-toggle>
+                <mat-datepicker #date_became_member></mat-datepicker>
+                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
+            </mat-form-field>
+        </div>
+
+
         <div class="col-4">
         </div>
     </div>
-
- <!--   <div class="row">
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="bank_name" placeholder="Bank Name">
-                <mat-error align="start" *ngIf="formErrors?.bank_name" class="form__error">{{ formErrors.bank_name }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="bank_branch" placeholder="Bank Branch">
-                <mat-error align="start" *ngIf="formErrors?.bank_branch" class="form__error">{{ formErrors.bank_branch }}</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="bank_account" placeholder="Bank Account">
-                <mat-error align="start" *ngIf="formErrors?.bank_account" class="form__error">{{ formErrors.bank_account }}</mat-error>
-            </mat-form-field>
-        </div>
-    </div>-->
-
-   <!-- <mat-form-field class="full-width">
-        <input matInput formControlName="passport_photo" placeholder="Passport Photo">
-        <mat-error align="start" *ngIf="formErrors?.passport_photo" class="form__error">{{ formErrors.passport_photo }}</mat-error>
-    </mat-form-field>-->
-
-    <mat-form-field class="full-width">
-        <input matInput formControlName="national_id_image" placeholder="National Id Image">
-        <mat-error align="start" *ngIf="formErrors?.national_id_image" class="form__error">{{ formErrors.national_id_image }}</mat-error>
-    </mat-form-field>
-
-<!--
-        <input type="file" placeholder="Upload file..." #image accept="image/*" (change)="onProfilePicSelect($event.target.files)">
-    -->
-
 
     <div class="row">
         <div class="col-4">
@@ -181,60 +139,16 @@
             <button mat-button class="mat-raised-button" (click)="profileFileInput.click()">
                 <i class="material-icons">attachment</i>
                 Profile Photo</button>
+
+            <img *ngIf="profilePicUrl" [src]="profilePicUrl" style="width: 120px; height: 120px;">
         </div>
-
-        <div class="col-4">
-            <input type="file" #nationalIdFileInput style="display: none" accept="image/*"  (change)="onNationalIdFileInputSelect($event.target.files)">
-            <button mat-button class="mat-raised-button" (click)="nationalIdFileInput.click()">
-                <i class="material-icons">attachment</i>
-                National Id Photo</button>
-        </div>
-
-        <div class="col-4">
-            <input type="file" #membershipFormFileInput style="display: none" accept="application/pdf*"  (change)="onMembershipFormInputSelect($event.target.files)">
-            <button mat-button class="mat-raised-button" (click)="membershipFormFileInput.click()">
-                <i class="material-icons">attachment</i>
-                Membership Form</button>
-        </div>
-
-    </div>
-
-    <div class="row justify-content-end">
-        <div class="col-md-6">
-            <label>Membership Application Form</label>
+         <div class="col-md-8">
+            <label>Membership Application Form</label><br/>
             <input type="file" (change)="membershipFormUpload($event.target.files)" placeholder="" accept=".pdf,.doc,.docx">
-        </div>
+             <mat-error align="start" *ngIf="formErrors?.membership_form" class="form__error">{{ formErrors.membership_form }}</mat-error>
+         </div>
     </div>
 
-
-    <div class="row">
-        <div class="col-4">
-            <img [src]="profilePicUrl" style="width: 150px; height: 200px;">
-        </div>
-
-        <div class="col-4">
-            <img [src]="nationalIdUrl" style="width: 150px; height: 200px;">
-        </div>
-
-        <div class="col-4">
-            <ng-container style="width: 150px; height: 200px;">
-                {{membershipFormUrl}}
-            </ng-container>
-        </div>
-    </div>
-
-
-
-   <!-- <mat-form-field class="full-width"  color="accent">
-        <textarea  formControlName="notes" matInput #notes placeholder="Note" maxlength="150" rows="3"></textarea>
-        <mat-hint align="end">{{notes.value.length}} / 150</mat-hint>
-        <mat-error align="start" *ngIf="formErrors?.notes" class="form__error">{{ formErrors.notes }}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-        <input matInput formControlName="attachment" placeholder="Attachment">
-        <mat-error align="start" *ngIf="formErrors?.attachment" class="form__error">{{ formErrors.attachment }}</mat-error>
-    </mat-form-field>-->
 
 </mat-dialog-content>
 

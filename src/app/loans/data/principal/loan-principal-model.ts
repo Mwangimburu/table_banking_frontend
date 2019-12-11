@@ -8,4 +8,5 @@ export class LoanPrincipalModel extends BaseModel {
     paid_on: string;
     paid_amount: string;
     balance: string;
+    loan: any;
 }

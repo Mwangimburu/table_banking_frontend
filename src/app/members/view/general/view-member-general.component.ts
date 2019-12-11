@@ -21,6 +21,8 @@ export class ViewMemberGeneralComponent implements OnInit {
 
     imageToShow: any;
 
+    loader = false;
+    memberShipForm = false;
 
 
     constructor(private service: ApplicationGuarantorService, private notification: NotificationService,
@@ -34,12 +36,8 @@ export class ViewMemberGeneralComponent implements OnInit {
             if (data) {
                 this.memberData = data;
                 this.memberId = data.id;
-
-           //     this.getImageFromService();
-
-             //   this.profilePicUrl = this.memberService.getImage(data.passport_photo);
-            //    this.getImage(data.passport_photo);
-               // this.displayProfilePic(this.memberService.getImage(data.passport_photo));
+                if(data.membership_form != null && data.membership_form != 'null' && data.membership_form != '')
+                    this.memberShipForm = true;
             }
         });
     }
@@ -73,15 +71,28 @@ export class ViewMemberGeneralComponent implements OnInit {
         }
     }
 
-   /* displayProfilePic(file: FileList) {
-        this.profilePicFileToUpload = file.item(0);
+    /**
+     *
+     */
+    downloadForm() {
+        this.getApplicationFomFromService();
+    }
 
-        const reader = new FileReader();
-
-        reader.onload = (event: any) => {
-            this.profilePicUrl = event.target.result;
-        };
-
-        reader.readAsDataURL(this.profilePicFileToUpload);
-    }*/
+    /**
+     *
+     */
+    getApplicationFomFromService() {
+        this.loader = true;
+        if (this.memberData && this.memberData.membership_form !== null) {
+            this.memberService.fetchMembershipForm(this.memberData.membership_form).subscribe(res => {
+                const fileURL = URL.createObjectURL(res);
+                window.open(fileURL, '_blank');
+                this.loader = false;
+            }, error => {
+                this.loader = false;
+                console.log('Error getting Membership Form from API');
+                console.log(error);
+            });
+        }
+    }
 }

@@ -20,9 +20,13 @@
             </mat-form-field>
         </div>
         <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="interest_rate" placeholder="Interest Rate">
-                <mat-error align="start" *ngIf="formErrors?.interest_rate" class="form__error">{{ formErrors.interest_rate }}</mat-error>
+            <mat-form-field class="full-width" color="primary">
+                <mat-select placeholder="Repayment Frequency" formControlName="payment_frequency_id">
+                    <mat-option *ngFor="let paymentFrequency of paymentFrequencies" [value]="paymentFrequency.id">
+                        {{paymentFrequency.display_name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error align="start" *ngIf="formErrors?.payment_frequency_id" class="form__error">{{ formErrors.payment_frequency_id }}</mat-error>
             </mat-form-field>
         </div>
     </div>
@@ -39,18 +43,15 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="service_fee" placeholder="Service Fee">
-                <mat-error align="start" *ngIf="formErrors?.service_fee" class="form__error">{{ formErrors.service_fee }}</mat-error>
+                <input matInput formControlName="interest_rate" placeholder="Interest Rate">
+                <mat-error align="start" *ngIf="formErrors?.interest_rate" class="form__error">{{ formErrors.interest_rate }}</mat-error>
             </mat-form-field>
+
         </div>
         <div class="col-4">
-            <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Repayment Frequency" formControlName="payment_frequency_id">
-                    <mat-option *ngFor="let paymentFrequency of paymentFrequencies" [value]="paymentFrequency.id">
-                        {{paymentFrequency.display_name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.interest_type_id" class="form__error">{{ formErrors.interest_type_id }}</mat-error>
+            <mat-form-field class="full-width">
+                <input matInput formControlName="service_fee" placeholder="Service Fee">
+                <mat-error align="start" *ngIf="formErrors?.service_fee" class="form__error">{{ formErrors.service_fee }}</mat-error>
             </mat-form-field>
         </div>
     </div>
@@ -73,14 +74,14 @@
             </mat-form-field>
         </div>
         <div class="col-4">
-        <mat-form-field class="full-width" color="primary">
-            <mat-select placeholder="Penalty Frequency" formControlName="penalty_frequency_id">
-                <mat-option *ngFor="let penaltyFrequency of penaltyFrequencies" [value]="penaltyFrequency.id">
-                    {{penaltyFrequency.display_name}}
-                </mat-option>
-            </mat-select>
-            <mat-error align="start" *ngIf="formErrors?.penalty_frequency_id" class="form__error">{{ formErrors.penalty_frequency_id }}</mat-error>
-        </mat-form-field>
+            <mat-form-field class="full-width" color="primary">
+                <mat-select placeholder="Penalty Frequency" formControlName="penalty_frequency_id">
+                    <mat-option *ngFor="let penaltyFrequency of penaltyFrequencies" [value]="penaltyFrequency.id">
+                        {{penaltyFrequency.display_name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error align="start" *ngIf="formErrors?.penalty_frequency_id" class="form__error">{{ formErrors.penalty_frequency_id }}</mat-error>
+            </mat-form-field>
         </div>
     </div>
     <div class="row">

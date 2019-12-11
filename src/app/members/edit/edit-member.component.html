@@ -30,25 +30,6 @@
 
     <div class="row">
         <div class="col-4">
-           <!-- <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Branch" formControlName="branch_id">
-                    <mat-option *ngFor="let branch of branches" [value]="branch.id">
-                        {{branch.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.branch_id" class="form__error">{{ formErrors.branch_id }}</mat-error>
-            </mat-form-field>-->
-            <mat-form-field class="full-width">
-                <input matInput formControlName="phone" placeholder="Phone">
-                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
-            </mat-form-field>
-        </div>
-        <div class="col-4">
-           <!-- <mat-form-field class="full-width">
-                <input matInput formControlName="date_of_birth" placeholder="Date Of Birth">
-                <mat-error align="start" *ngIf="formErrors?.date_of_birth" class="form__error">{{ formErrors.date_of_birth }}</mat-error>
-            </mat-form-field>-->
-
             <mat-form-field  class="full-width">
                 <input matInput [matDatepicker]="date_of_birth" formControlName="date_of_birth" placeholder="Date of Birth">
                 <mat-datepicker-toggle matSuffix [for]="date_of_birth"></mat-datepicker-toggle>
@@ -56,44 +37,19 @@
                 <mat-error align="start" *ngIf="formErrors?.date_of_birth" class="form__error">{{ formErrors.date_of_birth }}</mat-error>
             </mat-form-field>
         </div>
-
         <div class="col-4">
-           <!-- <mat-form-field class="full-width">
-                <input matInput formControlName="date_became_member" placeholder="Membership Date">
-                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
-            </mat-form-field>-->
-
-            <mat-form-field  class="full-width">
-                <input matInput [matDatepicker]="date_became_member" formControlName="date_became_member" placeholder="Date Became Member">
-                <mat-datepicker-toggle matSuffix [for]="date_became_member"></mat-datepicker-toggle>
-                <mat-datepicker #date_became_member></mat-datepicker>
-                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
+            <mat-form-field class="full-width">
+                <input matInput formControlName="phone" placeholder="Phone">
+                <mat-error align="start" *ngIf="formErrors?.phone" class="form__error">{{ formErrors.phone }}</mat-error>
             </mat-form-field>
         </div>
-    </div>
-
-    <div class="row">
         <div class="col-4">
             <mat-form-field class="full-width">
                 <input matInput formControlName="email" placeholder="Email">
                 <mat-error align="start" *ngIf="formErrors?.email" class="form__error">{{ formErrors.email }}</mat-error>
             </mat-form-field>
         </div>
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="passport_number" placeholder="Passport Number">
-                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="postal_address" placeholder="Postal Address">
-                <mat-error align="start" *ngIf="formErrors?.postal_address" class="form__error">{{ formErrors.postal_address }}</mat-error>
-            </mat-form-field>
-        </div>
     </div>
-
 
     <div class="row">
         <div class="col-4">
@@ -104,7 +60,7 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="id_number" placeholder="National ID">
+                <input matInput formControlName="id_number" placeholder="National ID or Passport">
                 <mat-error align="start" *ngIf="formErrors?.id_number" class="form__error">{{ formErrors.id_number }}</mat-error>
             </mat-form-field>
 
@@ -118,8 +74,14 @@
 
     </div>
 
-
     <div class="row">
+
+        <div class="col-4">
+            <mat-form-field class="full-width">
+                <input matInput formControlName="postal_address" placeholder="Postal Address">
+                <mat-error align="start" *ngIf="formErrors?.postal_address" class="form__error">{{ formErrors.postal_address }}</mat-error>
+            </mat-form-field>
+        </div>
 
         <div class="col-4">
             <mat-form-field class="full-width">
@@ -138,48 +100,78 @@
         </div>
     </div>
 
-    <!--   <div class="row">
-           <div class="col-4">
-               <mat-form-field class="full-width">
-                   <input matInput formControlName="bank_name" placeholder="Bank Name">
-                   <mat-error align="start" *ngIf="formErrors?.bank_name" class="form__error">{{ formErrors.bank_name }}</mat-error>
-               </mat-form-field>
-           </div>
-           <div class="col-4">
-               <mat-form-field class="full-width">
-                   <input matInput formControlName="bank_branch" placeholder="Bank Branch">
-                   <mat-error align="start" *ngIf="formErrors?.bank_branch" class="form__error">{{ formErrors.bank_branch }}</mat-error>
-               </mat-form-field>
-           </div>
+    <div class="row">
+        <div class="col-4">
+            <mat-form-field  class="full-width">
+                <input matInput [matDatepicker]="date_became_member" formControlName="date_became_member" placeholder="Date Became Member">
+                <mat-datepicker-toggle matSuffix [for]="date_became_member"></mat-datepicker-toggle>
+                <mat-datepicker #date_became_member></mat-datepicker>
+                <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
 
-           <div class="col-4">
-               <mat-form-field class="full-width">
-                   <input matInput formControlName="bank_account" placeholder="Bank Account">
-                   <mat-error align="start" *ngIf="formErrors?.bank_account" class="form__error">{{ formErrors.bank_account }}</mat-error>
-               </mat-form-field>
-           </div>
-       </div>-->
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field class="full-width"  color="accent">
+                <textarea  formControlName="membership_form" matInput placeholder="Membership Form" maxlength="150" rows="2"></textarea>
+                <mat-error align="start" *ngIf="formErrors?.membership_form" class="form__error">{{ formErrors.membership_form }}</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <label>Change Membership Form</label><br/>
+            <input type="file" #membershipFormFileInput style="display: none" accept=".pdf,.doc,.docx"  (change)="membershipFormUpload($event.target.files)">
+            <button mat-button class="mat-raised-button" (click)="membershipFormFileInput.click()">
+                <i class="material-icons">attachment</i>
+                Member Photo</button>
+        </div>
+    </div>
 
-    <mat-form-field class="full-width">
-        <input matInput formControlName="passport_photo" placeholder="Passport Photo">
-        <mat-error align="start" *ngIf="formErrors?.passport_photo" class="form__error">{{ formErrors.passport_photo }}</mat-error>
-    </mat-form-field>
+    <div  class="row">
+        <div class="col-6">
+            <img *ngIf="showPhoto" class="img" [src]="showPhoto | async" alt="Membership Photo" style="width: 120px; height: 120px;">
+        </div>
+        <div class="col-6">
+            <label>Change Member Photo</label><br/>
+            <input type="file" #profileFileInput style="display: none" accept="image/*"  (change)="onMemberPhotoSelect($event.target.files)">
+            <button mat-button class="mat-raised-button" (click)="profileFileInput.click()">
+                <i class="material-icons">attachment</i>
+                Member Photo</button>
+        </div>
+    </div>
+<!--
+    <input formControlName="document" type="file" ng2FileSelect accept="image/*" [uploader]="uploader" multiple/><br/>
+    <br>
+    <div class="drop-zone">
+        <div ng2FileDrop [uploader]="uploader" class="drop-zone">
+            Drag and drop files to upload
+        </div>
+    </div>
 
-    <mat-form-field class="full-width">
-        <input matInput formControlName="national_id_image" placeholder="National Id Image">
-        <mat-error align="start" *ngIf="formErrors?.national_id_image" class="form__error">{{ formErrors.national_id_image }}</mat-error>
-    </mat-form-field>
-
-    <!-- <mat-form-field class="full-width"  color="accent">
-         <textarea  formControlName="notes" matInput #notes placeholder="Note" maxlength="150" rows="3"></textarea>
-         <mat-hint align="end">{{notes.value.length}} / 150</mat-hint>
-         <mat-error align="start" *ngIf="formErrors?.notes" class="form__error">{{ formErrors.notes }}</mat-error>
-     </mat-form-field>
-
-     <mat-form-field class="full-width">
-         <input matInput formControlName="attachment" placeholder="Attachment">
-         <mat-error align="start" *ngIf="formErrors?.attachment" class="form__error">{{ formErrors.attachment }}</mat-error>
-     </mat-form-field>-->
+    <table>
+        <thead>
+        <tr>
+            <th width="90%">
+                File Name
+            </th>
+            <th width="10%">
+                Remove
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of uploader.queue">
+            <th width="90%">
+                (NaN MB)
+            </th>
+            <th class="text-center" width="10%">
+                <mat-icon (click)="item.remove()">delete</mat-icon>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Upload Data</button>-->
 
 </mat-dialog-content>
 

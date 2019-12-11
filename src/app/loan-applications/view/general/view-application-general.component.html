@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field>
-                                            <input matInput placeholder="Amount Applied" disabled value="{{(loanApplicationData$|async)?.amount_applied}}">
+                                            <input matInput placeholder="Amount Applied" disabled value="{{(loanApplicationData$|async)?.amount_applied|number:'1.2'}}">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
 
                                 <div class="row">
                                     <div class="col-6"></div>
-                                    <div class="col-6">
+                                    <div class="col-6" *ngIf="applicationForm">
                                         <div class="d-flex spinner-container" *ngIf="loader">
                                             <mat-spinner [diameter]="40"></mat-spinner>
                                         </div>

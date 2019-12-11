@@ -19,6 +19,7 @@ export class MemberModel extends BaseModel {
     date_became_member: string;
     passport_photo: File | null;
     national_id_image: File | null;
+    membership_form: string;
 
     created_by: string;
     updated_by: string;

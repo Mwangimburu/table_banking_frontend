@@ -16,12 +16,14 @@ import { MemberLoanApplicationsComponent } from './view/loan-applications/member
 import { MemberGuaranteeComponent } from './view/guarantee/member-guarantee.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
     imports: [
         MaterialModule,
         MemberRoutingModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        FileUploadModule
     ],
     declarations: [
         MemberComponent,

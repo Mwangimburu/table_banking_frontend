@@ -179,16 +179,15 @@
 
 
                 <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <mat-form-field class="full-width"  color="accent">
-                            <textarea  formControlName="application_form" matInput placeholder="Loan Application Form" maxlength="150" rows="3"></textarea>
-                            <mat-error align="start" *ngIf="formErrors?.application_form" class="form__error">{{ formErrors.application_form }}</mat-error>
+                            <textarea  formControlName="application_form" matInput placeholder="Loan Application Form" maxlength="150" rows="2"></textarea>
                         </mat-form-field>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label>Change Application Form</label>
                         <input type="file" (change)="applicationFormUpload($event.target.files)" placeholder="" accept=".pdf,.doc,.docx">
+                        <mat-error align="start" *ngIf="formErrors?.attach_application_form" class="form__error">{{ formErrors.attach_application_form }}</mat-error>
                     </div>
                 </div>
 

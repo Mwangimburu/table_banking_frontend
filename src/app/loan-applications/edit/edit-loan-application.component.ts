@@ -127,6 +127,7 @@ export class EditLoanApplicationComponent implements OnInit  {
             id_number: [{value: this.nationalID, disabled: true}],
 
             application_form: [{value: this.loanApplication.attach_application_form, disabled: true}],
+            attach_application_form: [''],
 
             last_name: [{value: this.lastName, disabled: true}],
             phone: [{value: this.userPhone, disabled: true}],

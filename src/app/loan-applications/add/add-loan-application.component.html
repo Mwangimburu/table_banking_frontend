@@ -180,6 +180,7 @@
                                         <div class="col-md-6">
                                             <label>Loan Application Form</label>
                                             <input type="file" (change)="applicationFormUpload($event.target.files)" placeholder="" accept=".pdf,.doc,.docx">
+                                            <mat-error align="start" *ngIf="formErrors?.attach_application_form" class="form__error">{{ formErrors.attach_application_form }}</mat-error>
                                         </div>
                                     </div>
 

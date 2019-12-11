@@ -58,7 +58,7 @@ export class AddPaymentComponent implements OnInit  {
                 Validators.minLength(1)]],
             payment_date: [moment(), Validators.required],
             notes: [''],
-            attachment: [''],
+          //  attachment: [''],
             account_number: [{value: '', disabled: true}],
             id_number: [{value: '', disabled: true}],
 

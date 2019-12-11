@@ -5,6 +5,8 @@ import { MemberModel } from '../models/member-model';
 import { MemberService } from '../data/member.service';
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
+import { FileUploader } from 'ng2-file-upload';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'app-edit-member',
@@ -24,6 +26,22 @@ export class EditMemberComponent implements OnInit  {
     memberStatuses: any = [];
     branches: any = [];
 
+    uploadForm: FormGroup;
+
+    membershipFormToUpload: File = null;
+    membershipFormUrl = '';
+
+    showPhoto: any;
+
+    photoToUpload: File = null;
+    photoName: any;
+    photoUrl = '';
+
+
+    public uploader: FileUploader = new FileUploader({
+        isHTML5: true
+    });
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private memberService: MemberService,
@@ -36,6 +54,14 @@ export class EditMemberComponent implements OnInit  {
     }
 
     ngOnInit() {
+        // Fetch photo
+        this.getImageFromService();
+
+        this.uploadForm = this.fb.group({
+            document: [null, null],
+            type:  [null, Validators.compose([Validators.required])]
+        });
+
 
         this.memberStatusService.list('name')
             .subscribe((res) => this.memberStatuses = res,
@@ -60,8 +86,11 @@ export class EditMemberComponent implements OnInit  {
             county: [this.member.county],
             city: [this.member.city],
             status_id: [this.member.status_id],
-            passport_photo: [this.member.passport_photo],
-            national_id_image: [this.member.national_id_image],
+
+            membership_form: [{value: this.member.membership_form, disabled: true}],
+
+            document: [null, null],
+            // type:  [null, Validators.compose([Validators.required])]
         });
     }
 
@@ -69,8 +98,189 @@ export class EditMemberComponent implements OnInit  {
         this.dialogRef.close();
     }
 
+    uploadSubmit(){
+        for (let i = 0; i < this.uploader.queue.length; i++) {
+            let fileItem = this.uploader.queue[i]._file;
+            if(fileItem.size > 10000000){
+                alert("Each File should be less than 10 MB of size.");
+                return;
+            }
+        }
+        for (let j = 0; j < this.uploader.queue.length; j++) {
+            let data = new FormData();
+            let fileItem = this.uploader.queue[j]._file;
+            console.log(fileItem.name);
+            data.append('file', fileItem);
+            data.append('fileSeq', 'seq'+j);
+            data.append( 'dataType', this.uploadForm.controls.type.value);
+          //  this.uploadFile(data).subscribe(data => alert(data.message));
+        }
+        this.uploader.clearQueue();
+    }
+
+
+    /**
+     *
+     * @param file
+     */
+    onMemberPhotoSelect(file: FileList) {
+        if (file.length > 0) {
+            this.photoToUpload = file.item(0);
+            this.photoName = file.item(0).name;
+            const reader = new FileReader();
+            reader.onload = (event: any) => {
+                this.photoUrl = event.target.result;
+            };
+            reader.readAsDataURL(this.photoToUpload);
+
+            this.loader = true;
+            // upload to server
+
+            const formData = new FormData();
+            formData.append('passport_photo', this.photoToUpload);
+            formData.append('id',  this.member.id);
+
+            // Upload Photo
+            this.uploadPhoto(formData);
+        }
+    }
+
+    /**
+     * Upload profile image to server
+     * @param formData
+     */
+    private uploadPhoto(formData: FormData) {
+        // Upload photo
+        this.memberService.updatePhoto(formData)
+            .subscribe((data) => {
+                    this.loader = false;
+                    this.getImageFromService();
+                    // notify success
+                    this.notification.showNotification('success', 'Success !! Member Photo has been updated.');
+                },
+                (error) => {
+                    this.loader = false;
+                    console.log('Error at Photo upload: ', error);
+                    if (error.payment === 0) {
+                        // notify error
+                        return;
+                    }
+                    // An array of all form errors as returned by server
+                    this.formErrors = error;
+
+                    if (this.formErrors) {
+                        // loop through from fields, If has an error, mark as invalid so mat-error can show
+                        for (const prop in this.formErrors) {
+                            console.log('Hallo: ', prop);
+                            if (this.form) {
+                                this.form.controls[prop].setErrors({incorrect: true});
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     *
+     */
+    getImageFromService() {
+        //  this.isImageLoading = true;
+        if (this.member && this.member.passport_photo !== null) {
+            this.memberService.fetchPhoto(this.member.passport_photo).subscribe(data => {
+                this.createImageFromBlob(data);
+                // this.isImageLoading = false;
+            }, error => {
+                // this.isImageLoading = false;
+                console.log('Error getting image from API');
+                console.log(error);
+            });
+        }
+    }
+
+    /**
+     *
+     * @param image
+     */
+    createImageFromBlob(image: Blob) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            this.showPhoto = of(reader.result);
+        }, false);
+
+        if (image) {
+            reader.readAsDataURL(image);
+        }
+    }
+
+    /**
+     *
+     * @param file
+     */
+    membershipFormUpload(file: FileList) {
+
+        if (file.length > 0) {
+            this.membershipFormToUpload = file.item(0);
+
+            const reader = new FileReader();
+
+            reader.onload = (event: any) => {
+                this.membershipFormUrl = event.target.result;
+            };
+
+            reader.readAsDataURL(this.membershipFormToUpload);
+
+            const formData = new FormData();
+            formData.append('membership_form', this.membershipFormToUpload);
+            formData.append('id',  this.member.id);
+
+            // Upload Form
+            this.updateMembershipForm(formData);
+
+        }
+    }
+
+    /**
+     *
+     * @param formData
+     */
+    private updateMembershipForm(formData: FormData) {
+        // Upload photo
+        this.memberService.updateMembershipForm(formData)
+            .subscribe((data) => {
+                    this.loader = false;
+                    //  this.getImageFromService();
+                    // notify success
+                    this.notification.showNotification('success', 'Success !! Membership Form has been replaced.');
+                },
+                (error) => {
+                    this.loader = false;
+                    this.notification.showNotification('danger', 'Error !! Unable to upload Membership Form. File too large?');
+                    console.log('Error at Application Form update: ', error);
+                    if (error.payment === 0) {
+                        // notify error
+                        return;
+                    }
+                    // An array of all form errors as returned by server
+                    this.formErrors = error;
+
+                    if (this.formErrors) {
+                        // loop through from fields, If has an error, mark as invalid so mat-error can show
+                        for (const prop in this.formErrors) {
+                            console.log('Hallo: ', prop);
+                            if (this.form) {
+                                this.form.controls[prop].setErrors({incorrect: true});
+                            }
+                        }
+                    }
+                });
+    }
+
+    /**
+     *
+     */
     update() {
         const body = Object.assign({}, this.member, this.form.value);
+        delete body.membership_form;
 
         this.loader = true;
         this.memberService.update(body)

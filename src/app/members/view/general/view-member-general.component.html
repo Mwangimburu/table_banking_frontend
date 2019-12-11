@@ -32,6 +32,18 @@
                 <div class="row">
                     <div class="col-6">
                         <mat-form-field>
+                            <input matInput placeholder="Phone" disabled value="{{(memberData$|async)?.phone}}">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <input matInput placeholder="Email" disabled value="{{(memberData$|async)?.email}}">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field>
                             <input matInput placeholder="Date of Birth" disabled value="{{(memberData$|async)?.date_of_birth}}">
                         </mat-form-field>
                     </div>
@@ -56,33 +68,7 @@
                 <div class="row">
                     <div class="col-6">
                         <mat-form-field>
-                            <input matInput placeholder="ID Number" disabled value="{{(memberData$|async)?.id_number}}">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput placeholder="Passport Number" disabled value="{{(memberData$|async)?.passport_number}}">
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput placeholder="Phone" disabled value="{{(memberData$|async)?.phone}}">
-                        </mat-form-field>
-                    </div>
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput placeholder="Email" disabled value="{{(memberData$|async)?.email}}">
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-6">
-                        <mat-form-field>
-                            <input matInput placeholder="Postal Address" disabled value="{{(memberData$|async)?.postal_address}}">
+                            <input matInput placeholder="National ID / Passport Number" disabled value="{{(memberData$|async)?.id_number}}">
                         </mat-form-field>
                     </div>
                     <div class="col-6">
@@ -95,8 +81,21 @@
                 <div class="row">
                     <div class="col-6">
                         <mat-form-field>
-                            <input matInput placeholder="Member Status" disabled value="{{(memberData$|async)?.status_id}}">
+                            <input matInput placeholder="Postal Address" disabled value="{{(memberData$|async)?.postal_address}}">
                         </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-6" *ngIf="memberShipForm">
+                            <div class="d-flex spinner-container" *ngIf="loader">
+                                <mat-spinner [diameter]="40"></mat-spinner>
+                            </div>
+
+                            <button mat-raised-button *ngIf="!loader" (click)="downloadForm()">
+                                <i class="material-icons">
+                                    cloud_download
+                                </i> Membership Form
+                            </button>
+                        </div>
                     </div>
                 </div>
 

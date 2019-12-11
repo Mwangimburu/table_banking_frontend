@@ -20,6 +20,7 @@ export class ViewApplicationGeneralComponent implements OnInit {
 
     step = 0;
     loader = false;
+    applicationForm = false;
 
     constructor(private service: ApplicationGuarantorService, private notification: NotificationService,
                 private activeRoute: ActivatedRoute, private dialog: MatDialog,
@@ -35,6 +36,8 @@ export class ViewApplicationGeneralComponent implements OnInit {
             if (data) {
                 this.loanApplicationData = data;
                 this.loanApplicationId = data.id;
+                if(data.attach_application_form != null && data.attach_application_form != 'null' && data.attach_application_form != '')
+                    this.applicationForm = true;
             }
         });
 
@@ -72,7 +75,7 @@ export class ViewApplicationGeneralComponent implements OnInit {
                 this.loader = false;
             }, error => {
                 this.loader = false;
-                console.log('Error getting image from API');
+                console.log('Error getting Application Form from API');
                 console.log(error);
             });
         }

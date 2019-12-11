@@ -288,7 +288,8 @@ export class AddLoanApplicationComponent implements OnInit  {
         body.reduce_principal_early = this.reducePrincipalEarly;
 
         const formData = new FormData();
-        formData.append('loan_application_form', this.applicationFormToUpload);
+        if(this.applicationFormToUpload != null)
+            formData.append('attach_application_form', this.applicationFormToUpload);
 
         for (const key in body) {
             if (body.hasOwnProperty(key)) {
