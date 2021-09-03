@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    selector: 'app-interest-type-setting',
+    selector: 'app-email-setting',
     templateUrl: './email-setting.component.html',
     styleUrls: ['./email-setting.component.css']
 })
@@ -20,24 +20,22 @@ export class EmailSettingComponent implements OnInit {
                 private notification: NotificationService, private emailSettingService: EmailSettingService) {
 
         this.form = this.fb.group({
-            protocol: ['', [Validators.required,
+            driver: ['', [Validators.required,
                 Validators.minLength(2)]],
-            smpt_host: ['', [Validators.required,
+            host: ['', [Validators.required,
                 Validators.minLength(2)]],
-            smpt_username: [''],
-            smpt_password: [''],
-            smpt_port: [''],
-            mail_gun_domain: [''],
-            mandrill_secret: [''],
-            from_name: [''],
-            from_email: ['']
+            username: [''],
+            password: [''],
+            port: [''],
+            from_address: [''],
+            from_name: ['']
         });
     }
 
 
     ngOnInit(): void {
         if (this.route.snapshot.data['setting']) {
-            this.prePopulateForm(this.route.snapshot.data['setting'].data);
+            this.prePopulateForm(this.route.snapshot.data['setting']);
         }
     }
 
@@ -49,15 +47,13 @@ export class EmailSettingComponent implements OnInit {
         this.setting = setting;
 
         this.form.patchValue({
-            protocol: this.setting.protocol,
-            smpt_host: this.setting.smpt_host,
-            smpt_username: this.setting.smpt_username,
-            smpt_password: this.setting.smpt_password,
-            smpt_port: this.setting.smpt_port,
-            mail_gun_domain: this.setting.mail_gun_domain,
-            mandrill_secret: this.setting.mandrill_secret,
-            from_name: this.setting.from_name,
-            from_email: this.setting.from_email
+            driver: this.setting.driver,
+            host: this.setting.host,
+            username: this.setting.username,
+            password: this.setting.password,
+            port: this.setting.port,
+            from_address: this.setting.from_address,
+            from_name: this.setting.from_name
         });
     }
 
@@ -65,21 +61,18 @@ export class EmailSettingComponent implements OnInit {
         const body = Object.assign({}, this.setting, this.form.value);
 
         this.loader = true;
-        this.emailSettingService.update(body)
+        this.emailSettingService.create(body)
             .subscribe((data) => {
-                    console.log('Update general Setting: ', data);
                     this.loader = false;
 
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Setting has been updated.');
+                    this.notification.showNotification('success', 'Success !! Email Setting has been updated.');
 
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit payment component: ', error);
 
                     if (error.payment === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -88,7 +81,6 @@ export class EmailSettingComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

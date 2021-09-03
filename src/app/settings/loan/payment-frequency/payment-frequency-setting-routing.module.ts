@@ -1,8 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
-import { InterestTypeSettingComponent } from './interest-type-setting.component';
+import { PaymentFrequencySettingComponent } from './payment-frequency-setting.component';
 
 export const ROUTES: Routes = [
-    { path: '', component: InterestTypeSettingComponent },
+    { path: '', component: PaymentFrequencySettingComponent },
 ];
 
 export const PaymentFrequencySettingRoutingModule = RouterModule.forChild(ROUTES);

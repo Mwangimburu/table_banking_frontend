@@ -30,6 +30,10 @@ export class GeneralSettingComponent implements OnInit {
 
     settingId: string;
 
+    dateFormats: any;
+    amountThousandSeparators: any;
+    amountDecimalSeparators: any;
+    amountDecimals: any;
 
     constructor(private fb: FormBuilder, private route: ActivatedRoute,
                 private generalSettingService: GeneralSettingService, private notification: NotificationService ) {
@@ -44,14 +48,13 @@ export class GeneralSettingComponent implements OnInit {
                     Validators.minLength(3)]],
             currency: [''],
             phone: [''],
-            country: [''],
-            county: [''],
-            town: [''],
             physical_address: [''],
             postal_address: [''],
             postal_code: [''],
-           // logo: [''],
-           // favicon: [''],
+            date_format: [''],
+            amount_thousand_separator: [''],
+            amount_decimal_separator: [''],
+            amount_decimal: [''],
         });
     }
 
@@ -63,6 +66,12 @@ export class GeneralSettingComponent implements OnInit {
             this.settingId = this.setting.id;
             // Fetch photo
             this.getImageFromService();
+
+            // Populate select drop down data
+            this.dateFormats = this.setting.date_formats;
+            this.amountThousandSeparators = this.setting.amount_thousand_separators;
+            this.amountDecimalSeparators = this.setting.amount_decimal_separators;
+            this.amountDecimals = this.setting.amount_decimals;
         }
      }
 
@@ -85,7 +94,11 @@ export class GeneralSettingComponent implements OnInit {
             physical_address: this.setting.physical_address,
             postal_address: this.setting.postal_address,
             postal_code: this.setting.postal_code,
-            logo: this.setting.logo
+            logo: this.setting.logo,
+            date_format: this.setting.date_format,
+            amount_thousand_separator: this.setting.amount_thousand_separator,
+            amount_decimal_separator: this.setting.amount_decimal_separator,
+            amount_decimal: this.setting.amount_decimal
         });
     }
 
@@ -103,38 +116,6 @@ export class GeneralSettingComponent implements OnInit {
                 this.logoUrl = event.target.result;
             };
             reader.readAsDataURL(this.logoToUpload);
-        }
-    }
-
-    /**
-     *
-     */
-    getImageFromServicexx() {
-        //  this.isImageLoading = true;
-        if (this.setting && this.setting.logo !== null) {
-            this.generalSettingService.fetchLogo(this.setting.logo).subscribe(data => {
-                this.createImageFromBlob(data);
-                // this.isImageLoading = false;
-            }, error => {
-                // this.isImageLoading = false;
-                console.log('Error getting image from API');
-                console.log(error);
-            });
-        }
-    }
-
-    /**
-     *
-     * @param image
-     */
-    createImageFromBlobxx(image: Blob) {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-            this.showLogo = reader.result;
-        }, false);
-
-        if (image) {
-            reader.readAsDataURL(image);
         }
     }
 
@@ -168,15 +149,10 @@ export class GeneralSettingComponent implements OnInit {
      *
      */
     getImageFromService() {
-        //  this.isImageLoading = true;
         if (this.setting && this.setting.logo !== null) {
             this.generalSettingService.fetchPhoto(this.settingId).subscribe(data => {
                 this.createImageFromBlob(data);
-                // this.isImageLoading = false;
             }, error => {
-                // this.isImageLoading = false;
-                console.log('Error getting image from API');
-                console.log(error);
             });
         }
     }
@@ -211,9 +187,7 @@ export class GeneralSettingComponent implements OnInit {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at Photo upload: ', error);
                     if (error.payment === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -222,7 +196,6 @@ export class GeneralSettingComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
@@ -252,10 +225,8 @@ export class GeneralSettingComponent implements OnInit {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at Setting update: ', error);
 
                     if (error.payment === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -264,41 +235,12 @@ export class GeneralSettingComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
                         }
                     }
                 });
-
-        // Upload logo
-   /*     this.generalSettingService.updateLogo(formData)
-            .subscribe((data) => {
-                    this.loader = false;
-                    // notify success
-                    // this.notification.showNotification('success', 'Success !! Logo has been uploaded.');
-                },
-                (error) => {
-                    this.loader = false;
-                    console.log('Error at Logo upload: ', error);
-                    if (error.payment === 0) {
-                        // notify error
-                        return;
-                    }
-                    // An array of all form errors as returned by server
-                    this.formErrors = error;
-
-                    if (this.formErrors) {
-                        // loop through from fields, If has an error, mark as invalid so mat-error can show
-                        for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
-                            if (this.form) {
-                                this.form.controls[prop].setErrors({incorrect: true});
-                            }
-                        }
-                    }
-                });*/
     }
 
 }

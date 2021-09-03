@@ -14,7 +14,6 @@ export class ExpenseResolverService implements Resolve<ExpenseModel> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | ExpenseModel {
 
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

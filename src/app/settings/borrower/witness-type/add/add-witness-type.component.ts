@@ -71,7 +71,6 @@ export class AddWitnessTypeComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

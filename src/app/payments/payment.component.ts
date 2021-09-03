@@ -67,11 +67,10 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'receipt_number', 'desc');
 
-        this.memberService.list(['first_name', 'last_name', 'id_number'])
+        this.memberService.list(['first_name', 'middle_name', 'last_name', 'id_number', 'phone'])
             .subscribe((res) => this.members = res,
                 () => this.members = []
             );
-
     }
 
     /**
@@ -113,7 +112,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
-                  //  this.loadData();
                 }
             }
         );
@@ -148,10 +146,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -173,7 +168,6 @@ export class PaymentComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {

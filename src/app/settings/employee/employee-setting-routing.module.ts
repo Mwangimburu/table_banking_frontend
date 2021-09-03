@@ -9,11 +9,7 @@ export const ROUTES: Routes = [
             {
                 path: '',
                 loadChildren: 'app/settings/employee/general/employee-general-setting.module#EmployeeGeneralSettingModule'
-            },
-            /*{
-                path: 'general',
-                loadChildren: 'app/settings/company/general/company-general-setting.module#CompanyGeneralSettingModule'
-            },*/
+            }
         ]
     }
 ];

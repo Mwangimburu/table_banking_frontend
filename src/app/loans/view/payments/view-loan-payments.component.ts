@@ -14,7 +14,6 @@ import { LoanInterestDataSource } from '../../data/interest/loan-interest-data.s
 import { LoanPrincipalDataSource } from '../../data/principal/loan-principal-data.source';
 import { LoanInterestService } from '../../data/interest/loan-interest.service';
 import { LoanPrincipalService } from '../../data/principal/loan-principal.service';
-import { PaymentDetailComponent } from '../../../payments/details/payment-detail.component';
 import { LoanInterestModel } from '../../data/interest/loan-interest-model';
 import { InterestTransactionComponent } from './transactions/interest-transaction.component';
 import { LoanPrincipalModel } from '../../data/principal/loan-principal-model';
@@ -24,7 +23,7 @@ import { PenaltyTransactionComponent } from './transactions/penalty/penalty-tran
 import { PenaltyAdjustmentComponent } from './adjustment/penalty/penalty-adjustment.component';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-payment',
     templateUrl: './view-loan-payments.component.html',
     styleUrls: ['./view-loan-payments.component.css']
 })
@@ -133,10 +132,7 @@ export class ViewLoanPaymentsComponent implements OnInit, AfterViewInit {
      */
     ngAfterViewInit() {
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

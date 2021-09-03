@@ -9,27 +9,11 @@
                         </div>
                         <div class="card-body">
 
-                          <!--  <mat-tab-group>
-                                <mat-tab label="First"> <app-view-member-general></app-view-member-general> </mat-tab>
-                                <mat-tab label="Second"> <app-member-payment></app-member-payment> </mat-tab>
-                                <mat-tab label="Third"> Content 3 </mat-tab>
-                                <mat-tab label="Four"> Content 4 </mat-tab>
-                                <mat-tab label="Five"> Content 5 </mat-tab>
-                                <mat-tab label="Six"> Content 6 </mat-tab>
-                                <mat-tab label="Seven"> Content 7 </mat-tab>
-                            </mat-tab-group>-->
-
                             <nav mat-tab-nav-bar>
 
                                 <a mat-tab-link routerLinkActive #general="routerLinkActive" [active]="general.isActive" [routerLinkActiveOptions]="{exact: true}"
                                    routerLink="/members/{{id}}">
                                     <span class="nav-text">  Info </span></a>
-
-                              <!--  <a mat-tab-link routerLinkActive #payment="routerLinkActive" [active]="payment.isActive" [routerLink]="['payments']">
-                                    <span class="nav-text">   Payments </span></a>-->
-
-                               <!-- <a mat-tab-link routerLinkActive #loan="routerLinkActive" [active]="loan.isActive" [routerLink]="['loans']">
-                                    <span class="nav-text">   Loans </span></a>-->
 
                                 <a mat-tab-link routerLinkActive #loan_application="routerLinkActive" [active]="loan_application.isActive" [routerLink]="['loan_applications']">
                                     <span class="nav-text">   Loan Applications </span></a>
@@ -39,7 +23,6 @@
 
                                 <a mat-tab-link routerLinkActive #guarantee="routerLinkActive" [active]="guarantee.isActive" [routerLink]="['guarantee']">
                                     <span class="nav-text">   Guarantee </span></a>
-
                             </nav>
 
                             <router-outlet></router-outlet>
@@ -49,11 +32,6 @@
                 </div>
                 <div class="col-md-3">
                     <div class="card card-profile">
-                       <!-- <div class="card-avatar">
-                            <a href="#pablo">
-                                <img class="img" src="./assets/img/faces/marc.jpg" />
-                            </a>
-                        </div>-->
                         <div class="card-profile">
                             <div class="card-avatar" *ngIf="imageToShow">
                                 <img [src]="imageToShow" alt="Profile Picture">
@@ -67,20 +45,7 @@
                                 <div>Email: {{memberData?.email}}</div>
                                 Branch: {{memberData?.branch?.name}}
                             </div>
-                            Joined: {{memberData?.date_became_member}}
-
-                        <!--    <div class="pull-center">
-
-                                <button mat-raised-button type="button" matTooltip="Edit Member" [matTooltipPosition]="'above'"
-                                        class="btn btn-primary btn-link btn-sm btn-just-icon">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button mat-raised-button type="button" matTooltip="Delete Member" [matTooltipPosition]="'above'"
-                                        class="btn btn-danger btn-link btn-sm btn-just-icon">
-                                    <mat-icon color="warn">delete</mat-icon>
-                                </button>
-                            </div>-->
-
+                            Joined: {{memberData?.date_became_member_display}}
                         </div>
                     </div>
                 </div>

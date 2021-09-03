@@ -1,14 +1,13 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExpenseModel } from '../models/expense-model';
 import { ExpenseService } from '../data/expense.service';
 import { NotificationService } from '../../shared/notification.service';
-import * as moment from '../add/add-expense.component';
 import { ExpenseCategorySettingService } from '../../settings/expense/expense_category/data/expense-category-setting.service';
 
 @Component({
-    selector: 'app-edit-lead',
+    selector: 'app-edit-expense',
     styles: [],
     templateUrl: './edit-expense.component.html'
 })
@@ -61,10 +60,8 @@ export class EditExpenseComponent implements OnInit  {
         this.loader = true;
         this.expenseService.update(body)
             .subscribe((data) => {
-                    console.log('Update expense: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -73,7 +70,6 @@ export class EditExpenseComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit expense component: ', error);
 
                     if (error.expense === 0) {
                         // notify error
@@ -85,7 +81,6 @@ export class EditExpenseComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

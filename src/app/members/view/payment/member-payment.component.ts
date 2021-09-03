@@ -89,10 +89,7 @@ export class MemberPaymentComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

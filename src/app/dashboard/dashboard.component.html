@@ -1,14 +1,10 @@
 <div class="main-content">
   <div class="container-fluid">
 
-
       <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card">
                   <div class="card-header card-header-success">
-                      <!--<div class="card-icon">
-                          <i class="material-icons">content_copy</i>
-                      </div>-->
                       <h4 class="card-title">{{current_branch?.name}}
                           <small></small>
                       </h4>
@@ -16,7 +12,7 @@
                   <div class="card-footer">
                       <div class="stats">
                           <i class="material-icons text-danger">business</i>
-                          <a href="#pablo">Branch</a>
+                          <a href="#">Branch</a>
                       </div>
                   </div>
               </div>
@@ -24,9 +20,6 @@
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card">
                   <div class="card-header card-header-success">
-                      <!-- <div class="card-icon">
-                           <i class="material-icons">store</i>
-                       </div>-->
                       <h4 class="card-title">{{count_members}} / {{count_loans}}</h4>
                   </div>
                   <div class="card-footer">
@@ -36,18 +29,6 @@
                   </div>
               </div>
           </div>
-     <!--     <div class="col-lg-2 col-md-6 col-sm-6">
-              <div class="card">
-                  <div class="card-header card-header-success">
-                      <h4 class="card-title">{{count_loans}}</h4>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons text-danger">attach_money</i> Loans
-                      </div>
-                  </div>
-              </div>
-          </div>-->
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card">
                   <div class="card-header card-header-danger">
@@ -74,109 +55,7 @@
           </div>
       </div>
 
-    <!--  <div class="row">
-
-
-         &lt;!&ndash; <div class="col-lg-7 col-md-12">
-              <div class="card">
-                  <div class="card-header card-header-warning">
-                      <h4 class="card-title">Due Today</h4>
-                  </div>
-                  <div class="card-body table-responsive">
-
-                      <mat-table #table [dataSource]="loansDueTodayDataSource" matSort matSortActive="member_first_name" matSortDirection="desc" matSortDisableClear>
-
-                          <ng-container matColumnDef="member_first_name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.member_first_name}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="member_last_name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.member_last_name}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="member_phone">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Phone </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.member_phone}} </mat-cell>
-                          </ng-container>
-                          <ng-container matColumnDef="totalDue">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Due Amount </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.totalDue|number:'1.2'}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="loan_reference_number">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Loan </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.loan_reference_number}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="loan_type_name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> loan Type </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.loan_type_name}} </mat-cell>
-                          </ng-container>
-
-                          <mat-header-row *matHeaderRowDef="loansDueColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: loansDueColumns;"> </mat-row>
-
-                      </mat-table>
-
-                  </div>
-              </div>
-          </div>&ndash;&gt;
-
-             <div class="col-md-4">
-                 <div class="card card-chart">
-                     <div class="card-header card-header-success">
-                         <div class="ct-chart" id="dailySalesChart"></div>
-                     </div>
-                     <div class="card-body">
-                         <h4 class="card-title">Daily Sales</h4>
-                         <p class="card-category">
-                             <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
-                     </div>
-                     <div class="card-footer">
-                         <div class="stats">
-                             <i class="material-icons">access_time</i> updated 4 minutes ago
-                         </div>
-                     </div>
-                 </div>
-             </div>
-          <div class="col-md-4">
-              <div class="card card-chart">
-                  <div class="card-header card-header-success">
-                      <div class="ct-chart" id="websiteViewsChart"></div>
-                  </div>
-                  <div class="card-body">
-                      <h4 class="card-title">Email Subscriptions</h4>
-                      <p class="card-category">Last Campaign Performance</p>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">access_time</i> campaign sent 2 days ago
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4">
-              <div class="card card-chart">
-                  <div class="card-header card-header-danger">
-                      <div class="ct-chart" id="completedTasksChart"></div>
-                  </div>
-                  <div class="card-body">
-                      <h4 class="card-title">Completed Tasks</h4>
-                      <p class="card-category">Last Campaign Performance</p>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">access_time</i> campaign sent 2 days ago
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>-->
-
       <div class="row">
-
 
           <div class="col-lg-12 col-md-12">
               <div class="card">
@@ -208,7 +87,7 @@
                           </ng-container>
                           <ng-container matColumnDef="totalDue">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Due Amount </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.totalDue|number:'1.2'}} </mat-cell>
+                              <mat-cell *matCellDef="let row"> {{row.totalDue}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="loan_reference_number">
@@ -217,7 +96,7 @@
                           </ng-container>
 
                           <ng-container matColumnDef="loan_type_name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> loan Type </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Type </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.loan_type_name}} </mat-cell>
                           </ng-container>
 
@@ -230,64 +109,21 @@
 
                   <div class="card-footer">
                       <div class="stats">
-                          <i class="material-icons">account_tree</i><span> Total: {{count_loans_due_today}} ...</span>
-<!--
-                          <i class="material-icons">cloud_download</i><a href="#"> Full Report.</a>
--->
+
+                          <ng-container *ngIf="count_loans_due_today > 0">
+                               <button *ngIf="!loaderDueToday" mat-button matTooltip="Download Loans Due Today Report." [matTooltipPosition]="'above'" (click)="dueTodayReport()">
+                                  <mat-icon color="accent">cloud_download</mat-icon>
+                                   <span color="accent">Download Full Report. <strong><span color="accent"> - Total: {{count_loans_due_today}} </span></strong></span>
+                              </button>
+                              <div class="d-flex justify-content-center spinner-container" *ngIf="loaderDueToday">
+                                  <mat-spinner [diameter]="20"></mat-spinner>
+                              </div>
+                          </ng-container>
+
                       </div>
                   </div>
               </div>
           </div>
-
-          <!--   <div class="col-md-4">
-                 <div class="card card-chart">
-                     <div class="card-header card-header-success">
-                         <div class="ct-chart" id="dailySalesChart"></div>
-                     </div>
-                     <div class="card-body">
-                         <h4 class="card-title">Daily Sales</h4>
-                         <p class="card-category">
-                             <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
-                     </div>
-                     <div class="card-footer">
-                         <div class="stats">
-                             <i class="material-icons">access_time</i> updated 4 minutes ago
-                         </div>
-                     </div>
-                 </div>
-             </div>-->
-       <!--   <div class="col-md-4">
-              <div class="card card-chart">
-                  <div class="card-header card-header-success">
-                      <div class="ct-chart" id="websiteViewsChart"></div>
-                  </div>
-                  <div class="card-body">
-                      <h4 class="card-title">Email Subscriptions</h4>
-                      <p class="card-category">Last Campaign Performance</p>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">access_time</i> campaign sent 2 days ago
-                      </div>
-                  </div>
-              </div>
-          </div>-->
-        <!--  <div class="col-md-4">
-              <div class="card card-chart">
-                  <div class="card-header card-header-danger">
-                      <div class="ct-chart" id="completedTasksChart"></div>
-                  </div>
-                  <div class="card-body">
-                      <h4 class="card-title">Completed Tasks</h4>
-                      <p class="card-category">Last Campaign Performance</p>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                          <i class="material-icons">access_time</i> campaign sent 2 days ago
-                      </div>
-                  </div>
-              </div>
-          </div>-->
       </div>
 
       <div class="row">
@@ -321,7 +157,7 @@
                           </ng-container>
                           <ng-container matColumnDef="totalDue">
                               <mat-header-cell *matHeaderCellDef mat-sort-header> Due Amount </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.totalDue|number:'1.2'}} </mat-cell>
+                              <mat-cell *matCellDef="let row"> {{row.totalDue}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="loan_reference_number">
@@ -330,7 +166,7 @@
                           </ng-container>
 
                           <ng-container matColumnDef="loan_type_name">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> loan Type </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Type </mat-header-cell>
                               <mat-cell *matCellDef="let row"> {{row.loan_type_name}} </mat-cell>
                           </ng-container>
 
@@ -343,10 +179,16 @@
 
                   <div class="card-footer">
                       <div class="stats">
-                          <i class="material-icons">account_tree</i><span> Total: {{count_loans_over_due}} ...</span>
-<!--
-                          <i class="material-icons">cloud_download</i><a href="#"> Full Report.</a>
--->
+                      <ng-container *ngIf="count_loans_over_due > 0">
+                          <button *ngIf="!loaderOverDue" mat-button matTooltip="Download Loans Over Due Report." [matTooltipPosition]="'above'" (click)="overDueReport()">
+                              <mat-icon color="accent">cloud_download</mat-icon>
+                              <span color="accent">Download Full Report <strong><span color="accent"> - Total: {{count_loans_over_due}} </span></strong></span>
+                          </button>
+                          <div class="d-flex justify-content-center spinner-container" *ngIf="loaderOverDue">
+                              <mat-spinner [diameter]="20"></mat-spinner>
+                          </div>
+                      </ng-container>
+
                       </div>
                   </div>
               </div>
@@ -357,9 +199,6 @@
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                   <div class="card-header card-header-warning">
-                      <!--<div class="card-icon">
-                          <i class="material-icons">content_copy</i>
-                      </div>-->
                       <h4 class="card-title">{{activeLoans}} / {{loansSum}}
                           <small></small>
                       </h4>
@@ -367,7 +206,7 @@
                   <div class="card-footer">
                       <div class="stats">
                           <i class="material-icons text-danger">attach_money</i>
-                          <a href="#pablo">Active Loans</a>
+                          <a href="#">Active Loans</a>
                       </div>
                   </div>
               </div>
@@ -375,9 +214,6 @@
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                   <div class="card-header card-header-success">
-                      <!-- <div class="card-icon">
-                           <i class="material-icons">store</i>
-                       </div>-->
                       <h4 class="card-title">{{loansSum}}</h4>
                   </div>
                   <div class="card-footer">
@@ -411,84 +247,6 @@
                   </div>
               </div>
           </div>
-      </div>
-
-      <div class="row">
-          <div class="col-lg-6 col-md-12">
-              <div class="card">
-                  <div class="card-header card-header-primary">
-                      <h4 class="card-title">Loan Applications</h4>
-                  </div>
-                  <div class="card-body table-responsive">
-
-                      <mat-table #table [dataSource]="loanApplicationsDataSource" matSort matSortActive="application_date" matSortDirection="desc" matSortDisableClear>
-
-                          <ng-container matColumnDef="application_date">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.application_date| date: 'dd/MM/yyyy'}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="member_id">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.member?.first_name}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="amount_applied">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Amount Applied </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.amount_applied|number:'1.2'}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="loan_type_id">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Type </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.loan_type?.name}} </mat-cell>
-                          </ng-container>
-
-                          <mat-header-row *matHeaderRowDef="loanApplicationColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: loanApplicationColumns;"> </mat-row>
-
-                      </mat-table>
-
-                  </div>
-              </div>
-          </div>
-          <div class="col-lg-6 col-md-12">
-              <div class="card">
-                  <div class="card-header card-header-primary">
-                      <h4 class="card-title">Payments</h4>
-                  </div>
-                  <div class="card-body table-responsive">
-
-                      <mat-table #table [dataSource]="latestPaymentsDataSource" matSort matSortActive="payment_date" matSortDirection="desc" matSortDisableClear>
-
-                          <ng-container matColumnDef="member_id">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.member?.first_name}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="amount">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.amount|number:'1.2'}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="method_id">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Method </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.payment_method?.display_name}} </mat-cell>
-                          </ng-container>
-
-                          <ng-container matColumnDef="payment_date">
-                              <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
-                              <mat-cell *matCellDef="let row"> {{row.payment_date}} </mat-cell>
-                          </ng-container>
-
-                          <mat-header-row *matHeaderRowDef="paymentColumns"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: paymentColumns;"> </mat-row>
-
-                      </mat-table>
-
-                  </div>
-              </div>
-          </div>
-
       </div>
   </div>
 </div>

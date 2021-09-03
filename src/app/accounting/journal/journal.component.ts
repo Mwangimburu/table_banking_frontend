@@ -15,7 +15,7 @@ import { AppState } from '../../reducers';
 import { branch } from '../../auth/auth.selectors';
 
 @Component({
-    selector: 'app-ledger',
+    selector: 'app-journal',
     templateUrl: './journal.component.html',
     styleUrls: ['./journal.component.css']
 })
@@ -103,7 +103,7 @@ export class JournalComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
+       // console.log(this.sort.direction);
         this.dataSourceJournal.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -132,9 +132,7 @@ export class JournalComponent implements OnInit, AfterViewInit {
 
         this.paginator.page.pipe(
             // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

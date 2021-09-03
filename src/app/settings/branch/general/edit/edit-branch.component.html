@@ -60,8 +60,8 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
 
     <button class="mat-raised-button mat-primary" (click)="updateBranch()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

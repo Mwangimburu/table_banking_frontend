@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthGuard } from './auth/auth.guard';
-import { PermissionGuardService as PermGuard } from './auth/permission-guard-service';
 import { AppPreloadingStrategy } from './app-preloading-strategy';
 
 const routes: Routes = [
@@ -17,75 +16,69 @@ const routes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
+        loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule',
+        canActivate: [AuthGuard]
       },
       {
         path: 'expenses',
         loadChildren: './expenses/expense.module#ExpenseModule',
-        // loadChildren: () => import('./branches/branch.module').then(m => m.BranchModule),
         canActivate: [AuthGuard],
-        data: { preload: true, delay: false },
+        data: { preload: true, delay: false }
       },
       {
         path: 'members',
         loadChildren: './members/member.module#MemberModule',
-        data: { preload: true, delay: false },
-
-      },
-      {
-        path: 'borrowers',
-        loadChildren: './borrowers/borrower.module#BorrowerModule',
-        data: { preload: false, delay: false },
-
-      },
-      {
-        path: 'guarantors',
-        loadChildren: './guarantors/guarantor.module#GuarantorModule',
-        data: { preload: false, delay: false },
-
-      },
-      {
-        path: 'payments',
-        loadChildren: './payments/payment.module#PaymentModule',
-        data: { preload: true, delay: true },
-
-      },
-      {
-        path: 'reports',
-        loadChildren: './accounting/accounting.module#AccountingModule',
-        data: { preload: true, delay: true },
-
-      },
-      {
-        path: 'loan-applications',
-        loadChildren: './loan-applications/loan-application.module#LoanApplicationModule',
-        data: { preload: true, delay: true },
-
+        data: { preload: true, delay: false }
       },
       {
         path: 'loans',
         loadChildren: './loans/loan.module#LoanModule',
-        data: { preload: true, delay: true },
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
+      },
+      {
+        path: 'loan-applications',
+        loadChildren: './loan-applications/loan-application.module#LoanApplicationModule',
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
+      },
+      {
+        path: 'payments',
+        loadChildren: './payments/payment.module#PaymentModule',
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
+      },
+      {
+        path: 'withdrawals',
+        loadChildren: './withdrawals/withdrawal.module#WithdrawalModule',
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
       },
       {
         path: 'settings',
         loadChildren: './settings/setting.module#SettingModule',
-       /* canLoad: [PermGuard],
-        data: {
-          permissions: ['create-branch'],
-          preload: true,
-          delay: true
-        }*/
-
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'mpesa',
+        loadChildren: './mpesa/mpesa.module#MpesaModule',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'reports',
+        loadChildren: './accounting/accounting.module#AccountingModule',
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
       },
       {
         path: 'user-profile',
         loadChildren: './user-profile/user-profile.module#UserProfileModule',
-        data: { preload: true, delay: true },
-
+        canActivate: [AuthGuard],
+        data: { preload: true, delay: true }
       },
     ]
   }
@@ -98,7 +91,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
        useHash: true,
       preloadingStrategy: AppPreloadingStrategy
-      // AppPreloadingStrategy : PreloadAllModules
     })
   ],
   exports: [

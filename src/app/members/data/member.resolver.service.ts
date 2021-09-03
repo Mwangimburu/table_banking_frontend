@@ -13,8 +13,6 @@ export class MemberResolverService implements Resolve<MemberModel> {
     constructor(private service: MemberService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | MemberModel {
-
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

@@ -6,10 +6,6 @@ export const ROUTES: Routes = [
         path: '',
         component: LoanSettingComponent,
         children: [
-            /*{
-                path: '',
-                loadChildren: 'app/settings/loan/source/loan-source-setting.module#LoanSourceSettingModule'
-            },*/
             {
                 path: '',
                 loadChildren: 'app/settings/loan/type/loan-type-setting.module#LoanTypeSettingModule'

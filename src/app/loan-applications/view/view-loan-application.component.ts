@@ -1,12 +1,12 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoanApplicationModel } from '../models/loan-application-model';
 import { LoanApplicationService } from '../data/loan-application.service';
 import { NotificationService } from '../../shared/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-    selector: 'app-edit-loan-application',
+    selector: 'app-view-loan-application',
     styles: [],
     templateUrl: './view-loan-application.component.html'
 })
@@ -35,15 +35,12 @@ export class ViewLoanApplicationComponent implements OnInit  {
     loanApplicationId = '';
     loanApplicationData$: any;
 
-    constructor(/*@Inject(MAT_DIALOG_DATA) row: any,*/
-                private activeRoute: ActivatedRoute,
+    constructor(private activeRoute: ActivatedRoute,
                 private fb: FormBuilder,
                 private loanApplicationService: LoanApplicationService,
                 private notification: NotificationService,
                 private router: Router, private route: ActivatedRoute
-                /*private dialogRef: MatDialogRef<EditLoanApplicationComponent>*/) {
-
-        // this.loanApplication = row.data;
+                ) {
         this.routeData = this.router.getCurrentNavigation().extras.state;
 
     }
@@ -51,8 +48,6 @@ export class ViewLoanApplicationComponent implements OnInit  {
     ngOnInit() {
 
         this.id = this.route.snapshot.paramMap.get('id');
-
-      //  this.loanApplicationData$ = this.loanApplicationService.selectedLoanApplicationChanges$;
 
         this.loanApplicationService.selectedLoanApplicationChanges$.subscribe(data => {
             // Data from service
@@ -102,7 +97,6 @@ export class ViewLoanApplicationComponent implements OnInit  {
     }
 
     close() {
-      //  this.dialogRef.close();
     }
 
     update() {
@@ -111,20 +105,13 @@ export class ViewLoanApplicationComponent implements OnInit  {
         this.loader = true;
         this.loanApplicationService.update(body)
             .subscribe((data) => {
-                    console.log('Update member: ', data);
                     this.loader = false;
-
-                    // this.loadData();
-                //    this.dialogRef.close(this.form.value);
-
                     // notify success
                     this.notification.showNotification('success', 'Success !! Loan application has been updated.');
 
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit member component: ', error);
-
                     if (error.member === 0) {
                         // notify error
                         return;
@@ -135,7 +122,6 @@ export class ViewLoanApplicationComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

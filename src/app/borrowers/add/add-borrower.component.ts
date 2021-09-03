@@ -1,6 +1,6 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { BorrowerModel } from '../models/borrower-model';
 import { BorrowerService } from '../data/borrower.service';
 
@@ -52,8 +52,7 @@ export class AddBorrowerComponent implements OnInit  {
             );
 
         this.form = this.fb.group({
-            member_id: [''/*, [Validators.required,
-                Validators.minLength(3)]*/],
+            member_id: [''],
             credit_score: [''],
             borrower_status_id: [''],
             witness_type_id: [''],
@@ -89,7 +88,6 @@ export class AddBorrowerComponent implements OnInit  {
 
         this.memberService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New borrower created.');
                 },
@@ -106,7 +104,6 @@ export class AddBorrowerComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

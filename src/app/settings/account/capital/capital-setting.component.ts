@@ -10,8 +10,8 @@ import { CapitalSettingModel } from './model/capital-setting.model';
 import { EditCapitalComponent } from './edit/edit-capital.component';
 import { NotificationService } from '../../../shared/notification.service';
 import { PeriodSettingService } from '../period/data/period-setting.service';
-import { MemberService } from '../../../members/data/member.service';
 import { BranchService } from '../../branch/general/data/branch.service';
+import { PaymentMethodSettingService } from '../../payment/method/data/payment-method-setting.service';
 
 @Component({
     selector: 'app-capital-setting',
@@ -20,6 +20,8 @@ import { BranchService } from '../../branch/general/data/branch.service';
 })
 export class CapitalSettingComponent implements OnInit, AfterViewInit {
     displayedColumns = [
+        'capital_date',
+        'method_id',
         'branch_id',
         'amount',
         'description'
@@ -45,10 +47,12 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
 
     interestTypes: any = [];
     branches: any = [];
+    paymentMethods: any = [];
 
 
     constructor(private service: CapitalSettingService, private interestTypeService: PeriodSettingService,
-                private notification: NotificationService, private dialog: MatDialog, private branchService: BranchService) {
+                private notification: NotificationService, private dialog: MatDialog,
+                private branchService: BranchService, private paymentMethodService: PaymentMethodSettingService) {
     }
 
     /**
@@ -64,11 +68,16 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         this.dataSource.meta$.subscribe((res) => this.meta = res);
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.dataSource.load('', 0, 0, 'amount', 'asc');
+        this.dataSource.load('', 0, 0, 'capital_date', 'asc');
 
         this.branchService.list('name')
             .subscribe((res) => this.branches = res,
                 () => this.branches = []
+            );
+
+        this.paymentMethodService.list('name')
+            .subscribe((res) => this.paymentMethods = res,
+                () => this.paymentMethods = []
             );
     }
 
@@ -81,7 +90,8 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.autoFocus = true;
 
         dialogConfig.data = {
-            branches: this.branches
+            branches: this.branches,
+            paymentMethods: this.paymentMethods
         };
 
         const dialogRef = this.dialog.open(AddCapitalComponent, dialogConfig);
@@ -105,7 +115,8 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
         dialogConfig.data = {
-            branches: this.branches
+            branches: this.branches,
+            paymentMethods: this.paymentMethods
         };
 
         const dialogRef = this.dialog.open(EditCapitalComponent, dialogConfig);
@@ -122,7 +133,6 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -148,10 +158,7 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -173,7 +180,6 @@ export class CapitalSettingComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {

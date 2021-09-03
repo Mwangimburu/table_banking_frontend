@@ -155,8 +155,6 @@ export class WitnessTypeSettingComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
-
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this.delete(type);

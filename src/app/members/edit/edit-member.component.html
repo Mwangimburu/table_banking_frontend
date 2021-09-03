@@ -120,62 +120,28 @@
         </div>
         <div class="col-md-6">
             <label>Change Membership Form</label><br/>
-            <input type="file" #membershipFormFileInput style="display: none" accept=".pdf,.doc,.docx"  (change)="membershipFormUpload($event.target.files)">
+            <input type="file" #membershipFormFileInput class="file-input" accept=".pdf,.doc,.docx"  (change)="membershipFormUpload($event.target.files)">
             <button mat-button class="mat-raised-button" (click)="membershipFormFileInput.click()">
                 <i class="material-icons">attachment</i>
-                Member Photo</button>
+                Membership Form</button>
         </div>
     </div>
 
     <div  class="row">
         <div class="col-6">
-            <img *ngIf="showPhoto" class="img" [src]="showPhoto | async" alt="Membership Photo" style="width: 120px; height: 120px;">
+            <img *ngIf="showPhoto" class="img member-photo" [src]="showPhoto | async" alt="Membership Photo">
         </div>
         <div class="col-6">
             <label>Change Member Photo</label><br/>
-            <input type="file" #profileFileInput style="display: none" accept="image/*"  (change)="onMemberPhotoSelect($event.target.files)">
+            <input type="file" #profileFileInput class="file-input" accept="image/*"  (change)="onMemberPhotoSelect($event.target.files)">
             <button mat-button class="mat-raised-button" (click)="profileFileInput.click()">
                 <i class="material-icons">attachment</i>
                 Member Photo</button>
         </div>
     </div>
-<!--
-    <input formControlName="document" type="file" ng2FileSelect accept="image/*" [uploader]="uploader" multiple/><br/>
-    <br>
-    <div class="drop-zone">
-        <div ng2FileDrop [uploader]="uploader" class="drop-zone">
-            Drag and drop files to upload
-        </div>
-    </div>
-
-    <table>
-        <thead>
-        <tr>
-            <th width="90%">
-                File Name
-            </th>
-            <th width="10%">
-                Remove
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of uploader.queue">
-            <th width="90%">
-                (NaN MB)
-            </th>
-            <th class="text-center" width="10%">
-                <mat-icon (click)="item.remove()">delete</mat-icon>
-            </th>
-        </tr>
-        </tbody>
-    </table>
-    <br>
-    <button mat-raised-button color="accent" [disabled]="!uploadForm.valid" type="submit">Upload Data</button>-->
-
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="update()" [disabled]="!form.valid">Update</button>
 </mat-dialog-actions>

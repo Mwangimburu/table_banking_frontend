@@ -48,7 +48,6 @@ export class EditCommunicationGeneralComponent implements OnInit  {
     }
 
     ngOnInit() {
-       console.log(this.communicationSetting.email_template);
     }
 
     close() {
@@ -61,10 +60,8 @@ export class EditCommunicationGeneralComponent implements OnInit  {
         this.loader = true;
         this.communicationGeneralSettingService.update(body)
             .subscribe((data) => {
-                    console.log('Update type: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -73,10 +70,8 @@ export class EditCommunicationGeneralComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit type component: ', error);
 
                     if (error.type === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -85,7 +80,6 @@ export class EditCommunicationGeneralComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

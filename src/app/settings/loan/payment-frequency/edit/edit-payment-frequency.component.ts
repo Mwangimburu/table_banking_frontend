@@ -6,7 +6,7 @@ import { PaymentFrequencySettingService } from '../data/payment-frequency-settin
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-edit-interest-type',
+    selector: 'app-edit-payment-frequency',
     styles: [],
     templateUrl: './edit-payment-frequency.component.html'
 })
@@ -50,22 +50,18 @@ export class EditPaymentFrequencyComponent implements OnInit  {
         this.loader = true;
         this.interestTypeService.update(body)
             .subscribe((data) => {
-                    console.log('Update interestType: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Source has been updated.');
+                    this.notification.showNotification('success', 'Success !! Payment Frequency has been updated.');
 
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit interestType component: ', error);
 
                     if (error.interestType === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -74,7 +70,6 @@ export class EditPaymentFrequencyComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

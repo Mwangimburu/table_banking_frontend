@@ -1,6 +1,4 @@
 <div class="row">
-
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -11,7 +9,6 @@
                         <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                             <mat-icon>add</mat-icon>Add New
                         </button>
-
                     </div>
 
                     <div class="col-9">
@@ -53,10 +50,6 @@
                                         <mat-icon color="accent">edit</mat-icon>
                                         <span>Edit</span>
                                     </button>
-                                   <!-- <button mat-menu-item (click)="openConfirmationDialog(row)">
-                                        <mat-icon color="warn">delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>-->
                                 </mat-menu>
                             </mat-cell>
                         </ng-container>
@@ -76,10 +69,7 @@
                                    [pageIndex]="pageIndex"
                                    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
                     </mat-paginator>
-
-
                 </div>
-
             </div>
         </div>
     </div>

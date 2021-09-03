@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-general-setting',
+    selector: 'app-branch-setting',
     templateUrl: './branch-setting.component.html',
     styleUrls: ['./branch-setting.component.css']
 })

@@ -6,7 +6,7 @@ import { LoanSourceSettingService } from '../data/loan-source-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-edit-tax-source',
+    selector: 'app-edit-loan-source',
     styles: [],
     templateUrl: './edit-loan-source.component.html'
 })
@@ -49,10 +49,8 @@ export class EditLoanSourceComponent implements OnInit  {
         this.loader = true;
         this.sourceService.update(body)
             .subscribe((data) => {
-                    console.log('Update source: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -61,10 +59,8 @@ export class EditLoanSourceComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit source component: ', error);
 
                     if (error.source === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -73,7 +69,6 @@ export class EditLoanSourceComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

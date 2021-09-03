@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoanTypeSettingModel } from '../model/loan-type-setting.model';
 import { LoanTypeSettingService } from '../data/loan-type-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
-import { PenaltyTypeSettingService } from '../../penalty/data/penalty-type-setting.service';
-import { PenaltyFrequencySettingService } from '../../penalty/data/penalty-frequency-setting.service';
 
 @Component({
     selector: 'app-add-tax-type',
@@ -52,9 +50,7 @@ export class AddLoanTypeComponent implements OnInit  {
             active_status: [''],
             penalty_type_id: [''],
             penalty_value: [0],
-            penalty_frequency_id: [''],
-            reduce_principal_early: new FormControl(false)
-
+            penalty_frequency_id: ['']
         });
     }
 
@@ -75,13 +71,10 @@ export class AddLoanTypeComponent implements OnInit  {
 
         this.loader = true;
 
-        console.log('Create Type: ', body);
-
-
         this.typeService.create(body)
             .subscribe((data) => {
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New type created.');
+                    this.notification.showNotification('success', 'Success !! New Loan Type created.');
                 },
                 (error) => {
                     this.loader = false;
@@ -96,7 +89,6 @@ export class AddLoanTypeComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

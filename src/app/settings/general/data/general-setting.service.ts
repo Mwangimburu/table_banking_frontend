@@ -26,9 +26,6 @@ export class GeneralSettingService extends BaseService<GeneralSettingModel> {
      * @param item
      */
     public update(item: any): Observable<GeneralSettingModel> {
-       // return this.localHttpClient.post<any>(super.getResourceUrl(), item);
-      //  return this.localHttpClient.put<any>(super.getItemUrl(item.id), item);
-       // return this.localHttpClient.put<any>(super.getItemUrl(item.get('id')), item);
         return this.localHttpClient.put<any>(super.getItemUrl(item.id), item);
     }
 
@@ -46,8 +43,6 @@ export class GeneralSettingService extends BaseService<GeneralSettingModel> {
      * @param file_path
      */
     public fetchLogo(file_path: any): Observable<File> {
-        console.log('Filepath');
-        console.log(file_path);
         const imageUrl = 'fetch_logo';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
         return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
@@ -71,7 +66,6 @@ export class GeneralSettingService extends BaseService<GeneralSettingModel> {
         const imageUrl = 'fetch_logo';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
         return this.localHttpClient.post<any>(url, {id}, { responseType: 'blob' as 'json'});
-        // return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 
 }

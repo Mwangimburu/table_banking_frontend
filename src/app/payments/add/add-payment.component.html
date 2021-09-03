@@ -1,4 +1,4 @@
-<h5 mat-dialog-title>Add Payment</h5>
+<h5 mat-dialog-title>New Deposit</h5>
 
 <div class="d-flex spinner-container" *ngIf="loader">
     <mat-spinner [diameter]="40"></mat-spinner>
@@ -8,13 +8,20 @@
 
     <div class="row">
         <div class="col-4">
-            <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Members" formControlName="member_id" #memberSelect (selectionChange)="onMemberItemChange(memberSelect.value)">
-                    <mat-option *ngFor="let member of members" [value]="member.id">
+            <mat-form-field>
+                <mat-select placeholder="Member*" formControlName="member_id" #memberSelect (selectionChange)="onMemberItemChange(memberSelect.value)">
+                    <!-- place ngx-mat-select-search inside mat-option to allow opening without initial selection -->
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="memberServerSideFilteringCtrl" [searching]="searching"
+                                               placeholderLabel="Find Member..."
+                                               noEntriesFoundLabel="No matching member found ...">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let member of filteredServerSideMembers | async" [value]="member.id">
                         {{member.first_name}}
                     </mat-option>
                 </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.account_id" class="form__error">{{ formErrors.account_id }}</mat-error>
+                <mat-error align="start" *ngIf="formErrors?.member_id" class="form__error">{{ formErrors.member_id }}</mat-error>
             </mat-form-field>
         </div>
         <div class="col-4">
@@ -42,7 +49,7 @@
         </div>
         <div class="col-4">
             <mat-form-field class="full-width">
-                <input matInput formControlName="amount" placeholder="Amount">
+                <input matInput type="number" min="0" formControlName="amount" placeholder="Amount">
                 <mat-error align="start" *ngIf="formErrors?.amount" class="form__error">{{ formErrors.amount }}</mat-error>
             </mat-form-field>
         </div>
@@ -99,14 +106,9 @@
         <mat-error align="start" *ngIf="formErrors?.notes" class="form__error">{{ formErrors.notes }}</mat-error>
     </mat-form-field>
 
-  <!--  <mat-form-field class="full-width">
-        <input matInput formControlName="attachment" placeholder="Any Attachment">
-        <mat-error align="start" *ngIf="formErrors?.attachment" class="form__error">{{ formErrors.attachment }}</mat-error>
-    </mat-form-field>-->
-
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

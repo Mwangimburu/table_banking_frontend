@@ -16,8 +16,17 @@ export class UserSettingService extends BaseService<UserSettingModel> {
      *
      * @param email
      */
-    public resetPassword(email: any): Observable<any> {
+    public forgotPassword(email: any): Observable<any> {
         const itemUrl = 'forgot_password';
         return this.localHttpClient.post<any>(`${super.getApiUrl()}/${itemUrl}`, email);
+    }
+
+    /**
+     *
+     * @param item
+     */
+    public resetPassword(item: any): Observable<any> {
+        const itemUrl = 'reset_password';
+        return this.localHttpClient.post<any>(`${super.getApiUrl()}/${itemUrl}`, item);
     }
 }

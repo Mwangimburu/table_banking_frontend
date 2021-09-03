@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { ConfirmationDialogComponent } from '../../shared/delete/confirmation-dialog-component';
 import { AccountingDataSource } from '../data/accounting-data.source';
-import { GeneralJournalDataSource } from '../data/general-journal-data.source';
 import { AccountingService } from '../data/accounting.service';
 import { GeneralJournalService } from '../data/general-journal.service';
 import { NotificationService } from '../../shared/notification.service';
@@ -13,7 +12,6 @@ import { AccountingModel } from '../models/accounting-model';
 import { StatementComponent } from '../statement/statement.component';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../reducers';
 import { branch } from '../../auth/auth.selectors';
@@ -111,7 +109,12 @@ export class LedgerComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-        dialogConfig.data = {account};
+       // dialogConfig.data = {id};
+
+        dialogConfig.data = {
+            id: id,
+            type: 'general'
+        };
 
         const dialogRef = this.dialog.open(StatementComponent, dialogConfig);
     }
@@ -120,7 +123,7 @@ export class LedgerComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
+       // console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -149,9 +152,9 @@ export class LedgerComponent implements OnInit, AfterViewInit {
 
         this.paginator.page.pipe(
             // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
+          //  tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
+           // tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
         ).subscribe();
 
         // reset the paginator after sorting
@@ -170,6 +173,47 @@ export class LedgerComponent implements OnInit, AfterViewInit {
     clearSearch() {
         this.search.nativeElement.value = '';
         this.loadData()
+    }
+
+    /**
+     *
+     * @param row
+     */
+    downloadStatement(row: any) {
+
+        this.loader = true;
+        this.service.downloadGeneralAccountStatement({id: row.id, pdf: true})
+            .subscribe((res) => {
+                    this.loader = false;
+                    this.showFile(res);
+                },
+                () => {
+                    this.loader = false;
+                    this.notification.showNotification('danger', 'Error Downloading File!');
+                }
+            );
+    }
+
+
+    /**
+     *
+     * @param blob
+     */
+    showFile(blob){
+        let newBlob = new Blob([blob], {type: "application/pdf"});
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+        }
+        const data = window.URL.createObjectURL(newBlob);
+        let link = document.createElement('a');
+        link.href = data;
+        link.download="statement.pdf";
+        link.click();
+        setTimeout(function(){
+            window.URL.revokeObjectURL(data);
+        }, 100);
     }
 
 }

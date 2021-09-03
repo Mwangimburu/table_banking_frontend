@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
 import { LoanService } from './data/loan.service';
 import { AddLoanComponent } from './add/add-loan.component';
@@ -10,8 +9,9 @@ import { LoanModel } from './models/loan-model';
 import { EditLoanComponent } from './edit/edit-loan.component';
 import { LoanDataSource } from './data/loan-data.source';
 import { NotificationService } from '../shared/notification.service';
-import { LoanApplicationModel } from '../loan-applications/models/loan-application-model';
 import { LoanAmortizationComponent } from './amortization/loan-amortization.component';
+import { StatementComponent } from '../accounting/statement/statement.component';
+import { AccountingService } from '../accounting/data/accounting.service';
 
 @Component({
     selector: 'app-loans',
@@ -52,7 +52,8 @@ export class LoanComponent implements OnInit, AfterViewInit {
     dataSource: LoanDataSource;
     selectedRowIndex = '';
 
-    constructor(private service: LoanService, private notification: NotificationService, private dialog: MatDialog) {
+    constructor(private service: LoanService, private notification: NotificationService,
+                private dialog: MatDialog, private accountingService: AccountingService) {
     }
 
     /**
@@ -69,21 +70,7 @@ export class LoanComponent implements OnInit, AfterViewInit {
 
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'loan_reference_number', 'desc', 'closed_on');
-
-      /*  this.dataSource.connect(null).subscribe(data => {
-            if (data && data.length > 0) {
-                this.selectedRowIndex = data[0].id;
-                this.onSelected(data[0]);
-                console.log(data[0].id);
-            }
-        });*/
-
     }
-
-  /*  onSelected(loan: LoanModel): void {
-        this.selectedRowIndex = loan.id;
-        this.service.changeSelectedLoan(loan);
-    }*/
 
     /**
      * Add dialog launch
@@ -121,13 +108,6 @@ export class LoanComponent implements OnInit, AfterViewInit {
         dialogConfig.data = {loan};
 
         const dialogRef = this.dialog.open(LoanAmortizationComponent, dialogConfig);
-     /*   dialogRef.afterClosed().subscribe(
-            (val) => {
-                if ((val)) {
-                    this.loadData();
-                }
-            }
-        );*/
     }
 
 
@@ -157,7 +137,6 @@ export class LoanComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -184,10 +163,7 @@ export class LoanComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -209,7 +185,6 @@ export class LoanComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
@@ -217,6 +192,22 @@ export class LoanComponent implements OnInit, AfterViewInit {
             }
             this.dialogRef = null;
         });
+    }
+
+
+    accountBalance(row) {
+        const id = row.id;
+
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            id: id,
+            type: 'loan'
+        };
+
+        const dialogRef = this.dialog.open(StatementComponent, dialogConfig);
     }
 
     /**
@@ -248,6 +239,65 @@ export class LoanComponent implements OnInit, AfterViewInit {
     clearSearch() {
         this.search.nativeElement.value = '';
         this.loadData()
+    }
+
+    /**
+     *
+     * @param row
+     */
+    downloadAmortization(row: any) {
+        this.loader = true;
+        this.service.downloadAmortizationStatement({id: row.id, pdf: true})
+            .subscribe((res) => {
+                    this.loader = false;
+                    this.showFile(res);
+                },
+                () => {
+                    this.loader = false;
+                    this.notification.showNotification('danger', 'Error Downloading File!');
+                }
+            );
+    }
+
+    /**
+     *
+     * @param row
+     */
+    downloadStatement(row: any) {
+
+        this.loader = true;
+        this.accountingService.downloadLoanAccountStatement({id: row.id, pdf: true})
+            .subscribe((res) => {
+                    this.loader = false;
+                    this.showFile(res);
+                },
+                () => {
+                    this.loader = false;
+                    this.notification.showNotification('danger', 'Error Downloading File!');
+                }
+            );
+    }
+
+
+    /**
+     *
+     * @param blob
+     */
+    showFile(blob){
+        let newBlob = new Blob([blob], {type: "application/pdf"});
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+        }
+        const data = window.URL.createObjectURL(newBlob);
+        let link = document.createElement('a');
+        link.href = data;
+        link.download="statement.pdf";
+        link.click();
+        setTimeout(function(){
+            window.URL.revokeObjectURL(data);
+        }, 100);
     }
 }
 

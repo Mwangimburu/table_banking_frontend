@@ -44,7 +44,7 @@
         <mat-row *matRowDef="let row; columns: guarantorColumns;"> </mat-row>
 
     </mat-table>
-    <span *ngIf="meta?.total===0">No collateral data.</span>
+    <span *ngIf="meta?.total===0">No guarantor data.</span>
 
     <div class="d-flex justify-content-center spinner-container" *ngIf="(guarantorDataSource?.loading$ | async) || loader">
         <mat-spinner [diameter]="40"></mat-spinner>

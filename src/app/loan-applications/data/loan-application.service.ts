@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { LoanApplicationModel } from '../models/loan-application-model';
 import { BaseService } from '../../shared/base-service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MemberModel } from '../../members/models/member-model';
-import { map } from 'rxjs/operators';
 import { UserProfileModel } from '../../user-profile/model/user-profile.model';
 
 @Injectable({ providedIn: 'root' })
@@ -36,11 +34,8 @@ export class LoanApplicationService extends BaseService<LoanApplicationModel> {
      * @param file_path
      */
     getImage(file_path: any): Observable<File> {
-
         const imageUrl = 'profile_pic';
-
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
-
         return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 
@@ -60,7 +55,6 @@ export class LoanApplicationService extends BaseService<LoanApplicationModel> {
     public fetchApplicationForm(file_path: any): Observable<any> {
         const imageUrl = 'application_form';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
-        // return this.localHttpClient.post<any>(url, {}, { responseType: 'blob' as 'json'});
         return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 }

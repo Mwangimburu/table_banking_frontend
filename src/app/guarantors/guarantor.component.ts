@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 import { ConfirmationDialogComponent } from '../shared/delete/confirmation-dialog-component';
 import { GuarantorService } from './data/guarantor.service';
 import { AddGuarantorComponent } from './add/add-guarantor.component';
@@ -131,7 +130,6 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -158,9 +156,7 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
 
         this.paginator.page.pipe(
             // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -182,7 +178,6 @@ export class GuarantorComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {

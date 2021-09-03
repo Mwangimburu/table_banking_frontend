@@ -3,10 +3,9 @@ import { BaseModel } from '../../shared/models/base-model';
 export class LoanApplicationModel extends BaseModel {
     status_id: string;
     witnessed_by_user_id: string;
- //   approved_by_user_id: string;
-
     reviewed_by_user_id: string;
     reviewed_on: string;
+    reviewed_on_display: string;
     status: string;
     approved_on: string;
     rejected_on: string;
@@ -17,6 +16,7 @@ export class LoanApplicationModel extends BaseModel {
     loan_type_id: string;
     interest_type_id: string;
     service_fee: string;
+    service_fee_display: string;
 
     penalty_type_id: string;
     penalty_value: string;
@@ -24,8 +24,14 @@ export class LoanApplicationModel extends BaseModel {
     reduce_principal_early: string;
 
     application_date: string;
+    application_date_display: string;
 
     amount_applied: string;
+    amount_applied_display: string;
+
+    amount_to_disburse: string;
+    amount_to_disburse_display: string;
+
     interest_rate: string;
     repayment_period: string;
     payment_frequency: string;
@@ -34,11 +40,18 @@ export class LoanApplicationModel extends BaseModel {
     interest_type: string;
 
     disburse_method_id: string;
-    mpesa_number: string;
+
+    bank_account: string;
+    disburse_note: string;
+
+    cheque_number: string;
+    cheque_date: string;
     bank_name: string;
     bank_branch: string;
-    bank_account: string;
-    other_banking_details: string;
+
+    mpesa_number: string;
+    mpesa_first_name: string;
+    mpesa_last_name: string;
 
     witness_type_id: string;
     witness_first_name: string;
@@ -60,4 +73,10 @@ export class LoanApplicationModel extends BaseModel {
     loanType: {};
 
     loan_application_form: File | null;
+
+    bank_fields: {};
+
+    disburseMethod: any;
+    witnessType: any;
+    other_banking_details: any;
 }

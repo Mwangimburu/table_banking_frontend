@@ -11,7 +11,7 @@ import { EditPermissionComponent } from './edit/edit-permission.component';
 import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
-    selector: 'app-permission-permissions-setting',
+    selector: 'app-user-permission-setting',
     templateUrl: './user-permissions-setting.component.html',
     styleUrls: ['./user-permissions-setting.component.css']
 })
@@ -86,7 +86,6 @@ export class UserPermissionsSettingComponent implements OnInit, AfterViewInit {
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -112,10 +111,7 @@ export class UserPermissionsSettingComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

@@ -14,7 +14,6 @@ export class BorrowerResolverService implements Resolve<BorrowerModel> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | BorrowerModel {
 
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

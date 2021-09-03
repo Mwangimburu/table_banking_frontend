@@ -70,7 +70,6 @@ export class UserProfileComponent implements OnInit {
    * @param profile
    */
   prePopulateForm(profile: UserProfileModel) {
-   // this.profile = profile;
 
     this.form.patchValue({
       branch: this.profile.branch.name,
@@ -121,15 +120,10 @@ export class UserProfileComponent implements OnInit {
    *
    */
   getImageFromService() {
-    //  this.isImageLoading = true;
     if (this.profile && this.profile.photo !== null) {
       this.userProfileService.fetchPhoto(this.profile.photo).subscribe(data => {
         this.createImageFromBlob(data);
-        // this.isImageLoading = false;
       }, error => {
-        // this.isImageLoading = false;
-        console.log('Error getting image from API');
-        console.log(error);
       });
     }
   }
@@ -164,7 +158,7 @@ export class UserProfileComponent implements OnInit {
             },
             (error) => {
               this.loader = false;
-              console.log('Error at Photo upload: ', error);
+             // console.log('Error at Photo upload: ', error);
               if (error.payment === 0) {
                 // notify error
                 return;
@@ -175,7 +169,6 @@ export class UserProfileComponent implements OnInit {
               if (this.formErrors) {
                 // loop through from fields, If has an error, mark as invalid so mat-error can show
                 for (const prop in this.formErrors) {
-                  console.log('Hallo: ', prop);
                   if (this.form) {
                     this.form.controls[prop].setErrors({incorrect: true});
                   }
@@ -193,17 +186,13 @@ export class UserProfileComponent implements OnInit {
     this.loader = true;
     this.userProfileService.update(body)
         .subscribe((data) => {
-             // console.log('Update Profile: ', data);
               this.loader = false;
-              // this.loadData();
               // notify success
               this.notification.showNotification('success', 'Success !! Profile has been updated.');
 
             },
             (error) => {
               this.loader = false;
-            //  console.log('Error at edit Profile component: ', error);
-
               if (error.expense === 0) {
                 // notify error
                 return;
@@ -214,7 +203,6 @@ export class UserProfileComponent implements OnInit {
               if (this.formErrors) {
                 // loop through from fields, If has an error, mark as invalid so mat-error can show
                 for (const prop in this.formErrors) {
-                //  console.log('Hallo: ', prop);
                   if (this.form) {
                     this.form.controls[prop].setErrors({incorrect: true});
                   }

@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoanModel } from '../models/loan-model';
 import { LoanService } from '../data/loan.service';
 import { NotificationService } from '../../shared/notification.service';
 
 @Component({
-    selector: 'app-edit-lead',
+    selector: 'app-edit-loan',
     styles: [],
     templateUrl: './edit-loan.component.html'
 })
@@ -49,21 +49,6 @@ export class EditLoanComponent implements OnInit  {
     }
 
     ngOnInit() {
-        /*this.leadStatusService.list('name')
-            .subscribe((res) => this.leadStatuses = res,
-                () => this.leadStatuses = []
-            );
-
-        this.leadSourceService.list('name')
-            .subscribe((res) => this.leadSources = res,
-                () => this.leadSources = []
-            );
-
-        this.leadTypeService.list('name')
-            .subscribe((res) => this.leadTypes = res,
-                () => this.leadTypes = []
-            );*/
-
         this.firstFormGroup = this.fb.group({
             title: ['', Validators.required],
             amount: [''],
@@ -107,10 +92,8 @@ export class EditLoanComponent implements OnInit  {
         this.loader = true;
         this.leadService.update(body)
             .subscribe((data) => {
-                    console.log('Update lead: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -119,8 +102,6 @@ export class EditLoanComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit lead component: ', error);
-
                     if (error.lead === 0) {
                         // notify error
                         return;
@@ -131,7 +112,6 @@ export class EditLoanComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

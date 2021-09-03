@@ -6,7 +6,7 @@ import { PeriodSettingService } from '../data/period-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-edit-interest-type',
+    selector: 'app-edit-period',
     styles: [],
     templateUrl: './edit-period.component.html'
 })
@@ -49,10 +49,8 @@ export class EditPeriodComponent implements OnInit  {
         this.loader = true;
         this.fiscalPeriodService.update(body)
             .subscribe((data) => {
-                    console.log('Update fiscalPeriod: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -61,10 +59,8 @@ export class EditPeriodComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit fiscalPeriod component: ', error);
 
                     if (error.fiscalPeriod === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -73,7 +69,6 @@ export class EditPeriodComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

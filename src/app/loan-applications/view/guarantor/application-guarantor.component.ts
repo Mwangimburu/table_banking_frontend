@@ -55,12 +55,6 @@ export class ApplicationGuarantorComponent implements OnInit, AfterViewInit {
     constructor(private service: ApplicationGuarantorService, private notification: NotificationService,
                 private dialog: MatDialog, private loanApplicationService: LoanApplicationService,
                 private memberService: MemberService) {
-
-       /* this.loanApplicationService.selectedLoanApplicationChanges$.subscribe(data => {
-            console.log('At Guarantor ...passed loan application ...');
-            console.log(data);
-            this.loanApplicationData = data
-        });*/
     }
 
     /**
@@ -79,9 +73,6 @@ export class ApplicationGuarantorComponent implements OnInit, AfterViewInit {
         });
 
         this.guaranteeAmount = this.loanApplicationData.amount_applied;
-
-        console.log('this.loanApplicationData');
-        console.log(this.loanApplicationData);
 
         this.dataSource = new ApplicationGuarantorDataSource(this.service);
 
@@ -151,7 +142,6 @@ export class ApplicationGuarantorComponent implements OnInit, AfterViewInit {
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -178,10 +168,7 @@ export class ApplicationGuarantorComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -203,7 +190,6 @@ export class ApplicationGuarantorComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {

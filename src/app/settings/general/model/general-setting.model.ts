@@ -15,4 +15,13 @@ export class GeneralSettingModel extends BaseModel {
     logo: File | null;
 
     favicon: string;
+    date_formats: string;
+    amount_thousand_separators: string;
+    amount_decimals: string;
+    amount_decimal_separators: string;
+
+    date_format: string;
+    amount_thousand_separator: string;
+    amount_decimal: string;
+    amount_decimal_separator: string;
 }

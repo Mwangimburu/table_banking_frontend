@@ -6,7 +6,7 @@ import { PaymentMethodSettingService } from '../data/payment-method-setting.serv
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-tax-method',
+    selector: 'app-add-payment-method',
     styles: [],
     templateUrl: './add-payment-method.component.html'
 })
@@ -56,9 +56,8 @@ export class AddPaymentMethodComponent implements OnInit  {
 
         this.methodService.create(body)
             .subscribe((data) => {
-                    console.log('Create Method: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New method created.');
+                    this.notification.showNotification('success', 'Success !! New Payment Method created.');
                 },
                 (error) => {
                     this.loader = false;
@@ -73,7 +72,6 @@ export class AddPaymentMethodComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

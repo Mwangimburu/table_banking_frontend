@@ -30,14 +30,6 @@
 
     <div class="row">
         <div class="col-4">
-          <!--  <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Branch" formControlName="branch_id">
-                    <mat-option *ngFor="let branch of branches" [value]="branch.id">
-                        {{branch.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.branch_id" class="form__error">{{ formErrors.branch_id }}</mat-error>
-            </mat-form-field>-->
 
             <mat-form-field  class="full-width">
                 <input matInput [matDatepicker]="date_of_birth" formControlName="date_of_birth" placeholder="Date of Birth">
@@ -106,15 +98,6 @@
                 <mat-error align="start" *ngIf="formErrors?.city" class="form__error">{{ formErrors.city }}</mat-error>
             </mat-form-field>
         </div>
-
-       <!-- <div class="col-4">
-            <mat-form-field class="full-width">
-                <input matInput formControlName="passport_number" placeholder="Passport Number">
-                <mat-error align="start" *ngIf="formErrors?.passport_number" class="form__error">{{ formErrors.passport_number }}</mat-error>
-            </mat-form-field>
-        </div>-->
-
-
     </div>
 
     <div class="row">
@@ -127,20 +110,18 @@
                 <mat-error align="start" *ngIf="formErrors?.date_became_member" class="form__error">{{ formErrors.date_became_member }}</mat-error>
             </mat-form-field>
         </div>
-
-
         <div class="col-4">
         </div>
     </div>
 
     <div class="row">
         <div class="col-4">
-            <input type="file" #profileFileInput style="display: none" accept="image/*"  (change)="onProfilePicSelect($event.target.files)">
+            <input type="file" #profileFileInput class="file-input" accept="image/*"  (change)="onProfilePicSelect($event.target.files)">
             <button mat-button class="mat-raised-button" (click)="profileFileInput.click()">
                 <i class="material-icons">attachment</i>
                 Profile Photo</button>
 
-            <img *ngIf="profilePicUrl" [src]="profilePicUrl" style="width: 120px; height: 120px;">
+            <img alt="Member Photo" *ngIf="profilePicUrl" [src]="profilePicUrl" class="member-photo">
         </div>
          <div class="col-md-8">
             <label>Membership Application Form</label><br/>
@@ -152,7 +133,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

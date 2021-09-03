@@ -119,9 +119,7 @@
           <div class="col-md-4">
               <div class="card card-profile">
                   <div class="card-avatar" *ngIf="showPhoto">
-<!--
-                          <img class="img" src="./assets/img/faces/marc.jpg" />
--->
+
                       <img class="img" [src]="showPhoto | async" alt="Profile Photo">
                   </div>
                   <div class="card-body">
@@ -132,7 +130,7 @@
                       </p>
 
                       <div>
-                          <input type="file" #profileFileInput style="display: none" accept="image/*"  (change)="onProfilePhotoSelect($event.target.files)">
+                          <input type="file" #profileFileInput class="file-input" accept="image/*"  (change)="onProfilePhotoSelect($event.target.files)">
                           <button mat-button class="mat-raised-button" (click)="profileFileInput.click()">
                               <i class="material-icons">attachment</i>
                               Profile Photo</button>

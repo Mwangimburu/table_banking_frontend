@@ -6,7 +6,7 @@ import { PermissionSettingModel } from '../../model/permission-setting-model';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-edit-role',
+    selector: 'app-edit-permission',
     styles: [],
     templateUrl: './edit-permission.component.html'
 })
@@ -27,7 +27,6 @@ export class EditPermissionComponent implements OnInit  {
     private dialogRef: MatDialogRef<EditPermissionComponent>) {
 
         this.permission = row.permission;
-        console.log(this.permission);
     }
 
     ngOnInit() {
@@ -51,10 +50,8 @@ export class EditPermissionComponent implements OnInit  {
         this.loader = true;
         this.permissionService.update(body)
             .subscribe((data) => {
-                    console.log('Update permission: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -63,10 +60,8 @@ export class EditPermissionComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit permission component: ', error);
 
                     if (error.permission === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -75,7 +70,6 @@ export class EditPermissionComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

@@ -1,16 +1,14 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ExpenseModel } from '../models/expense-model';
 import { ExpenseService } from '../data/expense.service';
 
 import { NotificationService } from '../../shared/notification.service';
-import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import * as moment from 'moment';
-import { ExpenseCategorySettingService } from '../../settings/expense/expense_category/data/expense-category-setting.service';
 
 @Component({
-    selector: 'app-add-payment',
+    selector: 'app-add-expense',
     styles: [],
     templateUrl: './add-expense.component.html'
 })
@@ -87,48 +85,6 @@ export class AddExpenseComponent implements OnInit  {
         this.dialogRef.close();
     }
 
-    /**
-     * Create expense
-     */
-/*    create() {
-
-        const body = Object.assign({}, this.expense, this.form.value);
-
-        this.loader = true;
-
-      //  body.expense_date = moment(body.expense_date).format('DD/MM/YYYY HH:mm');
-
-        this.expenseService.create(body)
-            .subscribe((data) => {
-                    console.log('Create Type: ', data);
-
-                    this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New Expense created.');
-                },
-                (error) => {
-                    console.log(error);
-                    this.loader = false;
-                    if (error.expense === 0) {
-                        this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
-                            ' Check your connection and retry.');
-                        return;
-                    }
-                    // An array of all form errors as returned by server
-                    this.formErrors = error;
-
-                    if (this.formErrors) {
-                        // loop through from fields, If has an error, mark as invalid so mat-error can show
-                        for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
-                            if (this.form) {
-                                this.form.controls[prop].setErrors({incorrect: true});
-                            }
-                        }
-                    }
-
-                });
-    }*/
-
     create() {
 
         const body = Object.assign({}, this.expense, this.form.value);
@@ -136,14 +92,14 @@ export class AddExpenseComponent implements OnInit  {
 
         this.expenseService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
+                   // console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New expense created.');
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('error ');
-                    console.log(error);
+                   // console.log('error ');
+                   // console.log(error);
 
                     if (error.expense === 0) {
                         this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
@@ -156,7 +112,6 @@ export class AddExpenseComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

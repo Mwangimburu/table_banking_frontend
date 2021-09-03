@@ -18,7 +18,6 @@ import { OtherReportsComponent } from './other-reports/other-reports.component';
     ],
     declarations: [
         AccountingComponent,
-        StatementComponent,
         LedgerComponent,
         JournalComponent,
         FinanceComponent,

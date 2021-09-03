@@ -1,6 +1,4 @@
 <div class="row">
-
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -8,7 +6,7 @@
                 <div class="row search-form-section">
 
                     <div class="col-3">
-                        <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
+                        <button *ngIf="!(dataSource?.loading$ | async)" mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                             <mat-icon>add</mat-icon>Add New
                         </button>
 
@@ -86,8 +84,6 @@
                                    [pageIndex]="pageIndex"
                                    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
                     </mat-paginator>
-
-
                 </div>
 
             </div>

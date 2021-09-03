@@ -1,12 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApplicationGuarantorModel } from '../model/application-guarantor.model';
 import { ApplicationGuarantorService } from '../data/application-guarantor.service';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-tax-method',
+    selector: 'app-add-application-guarantor',
     styles: [],
     templateUrl: './add-application-guarantor.component.html'
 })
@@ -80,9 +80,8 @@ export class AddApplicationGuarantorComponent implements OnInit  {
 
         this.methodService.create(body)
             .subscribe((data) => {
-                    console.log('Create Method: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New method created.');
+                    this.notification.showNotification('success', 'Success !! New Guarantor Added to Loan.');
                 },
                 (error) => {
                     this.loader = false;
@@ -97,7 +96,7 @@ export class AddApplicationGuarantorComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
+                          //  console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

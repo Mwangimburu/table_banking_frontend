@@ -8,22 +8,10 @@
             <div class="card-body">
 
                 <nav mat-tab-nav-bar>
-                 <!--   <a mat-tab-link routerLinkActive #payment="routerLinkActive" [active]="payment.isActive" [routerLinkActiveOptions]="{exact: true}"
-                       [routerLink]="['/settings/payment']">
-                        <span class="nav-text"> Payment</span></a>-->
-
                     <a mat-tab-link routerLinkActive #method="routerLinkActive" [active]="method.isActive" [routerLinkActiveOptions]="{exact: true}"
                        [routerLink]="['/settings/payment']">
                         <span class="nav-text"> Payment Methods</span></a>
-
-                   <!-- <a mat-tab-link routerLinkActive #method="routerLinkActive" [active]="method.isActive" [routerLink]="['method']">
-                        <span class="nav-text"> Methods</span></a>-->
-
-                   <!-- <a mat-tab-link routerLinkActive #status="routerLinkActive" [active]="status.isActive" [routerLink]="['status']">
-                        <span class="nav-text"> Status</span></a>-->
-
                 </nav>
-
                 <router-outlet></router-outlet>
 
             </div>

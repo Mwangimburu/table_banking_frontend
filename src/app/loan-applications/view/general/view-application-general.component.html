@@ -1,14 +1,10 @@
 <div class="row">
     <div class="col-md-12">
-
-
-
                         <mat-accordion class="example-headers-align">
 
                             <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        1. Details
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
 
@@ -20,7 +16,7 @@
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field>
-                                            <input matInput placeholder="Amount Applied" disabled value="{{(loanApplicationData$|async)?.amount_applied|number:'1.2'}}">
+                                            <input matInput placeholder="Amount Applied" disabled value="{{(loanApplicationData$|async)?.amount_applied_display}}">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -44,7 +40,7 @@
                                     </div>
                                     <div class="col-6">
                                         <mat-form-field>
-                                            <input matInput placeholder="Application Date" disabled value="{{(loanApplicationData$|async)?.application_date}}">
+                                            <input matInput placeholder="Application Date" disabled value="{{(loanApplicationData$|async)?.application_date_display}}">
                                         </mat-form-field>
                                     </div>
                                 </div>
@@ -111,14 +107,14 @@
                             <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        2.  Bank Details
+                                        2.  Disburse Information
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
 
                                 <div class="row">
                                     <div class="col-6">
                                         <mat-form-field>
-                                            <input matInput placeholder="Disburse Method" disabled value="{{(loanApplicationData$|async)?.disburse_method_id}}">
+                                            <input matInput placeholder="Disburse Method" disabled value="{{(loanApplicationData$|async)?.disburseMethod?.display_name}}">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -163,14 +159,14 @@
                             <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        3. Witness Details
+                                        3. Witness Information
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
 
                                 <div class="row">
                                     <div class="col-6">
                                         <mat-form-field>
-                                            <input matInput placeholder="Witness Type" disabled value="{{(loanApplicationData$|async)?.witness_type_id}}">
+                                            <input matInput placeholder="Witness Type" disabled value="{{(loanApplicationData$|async)?.witnessType?.display_name}}">
                                         </mat-form-field>
                                     </div>
                                     <div class="col-6">
@@ -234,8 +230,6 @@
                                         </mat-form-field>
                                     </div>
                                 </div>
-
-
                                 <mat-action-row>
                                     <button mat-button color="warn" (click)="prevStep()">Previous</button>
                                     <button mat-button color="primary" (click)="nextStep()">End</button>
@@ -243,8 +237,5 @@
                             </mat-expansion-panel>
 
                         </mat-accordion>
-
-
-
     </div>
 </div>

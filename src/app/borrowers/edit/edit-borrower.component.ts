@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BorrowerModel } from '../models/borrower-model';
 import { BorrowerService } from '../data/borrower.service';
@@ -69,10 +69,8 @@ export class EditBorrowerComponent implements OnInit  {
         this.loader = true;
         this.memberService.update(body)
             .subscribe((data) => {
-                    console.log('Update member: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -81,8 +79,6 @@ export class EditBorrowerComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit borrower component: ', error);
-
                     if (error.member === 0) {
                         // notify error
                         return;
@@ -93,7 +89,6 @@ export class EditBorrowerComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

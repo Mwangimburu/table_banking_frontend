@@ -15,8 +15,8 @@ export class LoanApplicationResolverService implements Resolve<LoanApplicationMo
 
     resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | LoanApplicationModel {
 
-        console.log('snap...');
-        console.log(snapshot.params.id);
+       // console.log('snap...');
+       // console.log(snapshot.params.id);
         this.id = snapshot.params.id;
 
         // If there's data in the loan application service, show it, otherwise fetch from db (This is incase of a page reload)
@@ -25,7 +25,7 @@ export class LoanApplicationResolverService implements Resolve<LoanApplicationMo
         });
 
         if ( this.loanApp == null) {
-           console.log('Ftech data from api');
+         //  console.log('Ftech data from api');
            this.loanApp = this.loanApplicationService.getById(this.id);
         }
 

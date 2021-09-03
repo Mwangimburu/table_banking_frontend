@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TransactionDataSource } from '../../../../../transactions/data/transaction-data.source';
 import { PaymentService } from '../../../../../payments/data/payment.service';
 import { TransactionService } from '../../../../../transactions/data/transaction.service';
@@ -60,8 +60,6 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
                 private dialogRef: MatDialogRef<PenaltyAdjustmentComponent>) {
 
         this.penalty = row.data;
-        console.log('penalty');
-        console.log(this.penalty);
 
         if(this.penalty.balance <= '0'){
             this.disable = true;
@@ -73,7 +71,6 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
         this.form = this.fb.group({
             amount: [this.penalty.amount, [Validators.required,
                 Validators.minLength(3)]],
-           // due_date: [this.penalty.due_date, Validators.required],
             paid_amount: [this.penalty.paid_amount, [Validators.required,
                 Validators.minLength(1)]],
             waiver_amount: [{value: this.penalty.balance, disabled: this.disable}, [Validators.required,
@@ -116,10 +113,7 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
      */
     ngAfterViewInit() {
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -142,16 +136,11 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
         body.loan = this.penalty.loan;
         body.balance = this.penalty.balance;
 
-        console.log('Waiver: ', body);
-
-
         this.loader = true;
         this.loanPenaltyService.waive(body)
             .subscribe((data) => {
-                    console.log('Update member: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -160,7 +149,7 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit penalty waiver: ', error);
+                  //  console.log('Error at edit penalty waiver: ', error);
 
                     if (error.member === 0) {
                         // notify error
@@ -172,7 +161,6 @@ export class PenaltyAdjustmentComponent implements OnInit, AfterViewInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

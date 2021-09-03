@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { ActivatedRoute } from '@angular/router';
-import { GeneralSettingService } from '../settings/general/data/general-setting.service';
+import { DashboardService } from './data/dashboard.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,6 +37,9 @@ export class DashboardComponent implements OnInit {
 
     data: any;
 
+    loaderDueToday = false;
+    loaderOverDue = false;
+
     activeLoans: any;
     activeMembers: any;
     loansSum: any;
@@ -57,7 +61,7 @@ export class DashboardComponent implements OnInit {
     count_loans_due_today: any;
     count_loan_applications: any;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private dashboardService: DashboardService, private notification: NotificationService) {
       if (this.route.snapshot.data['summary']) {
           this.data = this.route.snapshot.data['summary'];
       }
@@ -146,10 +150,6 @@ export class DashboardComponent implements OnInit {
           this.loansOverDueDataSource = this.data.loans_over_due;
       }
 
-   //   console.log(this.route.snapshot.data['summary']);
-
-      /* ----------==========     Daily Sales Chart initialization For Documentation    ==========---------- */
-
       const dataDailySalesChart: any = {
           labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
           series: [
@@ -164,14 +164,7 @@ export class DashboardComponent implements OnInit {
           low: 0,
           high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0},
-      }
-
-    //  var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
-
-     // this.startAnimationForLineChart(dailySalesChart);
-
-
-      /* ----------==========     Completed Tasks Chart initialization    ==========---------- */
+      };
 
       const dataCompletedTasksChart: any = {
           labels: ['12p', '3p', '6p', '9p', '12p', '3a', '6a', '9a'],
@@ -187,16 +180,7 @@ export class DashboardComponent implements OnInit {
           low: 0,
           high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
           chartPadding: { top: 0, right: 0, bottom: 0, left: 0}
-      }
-
-    //  var completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
-
-      // start animation for the Completed Tasks Chart - Line Chart
-     // this.startAnimationForLineChart(completedTasksChart);
-
-
-
-      /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
+      };
 
       var datawebsiteViewsChart = {
         labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
@@ -223,10 +207,62 @@ export class DashboardComponent implements OnInit {
           }
         }]
       ];
-    //  var websiteViewsChart = new Chartist.Bar('#websiteViewsChart', datawebsiteViewsChart, optionswebsiteViewsChart, responsiveOptions);
-
-      //start animation for the Emails Subscription Chart
-    //  this.startAnimationForBarChart(websiteViewsChart);
   }
+
+
+    /**
+     *
+     */
+    overDueReport() {
+        this.loaderOverDue = true;
+        this.dashboardService.downloadOverDueStatement({id: '', pdf: true})
+            .subscribe((res) => {
+                    this.loaderOverDue = false;
+                    this.showFile(res);
+                },
+                () => {
+                    this.loaderOverDue = false;
+                    this.notification.showNotification('danger', 'Error Downloading File!');
+                }
+            );
+    }
+
+    /**
+     *
+     */
+    dueTodayReport() {
+        this.loaderDueToday = true;
+        this.dashboardService.downloadDueTodayStatement({id: '', pdf: true})
+            .subscribe((res) => {
+                    this.loaderDueToday = false;
+                    this.showFile(res);
+                },
+                () => {
+                    this.loaderDueToday = false;
+                    this.notification.showNotification('danger', 'Error Downloading File!');
+                }
+            );
+    }
+
+    /**
+     *
+     * @param blob
+     */
+    private showFile(blob){
+        let newBlob = new Blob([blob], {type: "application/pdf"});
+
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(newBlob);
+            return;
+        }
+        const data = window.URL.createObjectURL(newBlob);
+        let link = document.createElement('a');
+        link.href = data;
+        link.download="loans_due.pdf";
+        link.click();
+        setTimeout(function(){
+            window.URL.revokeObjectURL(data);
+        }, 100);
+    }
 
 }

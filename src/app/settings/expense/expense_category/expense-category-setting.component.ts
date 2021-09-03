@@ -11,7 +11,7 @@ import { EditExpenseCategoryComponent } from './edit/edit-expense-category.compo
 import { NotificationService } from '../../../shared/notification.service';
 
 @Component({
-    selector: 'app-loan-type-setting',
+    selector: 'app-expense-category-setting',
     templateUrl: './expense-category-setting.component.html',
     styleUrls: ['./expense-category-setting.component.css']
 })
@@ -113,7 +113,6 @@ export class ExpenseCategorySettingComponent implements OnInit, AfterViewInit {
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -139,10 +138,7 @@ export class ExpenseCategorySettingComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -164,7 +160,6 @@ export class ExpenseCategorySettingComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
@@ -184,7 +179,7 @@ export class ExpenseCategorySettingComponent implements OnInit, AfterViewInit {
             .subscribe((data) => {
                     this.loader = false;
                     this.loadData();
-                    this.notification.showNotification('success', 'Success !! Type has been deleted.');
+                    this.notification.showNotification('success', 'Success !! Expense category has been deleted.');
                 },
                 (error) => {
                     this.loader = false;

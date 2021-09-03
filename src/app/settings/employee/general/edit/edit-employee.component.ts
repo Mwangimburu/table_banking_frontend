@@ -72,7 +72,6 @@ export class EditEmployeeComponent implements OnInit  {
                     console.log('Update employee: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -84,7 +83,6 @@ export class EditEmployeeComponent implements OnInit  {
                     console.log('Error at edit employee component: ', error);
 
                     if (error.employee === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -93,7 +91,6 @@ export class EditEmployeeComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

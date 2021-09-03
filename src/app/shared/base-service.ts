@@ -2,26 +2,22 @@ import { BaseModel } from './models/base-model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { API_URLS } from '../../assets/config/api-url';
+import { API_VERSION } from '../../assets/config/api-version';
 
 export class BaseService<T extends BaseModel> {
 
     private readonly apiUrl: string;
     private readonly resourceUrl: string;
 
+    private protocol = 'http://';
+    private readonly version: any;
+
     constructor( private httpClient: HttpClient, private endpoint: string) {
-        this.apiUrl = environment.production ?  API_URLS.prod : API_URLS.dev;
+        this.version = environment.production ?  API_VERSION.prod : API_VERSION.dev;
+        const parsedUrl = new URL(window.location.href);
+        this.apiUrl = this.protocol + parsedUrl.hostname + this.version;
 
-        // this.resourceUrl = `${this.apiUrl}/${this.endpoint}`;
-       // this.resourceUrl = `http://localhost/19/dan/smartmicro/public/api/v1/` + this.endpoint;
         this.resourceUrl = this.apiUrl + `/` + this.endpoint;
-
-   /*     this.httpClient.get('../assets/config/data.json')
-            .subscribe(data => console.log(data));*/
-
-        // Demo1
-      //  this.resourceUrl = `http://africomit.co.ke/backend/api/v1/` + this.endpoint;
-
     }
 
     /**

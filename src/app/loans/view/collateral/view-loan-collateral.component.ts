@@ -11,7 +11,7 @@ import { CollateralService } from '../../../collateral/data/collateral.service';
 import { CollateralDataSource } from '../../../collateral/data/collateral-data.source';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-collateral',
     templateUrl: './view-loan-collateral.component.html',
     styleUrls: ['./view-loan-collateral.component.css']
 })
@@ -86,10 +86,7 @@ export class ViewLoanCollateralComponent implements OnInit, AfterViewInit {
      */
     ngAfterViewInit() {
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

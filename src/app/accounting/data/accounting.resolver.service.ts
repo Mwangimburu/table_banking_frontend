@@ -14,7 +14,6 @@ export class AccountingResolverService implements Resolve<AccountingModel> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | AccountingModel {
 
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

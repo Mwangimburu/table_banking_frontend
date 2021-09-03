@@ -13,8 +13,6 @@ export class TransactionResolverService implements Resolve<TransactionModel> {
     constructor(private service: TransactionService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | TransactionModel {
-
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

@@ -6,7 +6,7 @@ import { PeriodSettingService } from '../data/period-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-interest-type',
+    selector: 'app-add-period',
     styles: [],
     templateUrl: './add-period.component.html'
 })
@@ -54,7 +54,6 @@ export class AddPeriodComponent implements OnInit  {
 
         this.sourceService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New source created.');
                 },
@@ -71,7 +70,6 @@ export class AddPeriodComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

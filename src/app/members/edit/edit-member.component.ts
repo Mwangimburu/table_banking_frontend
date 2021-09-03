@@ -73,7 +73,6 @@ export class EditMemberComponent implements OnInit  {
                 Validators.minLength(3)]],
             middle_name: [this.member.middle_name],
             last_name: [this.member.last_name],
-            /*branch_id: [this.member.branch_id],*/
             nationality: [this.member.nationality],
             id_number: [this.member.id_number],
             passport_number: [this.member.passport_number],
@@ -86,11 +85,8 @@ export class EditMemberComponent implements OnInit  {
             county: [this.member.county],
             city: [this.member.city],
             status_id: [this.member.status_id],
-
             membership_form: [{value: this.member.membership_form, disabled: true}],
-
             document: [null, null],
-            // type:  [null, Validators.compose([Validators.required])]
         });
     }
 
@@ -109,11 +105,9 @@ export class EditMemberComponent implements OnInit  {
         for (let j = 0; j < this.uploader.queue.length; j++) {
             let data = new FormData();
             let fileItem = this.uploader.queue[j]._file;
-            console.log(fileItem.name);
             data.append('file', fileItem);
             data.append('fileSeq', 'seq'+j);
             data.append( 'dataType', this.uploadForm.controls.type.value);
-          //  this.uploadFile(data).subscribe(data => alert(data.message));
         }
         this.uploader.clearQueue();
     }
@@ -160,7 +154,6 @@ export class EditMemberComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at Photo upload: ', error);
                     if (error.payment === 0) {
                         // notify error
                         return;
@@ -171,7 +164,6 @@ export class EditMemberComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
@@ -184,15 +176,10 @@ export class EditMemberComponent implements OnInit  {
      *
      */
     getImageFromService() {
-        //  this.isImageLoading = true;
         if (this.member && this.member.passport_photo !== null) {
             this.memberService.fetchPhoto(this.member.passport_photo).subscribe(data => {
                 this.createImageFromBlob(data);
-                // this.isImageLoading = false;
             }, error => {
-                // this.isImageLoading = false;
-                console.log('Error getting image from API');
-                console.log(error);
             });
         }
     }
@@ -248,16 +235,14 @@ export class EditMemberComponent implements OnInit  {
         this.memberService.updateMembershipForm(formData)
             .subscribe((data) => {
                     this.loader = false;
-                    //  this.getImageFromService();
                     // notify success
                     this.notification.showNotification('success', 'Success !! Membership Form has been replaced.');
                 },
                 (error) => {
                     this.loader = false;
                     this.notification.showNotification('danger', 'Error !! Unable to upload Membership Form. File too large?');
-                    console.log('Error at Application Form update: ', error);
                     if (error.payment === 0) {
-                        // notify error
+                        // error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -266,7 +251,6 @@ export class EditMemberComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
@@ -285,10 +269,8 @@ export class EditMemberComponent implements OnInit  {
         this.loader = true;
         this.memberService.update(body)
             .subscribe((data) => {
-                    console.log('Update member: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -297,7 +279,6 @@ export class EditMemberComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit member component: ', error);
 
                     if (error.member === 0) {
                         // notify error
@@ -309,7 +290,6 @@ export class EditMemberComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

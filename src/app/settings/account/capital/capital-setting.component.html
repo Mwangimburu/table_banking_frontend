@@ -1,6 +1,5 @@
 <div class="row">
 
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -8,10 +7,9 @@
                 <div class="row search-form-section">
 
                     <div class="col-3">
-                        <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
+                        <button *ngIf="!(dataSource?.loading$ | async)" mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                             <mat-icon>add</mat-icon>Add New
                         </button>
-
                     </div>
 
                     <div class="col-9">
@@ -25,11 +23,19 @@
 
                 <div class="table-responsive">
 
-                    <mat-table #table [dataSource]="dataSource" matSort matSortActive="amount" matSortDirection="asc" matSortDisableClear>
+                    <mat-table #table [dataSource]="dataSource" matSort matSortActive="capital_date" matSortDirection="asc" matSortDisableClear>
 
+                        <ng-container matColumnDef="capital_date">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Date </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.capital_date}} </mat-cell>
+                        </ng-container>
                         <ng-container matColumnDef="branch_id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Branch </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.branch?.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="method_id">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Account </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.paymentMethod?.name}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="amount">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
@@ -40,25 +46,6 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Description </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.description}} </mat-cell>
                         </ng-container>
-
-                   <!--     <ng-container matColumnDef="actions">
-                            <mat-header-cell *matHeaderCellDef> Actions  </mat-header-cell>
-                            <mat-cell *matCellDef="let row" class="button-row">
-                                <button mat-icon-button [matMenuTriggerFor]="menu">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
-                                <mat-menu #menu="matMenu">
-                                    <button mat-menu-item (click)="editDialog(row)">
-                                        <mat-icon color="accent">edit</mat-icon>
-                                        <span>Edit</span>
-                                    </button>
-                                    <button mat-menu-item (click)="openConfirmationDialog(row)">
-                                        <mat-icon color="warn">delete</mat-icon>
-                                        <span>Delete</span>
-                                    </button>
-                                </mat-menu>
-                            </mat-cell>
-                        </ng-container>-->
 
                         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                         <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>

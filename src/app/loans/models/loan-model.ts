@@ -35,4 +35,6 @@ export class LoanModel extends BaseModel {
     payments: [];
     loanPayment: any;
     loanOfficer: any;
+    member: any;
+    loanType: any;
 }

@@ -55,9 +55,8 @@ export class AddInterestTypeComponent implements OnInit  {
 
         this.sourceService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
                     this.onSaveComplete();
-                    this.notification.showNotification('success', 'Success !! New source created.');
+                    this.notification.showNotification('success', 'Success !! New Interest Type created.');
                 },
                 (error) => {
                     this.loader = false;
@@ -72,7 +71,6 @@ export class AddInterestTypeComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

@@ -75,8 +75,6 @@ export class ViewApplicationGeneralComponent implements OnInit {
                 this.loader = false;
             }, error => {
                 this.loader = false;
-                console.log('Error getting Application Form from API');
-                console.log(error);
             });
         }
     }

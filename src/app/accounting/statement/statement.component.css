@@ -1,8 +1,3 @@
-/*
-table {
-    width: 100%;
-}
-*/
 mat-table {
     min-width: 600px;
 }
@@ -11,9 +6,6 @@ table tr:last-child {
 }
 .mat-cell {
     font-size: 12px;
-   /* min-height: 48px;
-    text-align: center;
-    border-right: 1px solid grey;*/
 }
 .narration {
     min-width: 200px;
@@ -28,4 +20,10 @@ table tr:last-child {
 }
 .fx-spacer {
     flex: 1 1 auto;
+}
+.align-center{
+    text-align: center;
+}
+.small-font {
+    font-size: small;
 }

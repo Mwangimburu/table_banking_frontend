@@ -1,14 +1,12 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../shared/notification.service';
-import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoanModel } from '../models/loan-model';
 import { LoanService } from '../data/loan.service';
 
 @Component({
-    selector: 'app-edit-loan-application',
+    selector: 'app-view-loan',
     styles: [],
     templateUrl: './view-loan.component.html'
 })
@@ -37,8 +35,7 @@ export class ViewLoanComponent implements OnInit  {
     loanId = '';
     loanData$: any;
 
-    constructor(/*@Inject(MAT_DIALOG_DATA) row: any,*/
-                private fb: FormBuilder,
+    constructor(private fb: FormBuilder,
                 private loanService: LoanService,
                 private notification: NotificationService,
                 private router: Router, private route: ActivatedRoute) {
@@ -63,7 +60,6 @@ export class ViewLoanComponent implements OnInit  {
     }
 
     close() {
-      //  this.dialogRef.close();
     }
 
 }

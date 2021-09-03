@@ -13,8 +13,6 @@ export class LoanResolverService implements Resolve<LoanModel> {
     constructor(private service: LoanService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | LoanModel {
-
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

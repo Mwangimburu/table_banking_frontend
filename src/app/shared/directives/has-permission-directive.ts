@@ -24,9 +24,6 @@ export class HasPermissionDirective implements OnInit {
             this.currentUser = user;
             this.updateView();
         });
-
-        /*console.log('In Directive....wow');
-        console.log(this.currentUser);*/
     }
 
     @Input()
@@ -49,22 +46,11 @@ export class HasPermissionDirective implements OnInit {
         if (this.currentUser && this.permissions !== undefined ) {
             for (const checkPermission of this.permissions) {
                 const permissionFound = this.currentUser.find(x => x.toUpperCase() === checkPermission.toUpperCase());
-
-                /*console.log('In Directive....permissionFound found?');
-                console.log(permissionFound);*/
-
                 if (permissionFound) {
                     hasPermission = true;
                 }
             }
         }
-
-      /*  if (this.currentUser && this.currentUser.permissions) {
-            for (const checkPermission of this.permissions) {
-                const permissionFound = this.currentUser.permissions.find(x => x.toUpperCase() === checkPermission.toUpperCase());
-            }
-        }*/
-
         return hasPermission;
     }
 }

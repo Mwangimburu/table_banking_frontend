@@ -17,7 +17,6 @@ export class FooterComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    // this.store.pipe(select(settings)).subscribe(res => this.businessName = res.business_name);
     this.currentSettings$ = this.store.pipe(select(settings));
   }
 

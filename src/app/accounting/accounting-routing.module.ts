@@ -14,6 +14,4 @@ export const ROUTES: Routes = [
         ]
     }
 ];
-
-
 export const AccountingRoutingModule = RouterModule.forChild(ROUTES);

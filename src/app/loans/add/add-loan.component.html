@@ -1,4 +1,4 @@
-<h5 mat-dialog-title>Add Lead</h5>
+<h5 mat-dialog-title>Add Loan</h5>
 
 <div class="d-flex spinner-container" *ngIf="loader">
     <mat-spinner [diameter]="40"></mat-spinner>
@@ -157,9 +157,6 @@
 
                     </div>
                 </div>
-
-
-
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button matStepperNext type="button">Next</button>
@@ -189,7 +186,7 @@
 
                         <mat-form-field class="full-width" color="primary">
                             <mat-select placeholder="Source" formControlName="source_id">
-                                <mat-option *ngFor="let source of leadSources" [value]="source.uuid">
+                                <mat-option *ngFor="let source of leadSources" [value]="source.id">
                                     {{source.name}}
                                 </mat-option>
                             </mat-select>
@@ -201,7 +198,7 @@
 
                         <mat-form-field class="full-width" color="primary">
                             <mat-select placeholder="Type" formControlName="type_id">
-                                <mat-option *ngFor="let type of leadTypes" [value]="type.uuid">
+                                <mat-option *ngFor="let type of leadTypes" [value]="type.id">
                                     {{type.name}}
                                 </mat-option>
                             </mat-select>
@@ -260,9 +257,6 @@
 
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
-<!--
-                    <button mat-button matStepperNext>Save</button>
--->
                 </div>
             </form>
         </mat-step>
@@ -271,6 +265,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!firstFormGroup.valid || !secondFormGroup.valid || !thirdFormGroup.valid">Save</button>
 </mat-dialog-actions>

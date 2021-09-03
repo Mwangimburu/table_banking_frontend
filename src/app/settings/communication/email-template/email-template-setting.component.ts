@@ -1,20 +1,19 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../../../shared/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailSettingModel } from '../email/model/email-setting.model';
 import { ActivatedRoute } from '@angular/router';
 import { EmailTemplateSettingService } from './data/email-template-setting.service';
-import { EmailTemplateSettingModule } from './email-template-setting.module';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { EmailTemplateSettingModel } from './model/email-template-setting.model';
 
 @Component({
-    selector: 'app-loan-type-setting',
+    selector: 'app-email-template-setting',
     templateUrl: './email-template-setting.component.html',
     styleUrls: ['./email-template-setting.component.css']
 })
 export class EmailTemplateSettingComponent implements OnInit {
     form: FormGroup;
-    emailTemplate: EmailTemplateSettingModule;
+    emailTemplate: EmailTemplateSettingModel;
     formErrors: any;
     loader = false;
 
@@ -69,14 +68,6 @@ export class EmailTemplateSettingComponent implements OnInit {
     }
 
     /**
-     *
-     * @param setting
-     */
-    prePopulateForm(setting: EmailSettingModel) {
-       // this.setting = setting;
-    }
-
-    /**
      * Update supporting fields when Template drop down changes content
      * @param value
      */
@@ -95,7 +86,6 @@ export class EmailTemplateSettingComponent implements OnInit {
         });
     }
 
-
     /**
      *
      */
@@ -106,7 +96,6 @@ export class EmailTemplateSettingComponent implements OnInit {
         this.loader = true;
         this.emailTemplateSettingService.update(body)
             .subscribe((data) => {
-                    console.log('Update email template: ', data);
                     this.loader = false;
 
                     // notify success
@@ -115,10 +104,8 @@ export class EmailTemplateSettingComponent implements OnInit {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit  email template component: ', error);
 
                     if (error.payment === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -127,7 +114,6 @@ export class EmailTemplateSettingComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

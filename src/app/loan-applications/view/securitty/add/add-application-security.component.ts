@@ -30,9 +30,6 @@ export class AddApplicationSecurityComponent implements OnInit  {
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<AddApplicationSecurityComponent>) {
         this.memberId = row.id;
-
-        console.log('this.memberId');
-        console.log(this.memberId);
     }
 
     ngOnInit() {
@@ -72,7 +69,6 @@ export class AddApplicationSecurityComponent implements OnInit  {
 
         this.methodService.create(body)
             .subscribe((data) => {
-                    console.log('Create Method: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New collateral created.');
                 },
@@ -89,7 +85,6 @@ export class AddApplicationSecurityComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

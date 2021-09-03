@@ -54,7 +54,6 @@ export class AddLoanStatusComponent implements OnInit  {
 
         this.statusService.create(body)
             .subscribe((data) => {
-                    console.log('Create Status: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New status created.');
                 },
@@ -71,13 +70,11 @@ export class AddLoanStatusComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
                         }
                     }
-
                 });
     }
 

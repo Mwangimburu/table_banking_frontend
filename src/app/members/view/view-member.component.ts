@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper, MatTableDataSource } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +7,7 @@ import { MemberModel } from '../models/member-model';
 import { MemberService } from '../data/member.service';
 
 @Component({
-    selector: 'app-view-account',
+    selector: 'app-view-member',
     styleUrls: ['./view-member.component.css'],
     templateUrl: './view-member.component.html'
 })
@@ -39,23 +38,11 @@ export class ViewMemberComponent implements OnInit, AfterViewInit  {
 
     imageToShow: any;
 
-    constructor(/*@Inject(MAT_DIALOG_DATA) row: any,*/
-                private fb: FormBuilder,
+    constructor(private fb: FormBuilder,
                 private memberService: MemberService,
                 private memberStatusService: PaymentMethodSettingService,
                 private notification: NotificationService,
-                private router: Router, private route: ActivatedRoute
-                /*private dialogRef: MatDialogRef<EditLoanApplicationComponent>*/) {
-
-      /*  this.memberData$ = this.memberService.selectedMemberChanges$;
-        this.memberService.selectedMemberChanges$.subscribe(data => {
-
-            if (data) {
-                this.memberData = data;
-                this.memberId = data.id;
-            }
-        });*/
-
+                private router: Router, private route: ActivatedRoute) {
     }
 
     ngOnInit() {
@@ -112,13 +99,10 @@ export class ViewMemberComponent implements OnInit, AfterViewInit  {
     }
 
     getImageFromService() {
-        //  this.isImageLoading = true;
         if (this.memberData && this.memberData.passport_photo !== null) {
             this.memberService.getImage(this.memberData.passport_photo).subscribe(data => {
                 this.createImageFromBlob(data);
-                // this.isImageLoading = false;
             }, error => {
-                // this.isImageLoading = false;
                 console.log(error);
             });
         }
@@ -136,7 +120,6 @@ export class ViewMemberComponent implements OnInit, AfterViewInit  {
     }
 
     close() {
-      //  this.dialogRef.close();
     }
 
     updateGeneralForm() {
@@ -159,10 +142,6 @@ export class ViewMemberComponent implements OnInit, AfterViewInit  {
             .subscribe((data) => {
                     console.log('Update member: ', data);
                     this.loader = false;
-
-                    // this.loadData();
-                //    this.dialogRef.close(this.form.value);
-
                     // notify success
                     this.notification.showNotification('success', 'Success !! Loan application has been updated.');
 
@@ -190,10 +169,6 @@ export class ViewMemberComponent implements OnInit, AfterViewInit  {
                 });
     }
 
-    ngAfterViewInit(): void {
-        /*if (this.accountId.length < 1) {
-            this.router.navigate(['/accounts']);
-        }*/
-    }
+    ngAfterViewInit(): void {}
 
 }

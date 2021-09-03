@@ -16,9 +16,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-
                 </form>
-
 
                 <div class="row search-form-section">
                     <div class="col-11">
@@ -46,12 +44,12 @@
 
                         <ng-container matColumnDef="debit_account_id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Debit Account </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.creditAccount.member ? row.creditAccount.member?.first_name : row.creditAccount.account_name}} </mat-cell>
+                            <mat-cell *matCellDef="let row"> {{row.debitAccount.account_display_name}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="credit_account_id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Credit Account </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.debitAccount.member ? row.debitAccount.member?.first_name : row.debitAccount.account_name}} </mat-cell>
+                            <mat-cell *matCellDef="let row"> {{row.creditAccount.account_display_name}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="amount">

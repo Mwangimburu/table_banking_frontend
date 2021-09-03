@@ -1,4 +1,4 @@
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router } from '@angular/router';
+import { CanLoad, Route, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../reducers';
@@ -18,7 +18,6 @@ export class PermissionGuardService implements CanLoad  {
         this.permissions = route.data.permissions;
         const token = localStorage.getItem('token');
         // decode the token to get its payload
-      //  const tokenPayload = decode(token);
 
         // Fetch all scopes from redux store
         this.store.pipe(select(allScopes)).subscribe(user => {
@@ -26,11 +25,8 @@ export class PermissionGuardService implements CanLoad  {
         });
 
         if (this.checkPermission()) {
-           // console.log('PermGuard.... has permission');
             return true;
         }
-       // console.log('PermGuard.... NO permission');
-       // this.router.navigate(['/login']);
         this.store.dispatch(new Logout());
         return false;
     }
@@ -44,8 +40,6 @@ export class PermissionGuardService implements CanLoad  {
         if (this.currentUser && this.permissions !== undefined ) {
             for (const checkPermission of this.permissions) {
                 const permissionFound = this.currentUser.find(x => x.toUpperCase() === checkPermission.toUpperCase());
-              //  console.log('In checkPermission....permissionFound found?');
-              //  console.log(permissionFound);
                 if (permissionFound) {
                     hasPermission = true;
                 }

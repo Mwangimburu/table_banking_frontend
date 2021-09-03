@@ -15,8 +15,12 @@ export class MemberModel extends BaseModel {
     postal_address: string;
     residential_address: string;
     status_id: string;
+
     date_of_birth: string;
+    date_of_birth_display: string;
     date_became_member: string;
+    date_became_member_display: string;
+
     passport_photo: File | null;
     national_id_image: File | null;
     membership_form: string;

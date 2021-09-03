@@ -1,10 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, merge, Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { Subject, Subscription } from 'rxjs';
 import { ConfirmationDialogComponent } from '../../../shared/delete/confirmation-dialog-component';
-import { ApplicationManageDataSource } from './data/application-manage-data.source';
-import { ApplicationManageService } from './data/application-manage.service';
 import { ApplicationManageModel } from './model/application-manage.model';
 import { NotificationService } from '../../../shared/notification.service';
 import { LoanApplicationService } from '../../data/loan-application.service';
@@ -13,9 +10,8 @@ import { LoanModel } from '../../../loans/models/loan-model';
 import { LoanService } from '../../../loans/data/loan.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
-import { MemberService } from '../../../members/data/member.service';
 import { UserSettingService } from '../../../settings/user/data/user-setting.service';
-
+import { PaymentMethodSettingService } from '../../../settings/payment/method/data/payment-method-setting.service';
 
 @Component({
     selector: 'app-application-manage',
@@ -28,9 +24,14 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
     formErrors: any;
 
     method: ApplicationManageModel;
+    dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+
 
     loader = false;
+    isMpesa = false;
+
     users: any = [];
+    methods: any = [];
 
     loanApplicationData: any;
     loanApplicationId = '';
@@ -51,9 +52,10 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
     periodicPayments: number;
 
     loan: LoanModel;
+    convertingToLoan = false;
 
-    constructor(private fb: FormBuilder, private router: Router, private userService: UserSettingService,
-                private methodService: ApplicationManageService, private loanService: LoanService,
+    constructor(private fb: FormBuilder,  private dialog: MatDialog, private router: Router, private userService: UserSettingService,
+                private loanService: LoanService, private methodService: PaymentMethodSettingService,
                 private notification: NotificationService, private loanApplicationService: LoanApplicationService) {
 
         this.loanApplicationData$ = this.loanApplicationService.selectedLoanApplicationChanges$;
@@ -63,127 +65,73 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
                 this.loanApplicationId = data.id;
             }
         });
-
-
     }
 
     ngOnInit() {
-        this.periodicPayments = this.calculatePayment(
-            this.loanApplicationData.amount_applied,
-            this.loanApplicationData.repayment_period,
-            this.loanApplicationData.interest_rate,
-            2
-        );
 
         this.userService.list(['first_name', 'last_name', 'role_id'])
             .subscribe((res) => this.users = res,
                 () => this.users = []
             );
 
+        this.methodService.list(['name','display_name'])
+            .subscribe((res) => {
+                    this.methods = res;
+                    this.onPaymentMethodItemChange(this.loanApplicationData.disburse_method_id);
+                },
+                () => this.methods = []
+            );
+
         this.form = this.fb.group({
-            amount_applied: [{value: this.loanApplicationData.amount_applied, disabled: true}],
-            service_fee: [this.loanApplicationData.service_fee],
-            amount_approved: [this.loanApplicationData.amount_applied],
-            amount_to_disburse: [(this.loanApplicationData.amount_applied) - (this.loanApplicationData.service_fee)],
+            amount_applied: [{value: this.loanApplicationData.amount_applied_display, disabled: true}],
+            service_fee: [{value: this.loanApplicationData.service_fee_display, disabled: true}],
+
+            amount_to_disburse: [{value: this.loanApplicationData.amount_to_disburse_display, disabled: true}],
 
             loan_type: [{value: this.loanApplicationData.loanType.name, disabled: true}],
             interest_type: [{value: this.loanApplicationData.loanType.interestType.display_name, disabled: true}],
-            interest_rate: [this.loanApplicationData.interest_rate],
-            repayment_period: [this.loanApplicationData.repayment_period	],
-            periodic_payments: [this.periodicPayments],
+            interest_rate: [{value: this.loanApplicationData.interest_rate, disabled: true}],
+            repayment_period: [{value: this.loanApplicationData.repayment_period, disabled: true}	],
             start_date: [moment(), Validators.required],
-            member_id: [{value: this.loanApplicationData.member.first_name, disabled: true}],
             loan_officer_id: [this.loanApplicationData.loan_officer_id],
             review_notes: [''],
+            disburse_method_id: [this.loanApplicationData.disburse_method_id],
             collateral_check: ['', Validators.required],
             guarantor_check: ['', Validators.required],
 
+            mpesa_fields: this.fb.group({
+                mpesa_number: [this.loanApplicationData.mpesa_number],
+                mpesa_first_name: [this.loanApplicationData.mpesa_first_name]
+            })
+
+        });
+    }
+
+    onPaymentMethodItemChange(value) {
+        const paymentMethod = this.methods.find((item: any) => item.id === value).name;
+        this.isMpesa = paymentMethod === 'MPESA';
+    }
+
+    /**
+     * @param lead
+     */
+    openConfirmationDialog() {
+
+        this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            disableClose: true
         });
 
-        this.loanAmountModelChangeSubscription = this.loanAmountModelChanged
-            .pipe(
-                debounceTime(1000),
-                distinctUntilChanged()
-            )
-            .subscribe(newValue => {
-                this.periodicPayments = this.calculatePayment(
-                  newValue,
-                  this.form.get('repayment_period').value,
-                  this.form.get('interest_rate').value,
-                    2
-              );
-
-                this.form.patchValue({
-                    periodic_payments: this.periodicPayments
-                });
-
-            });
-
-        this.repaymentPeriodModelChangeSubscription = this.repaymentPeriodModelChanged
-            .pipe(
-                debounceTime(1000),
-                distinctUntilChanged()
-            )
-            .subscribe(newValue => {
-                this.periodicPayments = this.calculatePayment(
-                    this.form.get('amount_approved').value,
-                    newValue,
-                    this.form.get('interest_rate').value,
-                    2
-                );
-                this.form.patchValue({
-                    periodic_payments: this.periodicPayments
-                });
-            });
-
-        this.interestRateModelChangeSubscription = this.interestRateModelChanged
-            .pipe(
-                debounceTime(1000),
-                distinctUntilChanged()
-            )
-            .subscribe(newValue => {
-                this.interestRateValue = newValue;
-
-                this.periodicPayments = this.calculatePayment(
-                    this.form.get('amount_approved').value,
-                    this.form.get('repayment_period').value,
-                    newValue,
-                    2
-                );
-                this.form.patchValue({
-                    periodic_payments: this.periodicPayments
-                });
-            });
-    }
-
-    calculatePayment($loanAmount, $totalPeriods, $interest, $accuracy) {
-        $interest    = $interest / 100;    // convert to a percentage
-        const $value1 = $interest * Math.pow((1 + $interest), $totalPeriods);
-        const $value2 = Math.pow((1 + $interest), $totalPeriods) - 1;
-        const $payment    = +($loanAmount * ($value1 / $value2));
-// $accuracy specifies the number of decimal places required in the result
-       // $payment    = number_format($payment, $accuracy, '.', '');
-
-        return $payment;
-
-    }
-
-    calculatePaymentFixed(loanAmount, totalPeriods, interest, interestType) {
-        interest = interest / 100;
-        if (interestType === 'fixed') {
-            return +(( loanAmount / totalPeriods ) + ( interest * loanAmount ));
-        } else if (interestType === 'reducing_balance') {
-            const $value1 = interest * Math.pow((1 + interest), totalPeriods);
-            const $value2 = Math.pow((1 + interest), totalPeriods) - 1;
-            return +(loanAmount * ($value1 / $value2));
-        }
+        this.dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.rejectLoanApplication();
+            }
+            this.dialogRef = null;
+        });
     }
 
     covertToLoan() {
-        /*console.log('create loan');
-        console.log(this.loanApplicationData);*/
-        //  const body = Object.assign({}, this.loan, this.form.value);
-     //   const body = Object.assign({}, this.loan, this.loanApplicationData);
+        this.convertingToLoan = true;
+
         const body = Object.assign({}, this.loan, this.form.value);
 
         body.loan_application_id = this.loanApplicationData.id;
@@ -191,7 +139,7 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
         body.interest_rate = this.loanApplicationData.interest_rate;
         body.interest_type_id = this.loanApplicationData.interest_type_id;
         body.repayment_period = this.loanApplicationData.repayment_period;
-        body.amount_approved = this.form.value.amount_approved;
+        body.amount_approved = this.loanApplicationData.amount_applied;
         body.payment_frequency_id = this.loanApplicationData.payment_frequency_id;
         body.service_fee = this.loanApplicationData.service_fee;
         body.loan_type_id = this.loanApplicationData.loan_type_id;
@@ -201,40 +149,18 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
         body.penalty_frequency_id = this.loanApplicationData.penalty_frequency_id;
         body.reduce_principal_early = this.loanApplicationData.reduce_principal_early;
 
-        // xxx
-        //  body.member_id = this.form.value.amount_disbursed;
-       // body.loan_application_id = this.loanApplicationData.id;
-        //  body.loan_type_id = this.form.value.amount_disbursed;
-
-        // body.interest_rate = this.form.value.amount_disbursed;
-     //   body.interest_type_id = this.form.value.amount_disbursed;
-        //  body.repayment_period = this.form.value.amount_disbursed;
-
-        // ****    body.loan_status_id = this.form.value.amount_disbursed;
-        // ***  body.approved_by_user_id = this.form.value.amount_disbursed;
-
-      //  body.amount_approved = this.form.value.amount_approved;
-        //  body.loan_disbursed = this.form.value.amount_disbursed;
-
-     //   body.start_date = this.form.value.amount_disbursed;
-
-    //    body.payment_frequency_id = this.form.value.amount_disbursed;
-    //   body.next_repayment_date = this.form.value.amount_disbursed;
-
-        console.log('create loan ..body');
-        console.log(body);
-
         this.loader = true;
 
         this.loanService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
+                    this.convertingToLoan = false;
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New loan created.');
                     this.router.navigate(['/loans']);
                 },
                 (error) => {
                     this.loader = false;
+                    this.convertingToLoan = false;
                     if (error.member === 0) {
                         this.notification.showNotification('danger', 'Connection Error !! Nothing created.' +
                             ' Check your connection and retry.');
@@ -246,7 +172,6 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (prop === 'member_id') {
                                 this.notification.showNotification('danger', error.member_id[0]);
                             }
@@ -260,24 +185,26 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
     }
 
     rejectLoanApplication() {
+        this.convertingToLoan = true;
         const body = Object.assign({}, this.loan, this.loanApplicationData);
 
         body.review = true;
         body.rejection_notes = this.form.value.notes;
-
+        body.member_id = this.loanApplicationData.member_id;
+        body.id = this.loanApplicationData.id;
 
         this.loader = true;
         this.loanApplicationService.update(body)
             .subscribe((data) => {
-                    console.log('Update member: ', data);
+                    this.convertingToLoan = false;
                     this.loader = false;
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Loan Application has been updated.');
+                    this.notification.showNotification('info', 'Success !! Loan Application rejected !');
                     this.router.navigate(['/loan-applications']);
                 },
                 (error) => {
                     this.loader = false;
-
+                    this.convertingToLoan = false;
                     if (error.member === 0) {
                         // notify error
                         return;
@@ -288,7 +215,6 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
@@ -303,12 +229,8 @@ export class ApplicationManageComponent implements OnInit, OnDestroy {
     public onSaveComplete(): void {
         this.loader = false;
         this.form.reset();
-      //  this.dialogRef.close(this.form.value);
     }
 
     ngOnDestroy() {
-        this.loanAmountModelChangeSubscription.unsubscribe();
-        this.repaymentPeriodModelChangeSubscription.unsubscribe();
-        this.interestRateModelChangeSubscription.unsubscribe();
     }
 }

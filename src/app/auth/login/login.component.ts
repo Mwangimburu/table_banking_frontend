@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     returnUrl: string;
     loginError = '';
-    loading = false;
+    loader = false;
 
     constructor(private fb: FormBuilder, private store: Store<AppState>, private route: ActivatedRoute,
                 private router: Router, private authenticationService: AuthenticationService) {
@@ -47,12 +47,12 @@ export class LoginComponent implements OnInit {
      */
     login() {
         this.loginError = '';
-        this.loading = true;
+        this.loader = true;
 
         this.authenticationService.login(this.email.value, this.password.value)
             .pipe(tap(
                 user => {
-                    this.loading = false;
+                    this.loader = false;
                     this.store.dispatch(new Login({user}));
                     this.router.navigate([this.returnUrl]);
                 }
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
                     } else {
                         this.loginError = 'Server Error. Please try again later.';
                     }
-                    this.loading = false;
+                    this.loader = false;
                 });
     }
 }

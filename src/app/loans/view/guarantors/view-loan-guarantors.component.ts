@@ -1,20 +1,16 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TransactionDataSource } from '../../../transactions/data/transaction-data.source';
 import { MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { PaymentModel } from '../../../payments/models/payment-model';
 import { ApplicationGuarantorService } from '../../../members/view/payment/data/application-guarantor.service';
 import { NotificationService } from '../../../shared/notification.service';
-import { CollateralService } from '../../../collateral/data/collateral.service';
 import { LoanService } from '../../data/loan.service';
-import { CollateralDataSource } from '../../../collateral/data/collateral-data.source';
 import { tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
 import { GuarantorDataSource } from '../../../guarantors/data/guarantor-data.source';
 import { GuarantorService } from '../../../guarantors/data/guarantor.service';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-guarantor',
     templateUrl: './view-loan-guarantors.component.html',
     styleUrls: ['./view-loan-guarantors.component.css']
 })
@@ -85,10 +81,7 @@ export class ViewLoanGuarantorsComponent implements OnInit, AfterViewInit {
      */
     ngAfterViewInit() {
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

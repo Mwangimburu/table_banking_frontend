@@ -3,7 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../reducers';
-import { accessToken, isLoggedIn } from './auth.selectors';
+import { accessToken } from './auth.selectors';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -12,11 +12,8 @@ export class JwtInterceptor implements HttpInterceptor {
 
     constructor( private store: Store<AppState>) {}
 
-
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-       // const currentToken = JSON.parse(this.auth.getToken());
-       // const currentToken = this.auth.getToken();
         const currentToken$ = this.store.pipe(select(accessToken));
 
         const userData = JSON.parse(localStorage.getItem(this.storageKey));

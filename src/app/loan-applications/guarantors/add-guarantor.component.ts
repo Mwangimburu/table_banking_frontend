@@ -1,9 +1,6 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
-
-
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
 import { NotificationService } from '../../shared/notification.service';
-import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { GuarantorModel } from './guarantor-model';
 import { GuarantorService } from './data/guarantor.service';
@@ -46,8 +43,7 @@ export class AddGuarantorComponent implements OnInit  {
     ngOnInit() {
 
         this.form = this.fb.group({
-            member_id: [''/*, [Validators.required,
-                Validators.minLength(3)]*/],
+            member_id: [''],
             national_id: [''],
             loan_application_id: [''],
             assign_date: [''],
@@ -72,14 +68,10 @@ export class AddGuarantorComponent implements OnInit  {
 
         body.loan_application_id = this.loanApplicationId;
 
-        console.log('body');
-        console.log(body);
-
         this.loader = true;
 
         this.guarantorService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New guarantor created.');
                 },
@@ -96,7 +88,6 @@ export class AddGuarantorComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

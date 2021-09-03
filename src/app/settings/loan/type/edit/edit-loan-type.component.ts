@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoanTypeSettingModel } from '../model/loan-type-setting.model';
 import { LoanTypeSettingService } from '../data/loan-type-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
-import { PenaltyTypeSettingService } from '../../penalty/data/penalty-type-setting.service';
-import { PenaltyFrequencySettingService } from '../../penalty/data/penalty-frequency-setting.service';
 
 @Component({
     selector: 'app-edit-tax-type',
@@ -53,7 +51,6 @@ export class EditLoanTypeComponent implements OnInit  {
             penalty_type_id: [this.type.penalty_type_id],
             penalty_value: [this.type.penalty_value],
             penalty_frequency_id: [this.type.penalty_frequency_id],
-            reduce_principal_early: [this.type.reduce_principal_early]
         });
     }
 
@@ -71,22 +68,18 @@ export class EditLoanTypeComponent implements OnInit  {
         this.loader = true;
         this.typeService.update(body)
             .subscribe((data) => {
-                    console.log('Update type: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Type has been updated.');
+                    this.notification.showNotification('success', 'Success !! Loan Type has been updated.');
 
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit type component: ', error);
 
                     if (error.type === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -95,7 +88,6 @@ export class EditLoanTypeComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

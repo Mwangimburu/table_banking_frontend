@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
-import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {Location} from '@angular/common';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Logout } from '../../auth/auth.actions';
@@ -78,8 +78,6 @@ export class NavbarComponent implements OnInit {
      *
      */
     sidebarToggle() {
-        // const toggleButton = this.toggleButton;
-        // const body = document.getElementsByTagName('body')[0];
         var $toggle = document.getElementsByClassName('navbar-toggler')[0];
 
         if (this.sidebarVisible === false) {
@@ -90,7 +88,6 @@ export class NavbarComponent implements OnInit {
         const body = document.getElementsByTagName('body')[0];
 
         if (this.mobile_menu_visible == 1) {
-            // $('html').removeClass('nav-open');
             body.classList.remove('nav-open');
             if ($layer) {
                 $layer.remove();
@@ -170,9 +167,7 @@ export class NavbarComponent implements OnInit {
                 (error) => {
                     this.store.dispatch(new Logout());
                     if (error.error.message) {
-                        //  this.loginError = error.error.message;
                     } else {
-                        // this.loginError = 'Server Error. Please try again later.';
                     }
                     this.loading = false;
                 });

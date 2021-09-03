@@ -37,6 +37,7 @@ import {
 import { DeleteModule } from './delete/delete.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { HasPermissionDirective } from './directives/has-permission-directive';
+import { StatementComponent } from '../accounting/statement/statement.component';
 
 @NgModule({
     imports: [
@@ -115,7 +116,10 @@ import { HasPermissionDirective } from './directives/has-permission-directive';
         NgxMatSelectSearchModule,
         HasPermissionDirective
     ],
-    declarations: [HasPermissionDirective],
+    declarations: [
+        HasPermissionDirective,
+        StatementComponent,
+    ],
     entryComponents: [],
 })
 

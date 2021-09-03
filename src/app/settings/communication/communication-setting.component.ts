@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-general-setting',
+    selector: 'app-communication-setting',
     templateUrl: './communication-setting.component.html',
     styleUrls: ['./communication-setting.component.css']
 })

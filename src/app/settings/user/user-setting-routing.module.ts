@@ -10,10 +10,6 @@ export const ROUTES: Routes = [
                 path: '',
                 loadChildren: 'app/settings/user/general/user-general-setting.module#UserGeneralSettingModule'
             },
-            /*{
-                path: 'users',
-                loadChildren: 'app/settings/user/general/user-general-setting.module#UserGeneralSettingModule'
-            },*/
             {
                 path: 'roles',
                 loadChildren: 'app/settings/user/roles/user-roles-setting.module#UserRolesSettingModule'

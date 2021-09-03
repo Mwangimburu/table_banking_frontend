@@ -12,7 +12,7 @@ import { SmsTemplateSettingService } from '../sms-template/data/sms-template-set
 import { CommunicationSettingModel } from './model/communication-setting.model';
 
 @Component({
-    selector: 'app-loan-type-setting',
+    selector: 'app-communication-general-setting',
     templateUrl: './communication-general-setting.component.html',
     styleUrls: ['./communication-general-setting.component.css']
 })
@@ -78,30 +78,7 @@ export class CommunicationGeneralSettingComponent implements OnInit, AfterViewIn
             );
     }
 
-    /**
-     * Add dialog launch
-     */
-/*    addDialog() {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.disableClose = true;
-        dialogConfig.autoFocus = true;
-
-        dialogConfig.data = {
-            emailTemplates: this.emailTemplates,
-            smsTemplates: this.smsTemplates
-        };
-
-      //  const dialogRef = this.dialog.open(AddLoanTypeComponent, dialogConfig);
-        dialogRef.afterClosed().subscribe(
-            (val) => {
-                if ((val)) {
-                    this.loadData();
-                }
-            }
-        );
-    }*/
-
-    /**
+     /**
      * Edit dialog launch
      */
     editDialog(communicationSetting: CommunicationSettingModel) {
@@ -131,7 +108,6 @@ export class CommunicationGeneralSettingComponent implements OnInit, AfterViewIn
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -157,10 +133,7 @@ export class CommunicationGeneralSettingComponent implements OnInit, AfterViewIn
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -182,11 +155,9 @@ export class CommunicationGeneralSettingComponent implements OnInit, AfterViewIn
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
 
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
-             //   this.delete(communicationSetting);
             }
             this.dialogRef = null;
         });

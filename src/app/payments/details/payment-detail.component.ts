@@ -5,8 +5,6 @@ import { PaymentService } from '../data/payment.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { TransactionDataSource } from '../../transactions/data/transaction-data.source';
 import { TransactionService } from '../../transactions/data/transaction.service';
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-payment-detail',
@@ -48,13 +46,6 @@ export class PaymentDetailComponent implements OnInit, AfterViewInit  {
     }
 
     ngOnInit() {
-
-        this.transactionDataSource = new TransactionDataSource(this.transactionService);
-        // Load pagination data
-        this.transactionDataSource.meta$.subscribe((res) => this.meta = res);
-        // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
-        this.transactionDataSource.load('', 0, 0, 'amount', 'desc', 'payment_id', this.payment.id);
-
         this.paymentMethodService.list('name')
             .subscribe((res) => this.paymentMethods = res,
                 () => this.paymentMethods = []
@@ -83,21 +74,6 @@ export class PaymentDetailComponent implements OnInit, AfterViewInit  {
      * Handle search and pagination
      */
     ngAfterViewInit() {
-        this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
-        ).subscribe();
-
-        // reset the paginator after sorting
-        this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
-
-        merge(this.sort.sortChange, this.paginator.page)
-            .pipe(
-                tap(() => this.loadData())
-            )
-            .subscribe();
     }
 
 }

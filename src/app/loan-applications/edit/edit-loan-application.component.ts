@@ -1,22 +1,24 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoanApplicationModel } from '../models/loan-application-model';
 import { LoanApplicationService } from '../data/loan-application.service';
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { MemberService } from '../../members/data/member.service';
 import { LoanTypeSettingService } from '../../settings/loan/type/data/loan-type-setting.service';
 import { WitnessTypeSettingService } from '../../settings/borrower/witness-type/data/witness-type-setting.service';
+import * as moment from '../../withdrawals/add/add-withdrawal.component';
+import { debounceTime, distinctUntilChanged, map, delay, tap, filter, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-edit-loan-application',
     styles: [],
     templateUrl: './edit-loan-application.component.html'
 })
-export class EditLoanApplicationComponent implements OnInit  {
+export class EditLoanApplicationComponent implements OnInit, AfterViewInit, OnDestroy  {
 
     form: FormGroup;
 
@@ -25,6 +27,8 @@ export class EditLoanApplicationComponent implements OnInit  {
     loanApplication: LoanApplicationModel;
 
     loader = false;
+    isMpesa = false;
+    isBank = false;
 
     formGroup: FormGroup;
 
@@ -32,6 +36,7 @@ export class EditLoanApplicationComponent implements OnInit  {
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     thirdFormGroup: FormGroup;
+    fourthFormGroup: FormGroup;
 
     leadStatuses: any = [];
 
@@ -68,6 +73,21 @@ export class EditLoanApplicationComponent implements OnInit  {
 
     @ViewChild('stepper', {static: true }) stepper: MatStepper;
 
+    /** control for the selected bank for server side filtering */
+    public bankServerSideCtrl: FormControl = new FormControl();
+
+    /** control for filter for server side. */
+    public memberServerSideFilteringCtrl: FormControl = new FormControl();
+
+    /** indicate search operation is in progress */
+    public searching: boolean = false;
+
+    /** list of banks filtered after simulating server side search */
+    public  filteredServerSideMembers: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+    /** Subject that emits when the component has been destroyed. */
+    protected _onDestroy = new Subject<void>();
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder, private router: Router, private memberService: MemberService,
                 private loanTypeService: LoanTypeSettingService,
@@ -80,9 +100,46 @@ export class EditLoanApplicationComponent implements OnInit  {
         this.members = row.members;
         this.users = row.users;
         this.loanTypes = row.loanTypes;
+
+        this.filteredServerSideMembers.next( this.members.filter(member =>
+            member.first_name.toLowerCase().indexOf(this.loanApplication.member_id) > -1)
+        );
+
     }
 
     ngOnInit() {
+
+        // listen for search field value changes
+        this.memberServerSideFilteringCtrl.valueChanges
+            .pipe(
+                filter(search => !!search),
+                tap(() => this.searching = true),
+                takeUntil(this._onDestroy),
+                debounceTime(200),
+                distinctUntilChanged(),
+                map(search => {
+                    if (!this.members) {
+                        return [];
+                    }
+                    search = search.toLowerCase();
+                    // simulate server fetching and filtering data
+                    return this.members.filter(member => {
+                        return member.first_name.toLowerCase().indexOf(search) > -1
+                            || member.middle_name.toLowerCase().indexOf(search) > -1
+                            || member.last_name.toLowerCase().indexOf(search) > -1
+                            || member.phone.toLowerCase().indexOf(search) > -1
+                            || member.id_number.toLowerCase().indexOf(search) > -1;
+                    });
+                }),
+                delay(500)
+            )
+            .subscribe(filteredMembers => {
+                    this.searching = false;
+                    this.filteredServerSideMembers.next(filteredMembers);
+                },
+                error => {
+                    this.searching = false;
+                });
 
         this.nationalID = this.members.find((item: any) => item.id === this.loanApplication.member_id).id_number;
         this.accountNumber = this.members.find((item: any) => item.id === this.loanApplication.member_id).account.account_number;
@@ -105,11 +162,14 @@ export class EditLoanApplicationComponent implements OnInit  {
         this.repaymentPeriod = this.loanTypes.find((item: any) => item.id === this.loanApplication.loan_type_id).repayment_period;
 
         this.paymentMethodService.list(['name', 'display_name'])
-            .subscribe((res) => this.disburseMethods = res,
+            .subscribe((res) => {
+                    this.disburseMethods = res;
+                    this.onDisburseMethodItemChange(this.loanApplication.disburse_method_id);
+                },
                 () => this.disburseMethods = []
             );
 
-        this.witnessTypeService.list(['name'])
+        this.witnessTypeService.list(['name', 'display_name'])
             .subscribe((res) => this.witnessTypes = res,
                 () => this.witnessTypes = []
             );
@@ -126,9 +186,6 @@ export class EditLoanApplicationComponent implements OnInit  {
 
             id_number: [{value: this.nationalID, disabled: true}],
 
-            application_form: [{value: this.loanApplication.attach_application_form, disabled: true}],
-            attach_application_form: [''],
-
             last_name: [{value: this.lastName, disabled: true}],
             phone: [{value: this.userPhone, disabled: true}],
 
@@ -143,16 +200,29 @@ export class EditLoanApplicationComponent implements OnInit  {
         });
 
         this.secondFormGroup = this.fb.group({
-            disburse_method_id: [''],
+            disburse_method_id: [this.loanApplication.disburse_method_id],
             mpesa_number: [this.loanApplication.mpesa_number],
+            mpesa_first_name: [this.loanApplication.mpesa_first_name],
             bank_name: [this.loanApplication.bank_name],
             bank_branch: [this.loanApplication.bank_branch],
             bank_account: [this.loanApplication.bank_account],
-            other_banking_details: [this.loanApplication.other_banking_details]
+            disburse_note: [this.loanApplication.disburse_note],
+
+            bank_fields: this.fb.group({
+                cheque_number: [this.loanApplication.cheque_number],
+                cheque_date: [this.loanApplication.cheque_date],
+                bank_name: [this.loanApplication.bank_name],
+                bank_branch: [this.loanApplication.bank_branch]
+            }),
+            mpesa_fields: this.fb.group({
+                mpesa_number: [this.loanApplication.mpesa_number],
+                mpesa_first_name: [this.loanApplication.mpesa_first_name],
+                mpesa_last_name: [this.loanApplication.mpesa_last_name]
+            })
         });
 
         this.thirdFormGroup = this.fb.group({
-            witness_type_id: [this.loanApplication.witness_type_id, Validators.required],
+            witness_type_id: [this.loanApplication.witness_type_id],
             witness_first_name: [this.loanApplication.witness_first_name],
             witness_last_name: [this.loanApplication.witness_last_name],
             witness_country: [this.loanApplication.witness_country],
@@ -164,6 +234,23 @@ export class EditLoanApplicationComponent implements OnInit  {
             witness_postal_address: [this.loanApplication.witness_postal_address],
             witness_residential_address: [this.loanApplication.witness_residential_address]
         });
+
+        this.fourthFormGroup = this.fb.group({
+            application_form: [{value: this.loanApplication.attach_application_form, disabled: true}],
+            attach_application_form: [''],
+        });
+
+
+        this.firstFormGroup.patchValue({
+            member_id: this.loanApplication.member_id,
+        });
+
+    }
+
+    /**
+     *
+     */
+    ngAfterViewInit() {
 
     }
 
@@ -256,7 +343,7 @@ export class EditLoanApplicationComponent implements OnInit  {
                 (error) => {
                     this.loader = false;
                     this.notification.showNotification('danger', 'Error !! Unable to upload Application Form. File too large?');
-                    console.log('Error at Application Form update: ', error);
+                  //  console.log('Error at Application Form update: ', error);
                     if (error.payment === 0) {
                         // notify error
                         return;
@@ -267,13 +354,23 @@ export class EditLoanApplicationComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
+                          //  console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
                         }
                     }
                 });
+    }
+
+    /**
+     *
+     * @param value
+     */
+    onDisburseMethodItemChange(value) {
+        const paymentMethod = this.disburseMethods.find((item: any) => item.id === value).name;
+        this.isMpesa = paymentMethod === 'MPESA';
+        this.isBank = paymentMethod === 'BANK';
     }
 
     /**
@@ -297,7 +394,7 @@ export class EditLoanApplicationComponent implements OnInit  {
 
         this.loanApplicationService.update(body)
             .subscribe((res) => {
-                    console.log('Create Source: ', res);
+                   // console.log('Create Source: ', res);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! Loan Application updated.');
                 },
@@ -314,7 +411,7 @@ export class EditLoanApplicationComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
+                          //  console.log('Hallo: ' , prop);
 
                             this.stepper.selectedIndex = 0;
 
@@ -333,6 +430,10 @@ export class EditLoanApplicationComponent implements OnInit  {
                 });
     }
 
+    close() {
+        this.dialogRef.close();
+    }
+
     /**
      *
      */
@@ -341,5 +442,11 @@ export class EditLoanApplicationComponent implements OnInit  {
         //  this.form.reset();
         this.dialogRef.close(this.firstFormGroup.value);
     }
+
+    ngOnDestroy() {
+        this._onDestroy.next();
+        this._onDestroy.complete();
+    }
+
 
 }

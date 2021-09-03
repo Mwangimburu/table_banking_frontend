@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatSort } from '@angular/material';
-import { fromEvent, merge } from 'rxjs';
-import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { TransactionDataSource } from '../../../../../transactions/data/transaction-data.source';
 import { PaymentService } from '../../../../../payments/data/payment.service';
 import { TransactionService } from '../../../../../transactions/data/transaction.service';
@@ -18,8 +18,6 @@ export class PenaltyTransactionComponent implements OnInit, AfterViewInit  {
     transactionColumns = [
         'transaction_date',
         'amount',
-        'payment_method',
-        'receipt_number',
         'loan_id'
     ];
 
@@ -86,10 +84,7 @@ export class PenaltyTransactionComponent implements OnInit, AfterViewInit  {
      */
     ngAfterViewInit() {
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting

@@ -19,7 +19,7 @@
         </div>
         <div class="col-6">
             <mat-form-field class="full-width">
-                <input matInput formControlName="amount" placeholder="Amount">
+                <input matInput type="number" min="0" formControlName="amount" placeholder="Amount">
                 <mat-error align="start" *ngIf="formErrors?.amount" class="form__error">{{ formErrors.amount }}</mat-error>
             </mat-form-field>
         </div>
@@ -55,7 +55,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="create()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

@@ -31,7 +31,7 @@ export class AuthEffects {
       if (userData) {
         return of(new Login({user: userData}));
       } else {
-        return of(new Logout());
+       // return of(new Logout());
       }
   });
 

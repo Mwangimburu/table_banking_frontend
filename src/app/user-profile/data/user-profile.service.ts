@@ -25,9 +25,6 @@ export class UserProfileService extends BaseService<UserProfileModel> {
      * @param item
      */
     public update(item: any): Observable<UserProfileModel> {
-       // return this.localHttpClient.post<any>(super.getResourceUrl(), item);
-      //  return this.localHttpClient.put<any>(super.getItemUrl(item.id), item);
-       // return this.localHttpClient.put<any>(super.getItemUrl(item.get('id')), item);
         return this.localHttpClient.put<any>(super.getItemUrl(item.id), item);
     }
 
@@ -48,6 +45,5 @@ export class UserProfileService extends BaseService<UserProfileModel> {
         const imageUrl = 'fetch_photo';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
         return this.localHttpClient.post<any>(url, {}, { responseType: 'blob' as 'json'});
-       // return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 }

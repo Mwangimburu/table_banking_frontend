@@ -9,5 +9,4 @@ export const ROUTES: Routes = [
     { path: 'create', component: AddGuarantorComponent },
 ];
 
-
 export const GuarantorRoutingModule = RouterModule.forChild(ROUTES);

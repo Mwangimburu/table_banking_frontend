@@ -15,8 +15,6 @@ export class MemberResolverService implements Resolve<MemberModel> {
 
     resolve(snapshot: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | MemberModel {
 
-        console.log('member id...');
-        console.log(snapshot.params.id);
         this.id = snapshot.params.id;
 
         // If there's data in the service, show it, otherwise fetch from db (This is incase of a page reload)
@@ -25,7 +23,6 @@ export class MemberResolverService implements Resolve<MemberModel> {
         });
 
         if ( this.member == null) {
-            console.log('Ftech data from api');
             this.member = this.memberService.getById(this.id);
         }
 

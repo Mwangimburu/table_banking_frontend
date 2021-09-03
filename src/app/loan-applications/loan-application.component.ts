@@ -14,6 +14,7 @@ import { MemberService } from '../members/data/member.service';
 import { LoanService } from '../loans/data/loan.service';
 import { LoanTypeSettingService } from '../settings/loan/type/data/loan-type-setting.service';
 import { UserSettingService } from '../settings/user/data/user-setting.service';
+import { CalculatorComponent } from './calculator/calculator.component';
 
 @Component({
     selector: 'app-loan-applications',
@@ -78,7 +79,7 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         // We load initial data here to avoid affecting life cycle hooks if we load all data on after view init
         this.dataSource.load('', 0, 0, 'application_date', 'desc', 'reviewed_on');
 
-        this.memberService.list(['first_name', 'last_name', 'id_number'])
+        this.memberService.list(['first_name', 'middle_name', 'last_name', 'id_number', 'phone'])
             .subscribe((res) => this.members = res,
                 () => this.members = []
             );
@@ -108,7 +109,6 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
             if (data && data.length > 0) {
                 this.selectedRowIndex = data[0].id;
                 this.onSelected(data[0]);
-               // console.log(data[0].id);
             }
         });
     }
@@ -133,6 +133,25 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         };
 
         const dialogRef = this.dialog.open(AddLoanApplicationComponent, dialogConfig);
+        dialogRef.afterClosed().subscribe(
+            (val) => {
+                if ((val)) {
+                    this.loadData();
+                }
+            }
+        );
+    }
+
+    calculator() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+
+        dialogConfig.data = {
+            loanTypes: this.loanTypes
+        };
+
+        const dialogRef = this.dialog.open(CalculatorComponent, dialogConfig);
         dialogRef.afterClosed().subscribe(
             (val) => {
                 if ((val)) {
@@ -172,7 +191,6 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
      * Fetch data from data lead
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -199,10 +217,7 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -216,7 +231,6 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
     }
 
     /**
-     * Open Edit form
      * @param lead
      */
     openConfirmationDialog(lead: LoanApplicationModel) {
@@ -224,8 +238,6 @@ export class LoanApplicationComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
-
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this.delete(lead);

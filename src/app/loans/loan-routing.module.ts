@@ -7,7 +7,6 @@ import { LoanResolverService } from './data/loan-resolver.service';
 import { ViewLoanGeneralComponent } from './view/general/view-loan-general.component';
 import { ViewLoanCollateralComponent } from './view/collateral/view-loan-collateral.component';
 import { ViewLoanGuarantorsComponent } from './view/guarantors/view-loan-guarantors.component';
-import { ViewLoanLoanApplicationsComponent } from './view/loan-applications/view-loan-loan-applications.component';
 import { ViewLoanPaymentsComponent } from './view/payments/view-loan-payments.component';
 import { ViewLoanAdjustmentComponent } from './view/adjustment/view-loan-adjustment.component';
 
@@ -21,7 +20,6 @@ export const ROUTES: Routes = [
             { path: '', component: ViewLoanGeneralComponent },
             { path: 'adjustments', component: ViewLoanAdjustmentComponent },
             { path: 'payments', component: ViewLoanPaymentsComponent },
-           // { path: 'loan_applications', component: ViewLoanLoanApplicationsComponent },
             { path: 'collateral', component: ViewLoanCollateralComponent },
             { path: 'guarantors', component: ViewLoanGuarantorsComponent }
         ]

@@ -49,9 +49,6 @@ export class EditUserComponent implements OnInit  {
             last_name: [this.user.last_name, [Validators.required,
                 Validators.minLength(3)]],
             role_id: [this.user.role_id],
-/*
-            employee_id: [this.user.employee_id],
-*/
             email: [this.user.email],
             password: [''],
             password_confirmation: [''],
@@ -70,10 +67,7 @@ export class EditUserComponent implements OnInit  {
         this.loader = true;
         this.userService.update(body)
             .subscribe((data) => {
-                    console.log('Update user: ', data);
                     this.loader = false;
-
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -82,10 +76,7 @@ export class EditUserComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit user component: ', error);
-
                     if (error.user === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -94,7 +85,6 @@ export class EditUserComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

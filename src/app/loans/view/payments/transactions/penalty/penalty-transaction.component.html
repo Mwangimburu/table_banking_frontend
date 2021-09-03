@@ -43,16 +43,6 @@
                 <mat-cell *matCellDef="let row"> {{row.amount|number:'1.2'}} </mat-cell>
             </ng-container>
 
-            <ng-container matColumnDef="payment_method">
-                <mat-header-cell *matHeaderCellDef> Method </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.payment?.paymentMethod?.display_name}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="receipt_number">
-                <mat-header-cell *matHeaderCellDef> Receipt #. </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.payment?.receipt_number}} </mat-cell>
-            </ng-container>
-
             <ng-container matColumnDef="loan_id">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Transaction Type </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.transaction_type}} </mat-cell>

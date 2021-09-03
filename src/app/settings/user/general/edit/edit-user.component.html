@@ -28,23 +28,6 @@
             </mat-form-field>
         </div>
     </div>
-<!--    <div class="row">
-        <div class="col-7">
-            <mat-form-field class="full-width">
-                <mat-select placeholder="Employee ID" formControlName="employee_id">
-                    <mat-option *ngFor="let employee of employees" [value]="employee.id">
-                        {{employee.first_name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.employee_id" class="form__error">{{ formErrors.employee_id }}</mat-error>
-            </mat-form-field>
-        </div>
-        or
-        <button mat-button matPrefix color="accent" aria-label="add new" (click)="addDialog()">
-            <mat-icon>add</mat-icon> Add New
-        </button>
-    </div>-->
-
 
     <div class="row">
         <div class="col-12">
@@ -102,8 +85,8 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
 
     <button class="mat-raised-button mat-primary" (click)="updateUser()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

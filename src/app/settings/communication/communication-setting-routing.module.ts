@@ -2,8 +2,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommunicationSettingComponent } from './communication-setting.component';
 import { EmailSettingResolverService } from './email/data/email-setting-resolver.service';
 import { SmsSettingResolverService } from './sms/data/sms-setting-resolver.service';
-import { EmailTemplateSettingResolverService } from './email-template/data/email-template-setting-resolver.service';
-import { SmsTemplateSettingResolverService } from './sms-template/data/sms-template-setting-resolver.service';
 
 export const ROUTES: Routes = [
     {
@@ -14,11 +12,6 @@ export const ROUTES: Routes = [
                 path: '',
                 loadChildren: 'app/settings/communication/general/communication-general-setting.module#CommunicationGeneralSettingModule'
             },
-          /*  {
-                path: '',
-                loadChildren: 'app/settings/communication/email/email-setting.module#EmailSettingModule',
-                resolve : { setting: EmailSettingResolverService}
-            },*/
            {
                 path: 'email',
                 loadChildren: 'app/settings/communication/email/email-setting.module#EmailSettingModule',
@@ -32,13 +25,11 @@ export const ROUTES: Routes = [
             },
             {
                 path: 'email_templates',
-                loadChildren: 'app/settings/communication/email-template/email-template-setting.module#EmailTemplateSettingModule',
-              //  resolve : { setting: EmailTemplateSettingResolverService}
+                loadChildren: 'app/settings/communication/email-template/email-template-setting.module#EmailTemplateSettingModule'
             },
             {
                 path: 'sms_templates',
-                loadChildren: 'app/settings/communication/sms-template/sms-template-setting.module#SmsTemplateSettingModule',
-               // resolve : { setting: SmsTemplateSettingResolverService}
+                loadChildren: 'app/settings/communication/sms-template/sms-template-setting.module#SmsTemplateSettingModule'
             }
         ]
     }

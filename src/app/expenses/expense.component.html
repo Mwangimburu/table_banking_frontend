@@ -12,7 +12,7 @@
                         <div class="row search-form-section">
 
                             <div class="col-3">
-                                <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
+                                <button *ngIf="!(dataSource?.loading$ | async)" mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                                     <mat-icon>add</mat-icon>Add New
                                 </button>
 
@@ -58,12 +58,12 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-                                            <button mat-menu-item (click)="editDialog(row)">
-                                                <mat-icon color="accent">edit</mat-icon>
+                                            <button mat-menu-item matTooltip="Edit Expense." [matTooltipPosition]="'above'" (click)="editDialog(row)">
+                                                <mat-icon color="primary">edit</mat-icon>
                                                 <span>Edit</span>
                                             </button>
-                                            <button mat-menu-item (click)="openConfirmationDialog(row)">
-                                                <mat-icon color="warn">delete</mat-icon>
+                                            <button mat-menu-item matTooltip="Delete Expense." [matTooltipPosition]="'above'" (click)="openConfirmationDialog(row)">
+                                                <mat-icon color="primary">primary</mat-icon>
                                                 <span>Delete</span>
                                             </button>
                                         </mat-menu>

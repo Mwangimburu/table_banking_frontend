@@ -1,5 +1,4 @@
 <h5 mat-dialog-title>Interest Transactions. # {{interest?.loan?.loan_reference_number}}</h5>
-
 <div class="d-flex spinner-container" *ngIf="loader">
     <mat-spinner [diameter]="40"></mat-spinner>
 </div>
@@ -41,16 +40,6 @@
             <ng-container matColumnDef="amount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.amount|number:'1.2'}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="payment_method">
-                <mat-header-cell *matHeaderCellDef> Method </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.payment?.paymentMethod?.display_name}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="receipt_number">
-                <mat-header-cell *matHeaderCellDef> Receipt #. </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.payment?.receipt_number}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="loan_id">

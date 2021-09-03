@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PaymentModel } from '../models/payment-model';
@@ -7,15 +7,16 @@ import { PaymentService } from '../data/payment.service';
 import { NotificationService } from '../../shared/notification.service';
 import { PaymentMethodSettingService } from '../../settings/payment/method/data/payment-method-setting.service';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap, delay, tap, filter, takeUntil } from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-add-payment',
     styles: [],
     templateUrl: './add-payment.component.html'
 })
-export class AddPaymentComponent implements OnInit  {
+export class AddPaymentComponent implements OnInit, OnDestroy  {
 
     form: FormGroup;
 
@@ -34,6 +35,18 @@ export class AddPaymentComponent implements OnInit  {
 
     @ViewChild('stepper', {static: true }) stepper: MatStepper;
 
+    /** control for filter for server side. */
+    public memberServerSideFilteringCtrl: FormControl = new FormControl();
+
+    /** indicate search operation is in progress */
+    public searching: boolean = false;
+
+    /** list of banks filtered after simulating server side search */
+    public  filteredServerSideMembers: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+    /** Subject that emits when the component has been destroyed. */
+    protected _onDestroy = new Subject<void>();
+
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
                 private paymentService: PaymentService,
@@ -43,12 +56,47 @@ export class AddPaymentComponent implements OnInit  {
         this.members = row.members;
 
         this.paymentMethodService.list(['name', 'display_name'])
-            .subscribe((res) => this.paymentMethods = res,
+            .subscribe((res) => {
+                    this.paymentMethods = res;
+                },
                 () => this.paymentMethods = []
             );
     }
 
     ngOnInit() {
+        this.memberServerSideFilteringCtrl.valueChanges
+            .pipe(
+                filter(search => !!search),
+                tap(() => this.searching = true),
+                takeUntil(this._onDestroy),
+                debounceTime(200),
+                distinctUntilChanged(),
+                map(search => {
+                    if (!this.members) {
+                        return [];
+                    }
+                    search = search.toLowerCase();
+                    // simulate server fetching and filtering data
+                    return this.members.filter(member => {
+                        return member.first_name.toLowerCase().indexOf(search) > -1
+                            || member.middle_name.toLowerCase().indexOf(search) > -1
+                            || member.last_name.toLowerCase().indexOf(search) > -1
+                            || member.phone.toLowerCase().indexOf(search) > -1
+                            || member.id_number.toLowerCase().indexOf(search) > -1;
+                    });
+                }),
+                delay(500)
+            )
+            .subscribe(filteredMembers => {
+                    this.searching = false;
+                    this.filteredServerSideMembers.next(filteredMembers);
+                },
+                error => {
+                    // no errors in our simulated example
+                    this.searching = false;
+                    // handle error...
+                });
+
         this.form = this.fb.group({
             method_id: ['', [Validators.required,
                 Validators.minLength(3)]],
@@ -58,7 +106,6 @@ export class AddPaymentComponent implements OnInit  {
                 Validators.minLength(1)]],
             payment_date: [moment(), Validators.required],
             notes: [''],
-          //  attachment: [''],
             account_number: [{value: '', disabled: true}],
             id_number: [{value: '', disabled: true}],
 
@@ -86,7 +133,6 @@ export class AddPaymentComponent implements OnInit  {
 
     onPaymentMethodItemChange(value) {
         const paymentMethod = this.paymentMethods.find((item: any) => item.id === value).name;
-        console.log(paymentMethod);
         this.isBank = paymentMethod === 'BANK';
     }
 
@@ -107,15 +153,12 @@ export class AddPaymentComponent implements OnInit  {
 
         this.loader = true;
 
-      //  console.log('body');
-      //  console.log(body);
         this.paymentService.create(body)
             .subscribe((data) => {
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New payment created.');
                 },
                 (error) => {
-                   // console.log(error);
                     this.loader = false;
                     // User has no loan
                     if (error.error && error.error.status_code === 404) {
@@ -133,7 +176,6 @@ export class AddPaymentComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                           // console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }
@@ -150,6 +192,11 @@ export class AddPaymentComponent implements OnInit  {
         this.loader = false;
         this.form.reset();
         this.dialogRef.close(this.form.value);
+    }
+
+    ngOnDestroy() {
+        this._onDestroy.next();
+        this._onDestroy.complete();
     }
 
 }

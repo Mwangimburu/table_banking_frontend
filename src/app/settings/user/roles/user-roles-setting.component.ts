@@ -14,7 +14,7 @@ import { NotificationService } from '../../../shared/notification.service';
 import { PermissionSettingService } from '../data/permission-setting.service';
 
 @Component({
-    selector: 'app-role-roles-setting',
+    selector: 'app-user-role-setting',
     templateUrl: './user-roles-setting.component.html',
     styleUrls: ['./user-roles-setting.component.css']
 })
@@ -75,9 +75,6 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
                     this.allPermissions = res;
                     this.allPermissionsOptions = this.allPermissions.map(
                         x => new CheckboxItem(x.id, x.display_name));
-                      /*console.log(res[0].name);
-                      console.log(res[0].id);*/
-
                 },
                 () => this.allPermissions = []
             );
@@ -117,7 +114,6 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.disableClose = true;
         dialogConfig.autoFocus = true;
-       // dialogConfig.data = {role};
         dialogConfig.data = {role,
             permOptions: this.allPermissionsOptions};
 
@@ -135,7 +131,6 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
      * Fetch data from data source
      */
     loadData() {
-        console.log(this.sort.direction);
         this.dataSource.load(
             this.search.nativeElement.value,
             (this.paginator.pageIndex + 1),
@@ -161,10 +156,7 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
             ).subscribe();
 
         this.paginator.page.pipe(
-            // startWith(null),
-            tap(() => this.loadData() ),
-            tap( () => console.log('Page Index: ' + (this.paginator.pageIndex + 1))),
-            tap( () => console.log('Page Size: ' + (this.paginator.pageSize)))
+            tap(() => this.loadData() )
         ).subscribe();
 
         // reset the paginator after sorting
@@ -186,8 +178,6 @@ export class UserRolesSettingComponent implements OnInit, AfterViewInit {
         this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             disableClose: true
         });
-        //  this.dialogRef.componentInstance.confirmMessage = 'Confirm Permanent Delete.';
-
         this.dialogRef.afterClosed().subscribe((result) => {
             if (result) {
                 this.delete(role);

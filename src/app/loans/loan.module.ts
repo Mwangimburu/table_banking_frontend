@@ -17,6 +17,7 @@ import { InterestTransactionComponent } from './view/payments/transactions/inter
 import { PrincipalTransactionComponent } from './view/payments/transactions/principal/principal-transaction.component';
 import { PenaltyTransactionComponent } from './view/payments/transactions/penalty/penalty-transaction.component';
 import { PenaltyAdjustmentComponent } from './view/payments/adjustment/penalty/penalty-adjustment.component';
+import { StatementComponent } from '../accounting/statement/statement.component';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { PenaltyAdjustmentComponent } from './view/payments/adjustment/penalty/p
         InterestTransactionComponent,
         PrincipalTransactionComponent,
         PenaltyTransactionComponent,
-        PenaltyAdjustmentComponent
+        PenaltyAdjustmentComponent,
+        StatementComponent
     ]
 })
 

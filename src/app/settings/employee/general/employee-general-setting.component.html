@@ -1,6 +1,4 @@
 <div class="row">
-
-
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
@@ -11,7 +9,6 @@
                         <button mat-button matPrefix mat-stroked-button aria-label="add new" (click)="addDialog()">
                             <mat-icon>add</mat-icon>Add New
                         </button>
-
                     </div>
 
                     <div class="col-9">
@@ -70,14 +67,11 @@
                     <div class="d-flex justify-content-center spinner-container" *ngIf="(dataSource?.loading$ | async) || loader">
                         <mat-spinner [diameter]="40"></mat-spinner>
                     </div>
-
                     <mat-paginator #pagination
                                    [length]="meta?.total"
                                    [pageIndex]="pageIndex"
                                    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
                     </mat-paginator>
-
-
                 </div>
 
             </div>

@@ -14,7 +14,6 @@ export class CollateralResolverService implements Resolve<CollateralModel> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | CollateralModel {
 
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

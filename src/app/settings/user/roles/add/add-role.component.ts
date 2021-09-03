@@ -55,7 +55,6 @@ export class AddRoleComponent implements OnInit  {
 
         this.roleService.create(body)
             .subscribe((data) => {
-                    console.log('Create Role: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New role created.');
                 },
@@ -72,7 +71,6 @@ export class AddRoleComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

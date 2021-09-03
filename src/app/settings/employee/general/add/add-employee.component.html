@@ -6,7 +6,6 @@
 
 <mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="createEmployee()">
 
-
     <mat-form-field class="full-width">
         <input matInput formControlName="employee_number" placeholder="Staff Number">
         <mat-error align="start" *ngIf="formErrors?.employee_number" class="form__error">{{ formErrors.employee_number }}</mat-error>
@@ -18,14 +17,12 @@
                 <input matInput formControlName="first_name" placeholder="First Name">
                 <mat-error align="start" *ngIf="formErrors?.first_name" class="form__error">{{ formErrors.first_name }}</mat-error>
             </mat-form-field>
-
         </div>
         <div class="col-6">
             <mat-form-field class="full-width">
                 <input matInput formControlName="last_name" placeholder="Last Name">
                 <mat-error align="start" *ngIf="formErrors?.last_name" class="form__error">{{ formErrors.last_name }}</mat-error>
             </mat-form-field>
-
         </div>
     </div>
 
@@ -173,7 +170,7 @@
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
     <button class="mat-raised-button mat-primary" (click)="createEmployee()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

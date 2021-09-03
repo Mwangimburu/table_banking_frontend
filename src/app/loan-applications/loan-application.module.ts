@@ -14,8 +14,8 @@ import { EditApplicationGuarantorComponent } from './view/guarantor/edit/edit-ap
 import { ApplicationSecurityComponent } from './view/securitty/application-security.component';
 import { AddApplicationSecurityComponent } from './view/securitty/add/add-application-security.component';
 import { EditApplicationSecurityComponent } from './view/securitty/edit/edit-application-security.component';
-import { ApplicationManageComponent } from './view/manage/application-manage.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { CalculatorComponent } from './calculator/calculator.component';
 
 @NgModule({
     imports: [
@@ -36,7 +36,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         ApplicationSecurityComponent,
         AddApplicationSecurityComponent,
         EditApplicationSecurityComponent,
-       // ApplicationManageComponent
+        CalculatorComponent
     ],
     entryComponents: [
         EditLoanApplicationComponent,
@@ -45,7 +45,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         AddApplicationGuarantorComponent,
         EditApplicationGuarantorComponent,
         AddApplicationSecurityComponent,
-        EditApplicationSecurityComponent
+        EditApplicationSecurityComponent,
+        CalculatorComponent
     ]
 })
 

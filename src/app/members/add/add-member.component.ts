@@ -80,13 +80,9 @@ export class AddMemberComponent implements OnInit  {
             county: [''],
             city: [''],
             status_id: [''],
-           /* branch_id: ['', [Validators.required,
-                Validators.minLength(2)]],*/
             date_of_birth: ['', [Validators.required,
                 Validators.minLength(2)]],
-            date_became_member: [moment(), Validators.required],
-           // passport_photo: [''],
-           // national_id_image: [''],
+            date_became_member: [moment(), Validators.required]
         });
     }
 
@@ -110,7 +106,7 @@ export class AddMemberComponent implements OnInit  {
                 let reader = new FileReader();
                 reader.onload = (e: any) => {
                     this.urls.push(e.target.result);
-                }
+                };
                 reader.readAsDataURL(file);
             }
         }
@@ -216,26 +212,10 @@ export class AddMemberComponent implements OnInit  {
                 formData.append(key, body[key]);
             }
         }
-
-        console.log('***formData 1***');
-        console.log(formData);
-        console.log('***end formData 1***');
-
-
-        /*const newBody = Object.assign({}, formData, body);
-
-        console.log('***newBody***');
-        console.log(newBody);
-        console.log('***formData 2***');
-        console.log(formData);*/
-
-
-
         this.loader = true;
 
         this.memberService.create(formData)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New member created.');
                 },
@@ -252,7 +232,6 @@ export class AddMemberComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

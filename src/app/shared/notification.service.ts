@@ -8,9 +8,6 @@ export class NotificationService {
     }
 
     showNotification(type, message) {
-       // const type = ['', 'info', 'success', 'warning', 'danger'];
-
-      //  const color = Math.floor((Math.random() * 4) + 1);
 
         $.notify({
             icon: 'notifications',

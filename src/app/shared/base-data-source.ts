@@ -27,7 +27,6 @@ export class BaseDataSource implements DataSource<any> {
     load(filter: string, page: number, limit: number, sortField: string = '',
          sortDirection: string = '', whereField: string = '', whereValue: string = '') {
 
-        console.log('load data from base data source');
         this.loadingSubject.next(true);
 
         this.service.getAll(filter, page, limit, sortField, sortDirection, whereField, whereValue).pipe(

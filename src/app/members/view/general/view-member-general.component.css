@@ -1,9 +1,4 @@
-.qqqqqq {
-    /*
-    text-align : center;
-    */
-}
-.image, .xxxx {
+.image {
     display: inline-block;
     vertical-align: top;
 }

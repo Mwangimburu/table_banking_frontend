@@ -47,8 +47,7 @@ export class AddGuarantorComponent implements OnInit  {
     ngOnInit() {
 
         this.form = this.fb.group({
-            member_id: [''/*, [Validators.required,
-                Validators.minLength(3)]*/],
+            member_id: [''],
             loan_id: ['']
         });
     }
@@ -72,7 +71,7 @@ export class AddGuarantorComponent implements OnInit  {
 
         this.memberService.create(body)
             .subscribe((data) => {
-                    console.log('Create Source: ', data);
+                  //  console.log('Create Source: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New guarantor created.');
                 },
@@ -89,7 +88,6 @@ export class AddGuarantorComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

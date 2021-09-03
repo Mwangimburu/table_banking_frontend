@@ -7,5 +7,4 @@ export const ROUTES: Routes = [
     { path: 'create', component: AddPaymentComponent },
 ];
 
-
 export const PaymentRoutingModule = RouterModule.forChild(ROUTES);

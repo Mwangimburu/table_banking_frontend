@@ -10,10 +10,6 @@ export class LoanPenaltyService extends BaseService<LoanPenaltyModel> {
     private selectedLoanSource = new BehaviorSubject<LoanPenaltyModel | null>(null);
     selectedLoanChanges$ = this.selectedLoanSource.asObservable();
 
-  /*  constructor(httpClient: HttpClient) {
-        super( httpClient, 'loan_penalties');
-    }*/
-
     private  localHttpClient: HttpClient;
 
     constructor(httpClient: HttpClient) {

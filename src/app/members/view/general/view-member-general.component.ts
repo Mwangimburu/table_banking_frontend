@@ -3,7 +3,6 @@ import { ApplicationGuarantorService } from '../payment/data/application-guarant
 import { NotificationService } from '../../../shared/notification.service';
 import { MatDialog } from '@angular/material';
 import { MemberService } from '../../data/member.service';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-view-member-general',
@@ -46,18 +45,9 @@ export class ViewMemberGeneralComponent implements OnInit {
       //  this.isImageLoading = true;
         this.memberService.getImage(this.memberData.passport_photo).subscribe(data => {
             this.createImageFromBlob(data);
-           // this.isImageLoading = false;
         }, error => {
-           // this.isImageLoading = false;
-            console.log(error);
         });
     }
-
-  /*  getImage(imageUrl: string): Observable<File> {
-        return this.http
-            .get(imageUrl, { responseType: ResponseContentType.Blob })
-            .map((res: Response) => res.blob());
-    }*/
 
 
     createImageFromBlob(image: Blob) {
@@ -90,8 +80,6 @@ export class ViewMemberGeneralComponent implements OnInit {
                 this.loader = false;
             }, error => {
                 this.loader = false;
-                console.log('Error getting Membership Form from API');
-                console.log(error);
             });
         }
     }

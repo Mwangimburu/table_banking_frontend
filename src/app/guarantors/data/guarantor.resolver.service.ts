@@ -14,7 +14,6 @@ export class GuarantorResolverService implements Resolve<GuarantorModel> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | GuarantorModel {
 
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

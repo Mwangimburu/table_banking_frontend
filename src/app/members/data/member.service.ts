@@ -58,7 +58,6 @@ export class MemberService extends BaseService<MemberModel> {
     public fetchMembershipForm(file_path: any): Observable<any> {
         const imageUrl = 'membership_form';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
-        // return this.localHttpClient.post<any>(url, {}, { responseType: 'blob' as 'json'});
         return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 
@@ -79,6 +78,5 @@ export class MemberService extends BaseService<MemberModel> {
         const imageUrl = 'fetch_photo';
         const url =  `${super.getResourceUrl()}/${imageUrl}`;
         return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
-        // return this.localHttpClient.post<any>(url, {file_path}, { responseType: 'blob' as 'json'});
     }
 }

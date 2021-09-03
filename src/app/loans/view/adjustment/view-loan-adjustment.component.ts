@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApplicationGuarantorService } from '../../../members/view/payment/data/application-guarantor.service';
 import { NotificationService } from '../../../shared/notification.service';
 import { MatDialog } from '@angular/material';
 import { LoanService } from '../../data/loan.service';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-adjustment',
     templateUrl: './view-loan-adjustment.component.html',
     styleUrls: ['./view-loan-adjustment.component.css']
 })

@@ -42,3 +42,6 @@ img {
     /* Make the caption a block so it occupies its own line. */
     display: block;
 }
+.top-space{
+    padding: 5px 5px;
+}

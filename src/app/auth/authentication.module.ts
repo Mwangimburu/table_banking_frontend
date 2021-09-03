@@ -11,6 +11,10 @@ import { StoreModule } from '@ngrx/store';
 import * as fromAuth from './auth.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth.effects';
+import { RequirementsComponent } from '../install/requirements/requirements.component';
+import { InstallStartComponent } from '../install/install-start.component';
+import { InstallComponent } from '../install/install.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
     imports: [
@@ -22,9 +26,13 @@ import { AuthEffects } from './auth.effects';
     declarations: [
         LoginComponent,
         ForgotPasswordComponent,
+        ResetPasswordComponent,
         ConfirmEmailComponent,
         Error404Component,
-        Error500Component
+        Error500Component,
+        InstallStartComponent,
+        RequirementsComponent,
+        InstallComponent
     ],
     providers: [],
 })

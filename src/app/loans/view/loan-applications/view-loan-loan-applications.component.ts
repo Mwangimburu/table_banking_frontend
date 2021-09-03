@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-loan-application',
     templateUrl: './view-loan-loan-applications.component.html',
     styleUrls: ['./view-loan-loan-applications.component.css']
 })

@@ -13,8 +13,6 @@ export class PaymentResolverService implements Resolve<PaymentModel> {
     constructor(private service: PaymentService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | PaymentModel {
-
-      //  return this.dataSource.load('', 0, 0);
         return this.service.getAll('', 0, 0);
     }
 }

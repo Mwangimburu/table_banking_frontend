@@ -51,10 +51,8 @@ export class EditBranchComponent implements OnInit  {
         this.loader = true;
         this.branchService.update(body)
             .subscribe((data) => {
-                    console.log('Update branch: ', data);
                     this.loader = false;
 
-                    // this.loadData();
                     this.dialogRef.close(this.form.value);
 
                     // notify success
@@ -63,10 +61,8 @@ export class EditBranchComponent implements OnInit  {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit branch component: ', error);
 
                     if (error.branch === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -75,7 +71,6 @@ export class EditBranchComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

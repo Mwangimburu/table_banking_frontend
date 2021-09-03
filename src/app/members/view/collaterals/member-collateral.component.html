@@ -13,7 +13,7 @@
     <mat-table #table [dataSource]="collateralDataSource" matSort matSortActive="valuation_date" matSortDirection="desc" matSortDisableClear>
 
         <ng-container matColumnDef="asset_number">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Collateral Number </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Number </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.asset_number}} </mat-cell>
         </ng-container>
 

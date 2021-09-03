@@ -1,15 +1,11 @@
 <h5 mat-dialog-title>Penalty Adjustment. # {{penalty?.loan?.loan_reference_number}}</h5>
 
-<!--<div class="d-flex spinner-container" *ngIf="loader">
-    <mat-spinner [diameter]="40"></mat-spinner>
-</div>-->
-
 <mat-dialog-content class="mat-dialog-data" [formGroup]="form"  (ngSubmit)="penaltyWaiver()">
 
     <div class="row">
         <div class="col-3">
             <mat-form-field>
-                <input matInput placeholder="Amount" disabled value="{{penalty?.amount|number:'1.2'}}">
+                <input matInput type="number" min="0" placeholder="Amount" disabled value="{{penalty?.amount|number:'1.2'}}">
             </mat-form-field>
         </div>
         <div class="col-3">
@@ -32,18 +28,10 @@
     <div class="row">
         <div class="col-4">
             <mat-form-field>
-                <input matInput formControlName="waiver_amount" placeholder="Waiver Amount">
+                <input matInput type="number" min="0" formControlName="waiver_amount" placeholder="Waiver Amount">
                 <mat-error align="start" *ngIf="formErrors?.waiver_amount" class="form__error">{{ formErrors.waiver_amount }}</mat-error>
             </mat-form-field>
         </div>
-     <!--   <div class="col-4">
-            <mat-form-field  class="full-width">
-                <input matInput [matDatepicker]="due_date" formControlName="due_date" placeholder="Due Date">
-                <mat-datepicker-toggle matSuffix [for]="due_date"></mat-datepicker-toggle>
-                <mat-datepicker #due_date></mat-datepicker>
-                <mat-error align="start" *ngIf="formErrors?.due_date" class="form__error">{{ formErrors.due_date }}</mat-error>
-            </mat-form-field>
-        </div>-->
         <div class="col-4">
             <button class="mat-raised-button mat-primary" (click)="penaltyWaiver()" [disabled]="!form.valid">Update</button>
         </div>

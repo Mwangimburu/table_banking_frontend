@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { LoanService } from '../../data/loan.service';
 
 @Component({
-    selector: 'app-application-guarantor',
+    selector: 'app-view-loan-general',
     templateUrl: './view-loan-general.component.html',
     styleUrls: ['./view-loan-general.component.css']
 })

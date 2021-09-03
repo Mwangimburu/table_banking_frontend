@@ -1,11 +1,7 @@
 figure.item {
-    /* To correctly align image, regardless of content height: */
     vertical-align: top;
     display: inline-block;
-    /* To horizontally center images and caption */
     text-align: center;
-    /* The width of the container also implies margin around the images. */
-    /*width: 200px;*/
 }
 img {
     width: 150px;
@@ -13,7 +9,6 @@ img {
     background-color: grey;
 }
 .caption {
-    /* Make the caption a block so it occupies its own line. */
     display: block;
 }
 .centerTop {

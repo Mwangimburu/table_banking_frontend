@@ -1,19 +1,18 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../../../shared/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmailSettingModel } from '../email/model/email-setting.model';
 import { ActivatedRoute } from '@angular/router';
-import { EmailTemplateSettingModule } from '../email-template/email-template-setting.module';
 import { SmsTemplateSettingService } from './data/sms-template-setting.service';
+import { SmsTemplateSettingModel } from './model/sms-template-setting.model';
 
 @Component({
-    selector: 'app-loan-type-setting',
+    selector: 'app-sms-template-setting',
     templateUrl: './sms-template-setting.component.html',
     styleUrls: ['./sms-template-setting.component.css']
 })
 export class SmsTemplateSettingComponent implements OnInit {
     form: FormGroup;
-    emailTemplate: EmailTemplateSettingModule;
+    smsTemplate: SmsTemplateSettingModel;
     formErrors: any;
     loader = false;
 
@@ -76,12 +75,12 @@ export class SmsTemplateSettingComponent implements OnInit {
      *
      */
     update() {
-        const body = Object.assign({}, this.emailTemplate, this.form.value);
+        const body = Object.assign({}, this.smsTemplate, this.form.value);
         body.id = this.templateId;
         this.loader = true;
         this.smsTemplateSettingService.update(body)
             .subscribe((data) => {
-                    console.log('Update email template: ', data);
+                  //  console.log('Update email template: ', data);
                     this.loader = false;
 
                     // notify success
@@ -90,10 +89,8 @@ export class SmsTemplateSettingComponent implements OnInit {
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at edit  sms template component: ', error);
 
                     if (error.payment === 0) {
-                        // notify error
                         return;
                     }
                     // An array of all form errors as returned by server
@@ -102,7 +99,6 @@ export class SmsTemplateSettingComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

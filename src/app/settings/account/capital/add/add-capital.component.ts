@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CapitalSettingModel } from '../model/capital-setting.model';
 import { CapitalSettingService } from '../data/capital-setting.service';
 import { NotificationService } from '../../../../shared/notification.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-add-capital',
@@ -20,6 +21,7 @@ export class AddCapitalComponent implements OnInit  {
     capital: CapitalSettingModel;
 
     loader = false;
+    paymentMethods: any;
 
     constructor(@Inject(MAT_DIALOG_DATA) row: any,
                 private fb: FormBuilder,
@@ -27,14 +29,18 @@ export class AddCapitalComponent implements OnInit  {
                 private notification: NotificationService,
                 private dialogRef: MatDialogRef<AddCapitalComponent>) {
         this.branches = row.branches;
+        this.paymentMethods = row.paymentMethods;
     }
 
     ngOnInit() {
         this.form = this.fb.group({
             branch_id: ['', [Validators.required,
                 Validators.minLength(2)]],
+            method_id: ['', [Validators.required,
+                Validators.minLength(2)]],
+            capital_date: [moment(), Validators.required],
             amount: ['', [Validators.required,
-                Validators.minLength(3)]],
+                Validators.minLength(1)]],
             description: ['']
         });
     }
@@ -58,7 +64,6 @@ export class AddCapitalComponent implements OnInit  {
 
         this.typeService.create(body)
             .subscribe((data) => {
-                    console.log('Create Type: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New Capital added.');
                 },
@@ -75,7 +80,6 @@ export class AddCapitalComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

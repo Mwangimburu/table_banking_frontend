@@ -14,16 +14,6 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <div class="col-2" style="padding-top: 15px">
-                            <mat-checkbox>Exclude Member Loan Accounts.</mat-checkbox>
-
-                            <!-- <mat-form-field class="search-form-field" color="primary">
-                                 <mat-checkbox formControlName="include_members">Include Member Loan Accounts.</mat-checkbox>
-                             </mat-form-field>-->
-                            <!--  <mat-form-field>
-                                  <mat-checkbox formControlName="include_members">Active</mat-checkbox>
-                              </mat-form-field>-->
-                        </div>
                     </div>
 
                 </form>
@@ -47,11 +37,6 @@
                             <mat-cell *matCellDef="let row"> {{row.account_number}} </mat-cell>
                         </ng-container>
 
-                        <!-- <ng-container matColumnDef="account_code">
-                             <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
-                             <mat-cell *matCellDef="let row"> {{row.account_code}} </mat-cell>
-                         </ng-container>-->
-
                         <ng-container matColumnDef="account_class_id">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Class </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.accountType?.accountClass?.name}} </mat-cell>
@@ -59,7 +44,7 @@
 
                         <ng-container matColumnDef="account_name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Account Name </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.member ? row.member?.first_name : row.account_name}} </mat-cell>
+                            <mat-cell *matCellDef="let row"> {{row.account_display_name}} </mat-cell>
                         </ng-container>
 
                         <ng-container matColumnDef="account_type_id">
@@ -75,26 +60,16 @@
                         <ng-container matColumnDef="actions">
                             <mat-header-cell *matHeaderCellDef> Statement  </mat-header-cell>
                             <mat-cell *matCellDef="let row" class="button-row">
-                                <button mat-icon-button (click)="viewStatement(row)">
-                                    <mat-icon color="accent">visibility</mat-icon>
-                                </button>
-                              <!--  <button mat-icon-button [matMenuTriggerFor]="menu">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>-->
-                           <!--     <mat-menu #menu="matMenu">
-                                    <button mat-menu-item (click)="viewStatement(row)">
-                                        <mat-icon color="accent">visibility</mat-icon>
-                                        <span>View Statement</span>
+                                <span *ngIf="loader">-</span>
+
+                                <ng-container *ngIf="!loader">
+                                    <button mat-icon-button matTooltip="View Account Statement." [matTooltipPosition]="'above'" (click)="viewStatement(row)">
+                                        <mat-icon color="primary">visibility</mat-icon>
                                     </button>
-                                    <button mat-menu-item (click)="editDialog(row)">
-                                        <mat-icon color="accent">cloud_download</mat-icon>
-                                        <span>Download PDF</span>
+                                    <button mat-icon-button matTooltip="Download Account Statement." [matTooltipPosition]="'above'" (click)="downloadStatement(row)">
+                                        <mat-icon>cloud_download</mat-icon>
                                     </button>
-                                    <button mat-menu-item (click)="editDialog(row)">
-                                        <mat-icon color="accent">cloud_download</mat-icon>
-                                        <span>Download Excel</span>
-                                    </button>
-                                </mat-menu>-->
+                        </ng-container>
                             </mat-cell>
                         </ng-container>
 

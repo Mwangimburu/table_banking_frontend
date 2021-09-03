@@ -1,5 +1,5 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatPaginator, MatStepper } from '@angular/material';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoanModel } from '../models/loan-model';
 import { LoanService } from '../data/loan.service';
@@ -7,7 +7,7 @@ import { LoanService } from '../data/loan.service';
 import { NotificationService } from '../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-lead',
+    selector: 'app-add-loan',
     styles: [],
     templateUrl: './add-loan.component.html'
 })
@@ -42,17 +42,6 @@ export class AddLoanComponent implements OnInit  {
     }
 
     ngOnInit() {
-
-       /* this.leadStatusService.list('name')
-            .subscribe((res) => this.leadStatuses = res,
-                () => this.leadStatuses = []
-            );
-
-        this.leadSourceService.list('name')
-            .subscribe((res) => this.leadSources = res,
-                () => this.leadSources = []
-            );*/
-
         this.firstFormGroup = this.fb.group({
             title: ['', Validators.required],
             amount: [''],
@@ -84,56 +73,11 @@ export class AddLoanComponent implements OnInit  {
             website: [''],
             notes: [''],
         });
-
-        /*this.form = this.fb.group({
-            amount: ['', [Validators.required,
-                Validators.minLength(3)]],
-            first_name: ['', [Validators.required,
-                Validators.minLength(3)]],
-            last_name: [''],
-            company_id: [''],
-            title: [''],
-            lead_owner_id: [''],
-            status_id: [''],
-            source_id: [''],
-            type_id: [''],
-            email: [''],
-            phone: [''],
-            preferred_comm: [''],
-            address1: [''],
-            country: [''],
-            state: [''],
-            city: [''],
-            organization: [''],
-            industry: [''],
-            notes: [''],
-        });*/
     }
-
-    /*save() {
-        this.dialogRef.close(this.form.value);
-    }*/
 
     close() {
         this.dialogRef.close();
     }
-
-   /* createxx() {
-
-        const data = {...this.firstFormGroup.value, ...this.secondFormGroup.value, ...this.thirdFormGroup.value};
-        console.log('All data');
-        console.log(data);
-
-
-        const xx = Object.assign({}, this.firstFormGroup.value);
-        console.log(xx);
-
-
-        /!*const body = Object.assign({}, this.lead, this.formGroup.value);
-
-        console.log(body);*!/
-
-    }*/
 
     /**
      * Create lead
@@ -147,7 +91,6 @@ export class AddLoanComponent implements OnInit  {
 
         this.leadService.create(body)
             .subscribe((res) => {
-                    console.log('Create Source: ', res);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New lead created.');
                 },
@@ -164,8 +107,6 @@ export class AddLoanComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
-
                             this.stepper.selectedIndex = 0;
 
                             if (this.thirdFormGroup.controls[prop]) {
@@ -188,7 +129,6 @@ export class AddLoanComponent implements OnInit  {
      */
     public onSaveComplete(): void {
         this.loader = false;
-       // this.form.reset();
         this.dialogRef.close();
     }
 

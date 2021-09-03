@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../reducers';
 import { Logout } from './auth.actions';
 import { NotificationService } from '../shared/notification.service';
- // import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -16,6 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((err) => {
+            if (err.status === 400) {
+            }
             if (err.status === 401) {
                 console.log('Interceptor 401: ', err);
 
@@ -44,12 +44,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log('Interceptor - Main: ', err);
                 return throwError(errorData);
             }
-           /* if (err.status === 429) {
-                // Too Many Requests
-                const errorData = err.error.errors;
-                console.log('Interceptor - Main: ', err);
-                return throwError(errorData);
-            }*/
             return throwError(err);
 
         }));

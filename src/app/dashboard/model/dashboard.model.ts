@@ -14,4 +14,11 @@ export class DashboardModel extends BaseModel {
     postal_code: string;
     logo: string;
     favicon: string;
+
+    loan_type_name: string;
+    totalDue: string;
+    loan_officer_first_name: string;
+    member_first_name: string;
+    member_last_name: string;
+    member_phone: string;
 }

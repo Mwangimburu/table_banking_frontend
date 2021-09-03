@@ -13,22 +13,22 @@
     <mat-table #table [dataSource]="guarantorDataSource" matSort matSortActive="created_at" matSortDirection="desc" matSortDisableClear>
 
         <ng-container matColumnDef="loan_application_id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Ref Number </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Loan </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.loanApplication?.loan?.loan_reference_number}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="loan_type">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Type </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Type </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.loanApplication?.loanType?.name}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="guarantee_amount">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Applied Amount </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.loanApplication?.amount_applied}} </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="member_id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Loan Member </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Member </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.loanApplication?.member?.first_name}} </mat-cell>
         </ng-container>
 
@@ -38,7 +38,7 @@
         </ng-container>
 
         <ng-container matColumnDef="loan_status">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Application Status </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.loanApplication?.status}} </mat-cell>
         </ng-container>
 

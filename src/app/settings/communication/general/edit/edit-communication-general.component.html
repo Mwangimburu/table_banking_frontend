@@ -23,41 +23,25 @@
             </mat-form-field>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="Email" formControlName="email_template">
-                <!--    <mat-option [value]="false">No</mat-option>
-                    <mat-option [value]="true">Yes</mat-option>-->
+    <h5>Send notification via : </h5>
 
-                    <mat-option *ngFor="let option of options" [value]="option.id">
-                        {{option.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.email_template" class="form__error">{{ formErrors.email_template }}</mat-error>
-            </mat-form-field>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <mat-form-field class="full-width" color="primary">
-                <mat-select placeholder="SMS" formControlName="sms_template">
-
-                   <!-- <mat-option [value]="false">No</mat-option>
-                    <mat-option [value]="true">Yes</mat-option>-->
-                    <mat-option *ngFor="let option of options" [value]="option.id">
-                        {{option.name}}
-                    </mat-option>
-                </mat-select>
-                <mat-error align="start" *ngIf="formErrors?.sms_template" class="form__error">{{ formErrors.sms_template }}</mat-error>
-            </mat-form-field>
-        </div>
-    </div>
+    <mat-card>
+        <mat-card-content>
+            <div class="row">
+                <div class="col-6">
+                    <mat-slide-toggle formControlName="email_template" color="primary">Email</mat-slide-toggle>
+                </div>
+                <div class="col-6">
+                    <mat-slide-toggle formControlName="sms_template" color="primary">SMS</mat-slide-toggle>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
 
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <button mat-button class="mat-raised-button" [mat-dialog-close]="true">Close</button>
+<mat-dialog-actions align="center" *ngIf="!loader">
+    <button mat-button class="mat-raised-button" [mat-dialog-close]="true" (click)="close()">Close</button>
 
     <button class="mat-raised-button mat-primary" (click)="updateType()" [disabled]="!form.valid">Save</button>
 </mat-dialog-actions>

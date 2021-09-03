@@ -6,7 +6,7 @@ import { ExpenseCategorySettingService } from '../data/expense-category-setting.
 import { NotificationService } from '../../../../shared/notification.service';
 
 @Component({
-    selector: 'app-add-tax-type',
+    selector: 'app-add-expense-category',
     styles: [],
     templateUrl: './add-expense-category.component.html'
 })
@@ -57,7 +57,6 @@ export class AddExpenseCategoryComponent implements OnInit  {
 
         this.expenseCategoryService.create(body)
             .subscribe((data) => {
-                    console.log('Create Type: ', data);
                     this.onSaveComplete();
                     this.notification.showNotification('success', 'Success !! New Expense Category created.');
                 },
@@ -74,7 +73,6 @@ export class AddExpenseCategoryComponent implements OnInit  {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ' , prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

@@ -1,34 +1,14 @@
 <footer class="footer ">
     <div class="container-fluid">
         <nav class="pull-left">
-         <!--   <ul>
-                <li>
-                    <a href="https://www.creative-tim.com">
-                        Creative Tim
-                    </a>
-                </li>
-                <li>
-                    <a href="https://creative-tim.com/about-us">
-                        About Us
-                    </a>
-                </li>
-                <li>
-                    <a href="http://blog.creative-tim.com">
-                        Blog
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.creative-tim.com/license">
-                        Licenses
-                    </a>
-                </li>
-            </ul>-->
         </nav>
         <div class="copyright center-block">
             &copy;
             {{today | date: 'yyyy'}}  {{(currentSettings$|async)?.business_name}}
-            <br/>
-            robisignals@gmail.com
+            <hr/>
+            <span class="small-font">
+                <i>Help and tech support: robisignals@gmail.com</i>
+            </span>
         </div>
     </div>
 </footer>

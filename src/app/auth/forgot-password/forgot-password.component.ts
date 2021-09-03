@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../shared/notification.service';
 import { UserSettingService } from '../../settings/user/data/user-setting.service';
 import { UserSettingModel } from '../../settings/user/model/user-setting.model';
+import { Router } from '@angular/router';
 
 @Component({templateUrl: 'forgot-password.component.html'})
 export class ForgotPasswordComponent implements OnInit {
@@ -14,12 +15,11 @@ export class ForgotPasswordComponent implements OnInit {
     user: UserSettingModel;
 
     constructor(private fb: FormBuilder, private userService: UserSettingService,
-                private notification: NotificationService ){
+                private notification: NotificationService, private router: Router ){
         this.form = this.fb.group({
             email: ['', [Validators.required,
                 Validators.minLength(3)]]
         });
-
     }
 
     /**
@@ -34,15 +34,15 @@ export class ForgotPasswordComponent implements OnInit {
         const body = Object.assign({}, this.user, this.form.value);
 
         this.loader = true;
-        this.userService.resetPassword(body)
+        this.userService.forgotPassword(body)
             .subscribe((data) => {
                     this.loader = false;
+                    this.router.navigate(['reset-password']);
                     // notify success
-                    this.notification.showNotification('success', 'Success !! Check your email for password reset code.');
+                    this.notification.showNotification('info', 'Check your email for password reset code.');
                 },
                 (error) => {
                     this.loader = false;
-                    console.log('Error at reset password update: ', error);
 
                     if (error.payment === 0) {
                         // notify error
@@ -54,7 +54,6 @@ export class ForgotPasswordComponent implements OnInit {
                     if (this.formErrors) {
                         // loop through from fields, If has an error, mark as invalid so mat-error can show
                         for (const prop in this.formErrors) {
-                            console.log('Hallo: ', prop);
                             if (this.form) {
                                 this.form.controls[prop].setErrors({incorrect: true});
                             }

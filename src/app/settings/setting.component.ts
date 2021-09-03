@@ -10,7 +10,7 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/settings', title: 'General',  icon: '', class: '', permission: ['settings-general'], activeOption: true },
-    { path: 'account', title: 'Accounting',  icon: '', class: '', permission: ['settings-accounting'], activeOption: false },
+    { path: 'account', title: 'Capital',  icon: '', class: '', permission: ['settings-accounting'], activeOption: false },
     { path: 'borrower', title: 'Borrower',  icon: '', class: '', permission: ['settings-borrowers'], activeOption: false },
     { path: 'branch', title: 'Branches',  icon: '', class: '', permission: ['settings-branches'], activeOption: false },
     { path: 'communication', title: 'Communication',  icon: '', class: '', permission: ['settings-communication'], activeOption: false },
